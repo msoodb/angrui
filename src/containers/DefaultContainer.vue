@@ -9,6 +9,7 @@
       <SidebarToggler class="d-md-down-none" display="lg" />
       <b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-3" to="/dashboard">Dashboard</b-nav-item>
+        <b-nav-item class="px-3" to="/products" exact>Products</b-nav-item>
         <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item>
         <b-nav-item class="px-3">Settings</b-nav-item>
       </b-navbar-nav>
@@ -88,6 +89,18 @@ export default {
   data () {
     return {
       nav: nav.items
+    }
+  },
+  mounted(){
+    this.loading = true;
+    if(typeof(Storage) != "undefined"){
+      if(!localStorage.getItem("jwtoken") || localStorage.getItem("jwtoken") == "undefined" || localStorage.getItem("jwtoken") == ""){
+        var self = this;
+        self.$router.push('/pages/login');
+      }
+      else {
+        console.log("Your browser does not support Web Storage");
+      }
     }
   },
   computed: {

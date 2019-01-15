@@ -5,6 +5,8 @@ import 'core-js/es6/string'
 import 'core-js/es7/array'
 // import cssVars from 'css-vars-ponyfill'
 import Vue from 'vue'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
 import axios from 'axios'
@@ -16,55 +18,11 @@ import router from './router'
 // cssVars()
 
 Vue.use(BootstrapVue)
+Vue.use(ElementUI)
 Vue.use(axios)
 Vue.prototype.$axios = axios
 Vue.use(qs)
-Vue.use(VeeValidate,
-  {
-    dictionary: {
-      en: {
-        messages:{
-          required: () => 'فیلد فوق اجباری می‌باشد.',
-          digits: () => 'فیلد فوق شامل اعداد می‌باشد و شامل ۱۱ عدد می‌باشد.'
-        },
-        custom: {
-          Email: {
-            required: 'فیلد ایمیل اجباری می‌باشد' ,
-            email: 'ایمیل وارد شده معتبر نمی‌باشد.'
-          },
-          Password: {
-            required: 'رمز عبور اجباری می‌باشد' ,
-            min: 'رمز عبور باید بیشتر از ۴ کاراکتر باشد.'
-          },
-          NationalCode: {
-            required: 'کد ملی اجباری می‌باشد' ,
-            max: 'کد ملی بیشتر از ۱۰ کاراکتر مجاز نمی‌باشد.',
-            min: 'کد ملی کمتر از ۱۰ کاراکتر مجاز نمی‌باشد.',
-            numeric: 'کد ملی شامل حروف ٬ کاما یا خط فاصله نمی‌باشد.'
-          },
-          mobile: {
-            required: 'شماره موبایل اجباری می‌باشد' ,
-            numeric: 'شماره موبایل شامل حروف ٬ کاما یا خط فاصله نمی‌باشد.' ,
-            max: 'شماره موبایل نباید بیشتر از ۱۱ رقم باشد' ,
-            min: 'شماره موبایل باید ۱۱ رقم باشد' ,
-          },
-          ValidationCode: {
-            required: 'کد فعال‌سازی اجباری می‌باشد' ,
-            numeric: 'کد فعال‌سازی شامل حروف ٬ کاما یا خط فاصله نمی‌باشد.' ,
-            max: 'کد فعال‌سازی نباید بیشتر از ۶ رقم باشد' ,
-            min: 'کد فعال‌سازی باید ۶ رقم باشد' ,
-          },
-          first_name  : {
-            required: 'فیلد نام اجباری می‌باشد' ,
-          },
-          last_name  : {
-            required: 'فیلد نام‌خانوادگی اجباری می‌باشد' ,
-          },
-        }
-      }
-    }
-  })
-
+Vue.use(VeeValidate)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

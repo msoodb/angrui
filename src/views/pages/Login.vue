@@ -59,7 +59,7 @@ var qs = require('qs');
 var uuid = require('uuid');
 var njwt = require('njwt');
 export default {
-  name: 'login',
+  name: 'Login',
   data(){
     return{
       formData:{},
@@ -68,10 +68,9 @@ export default {
   },
   mounted(){
   },
-    beforeRouteUpdate (to, from, next) {
-      console.log(to, from);
+  beforeRouteUpdate (to, from, next) {
+    console.log(to, from);
   },
-  name: 'Login',
   methods:{
     login(){
       var self = this;
@@ -88,28 +87,26 @@ export default {
             .then(function (response) {
               self.disableClick = false;
               if(response.status == 200){
-                alert(localStorage.getItem("jwtoken"));
                 localStorage.setItem("jwtoken", JSON.stringify(response.data));
-                alert(localStorage.getItem("jwtoken"));
-                // let currentMsg =  self.$message  ({
-                //   message : 'شما با موفقیت وارد سامانه شدید.',
-                //   duration:0,
-                //   type:'success'
-                // })
+                let currentMsg =  self.$message  ({
+                  message : 'You are successfully logged in',
+                  duration:0,
+                  type:'success'
+                })
                 setTimeout(function () {
-                  // currentMsg.close();
+                  currentMsg.close();
                   self.$router.push('/dashboard');
                 }, 1000);
               }
             })
             .catch(function (error) {
               self.disableClick = false;
-              self.$message.error('خطایی در فرایند ورود رخ داده است.');
+              self.$message.error('The email or password is incorrect.');
             });
             return;
           }
           else{
-            self.$message.error('اطلاعات اجباری برای ورود را وارد کنید.');
+            self.$message.error('Please fill in the required fields.');
           }
         });
       },
