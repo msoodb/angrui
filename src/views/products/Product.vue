@@ -2,24 +2,39 @@
   <b-row>
     <b-col cols="12" lg="6">
       <b-card no-header>
-        <template slot="header">
-          Product id:  {{ $route.params.id }}
-        </template>
-        <b-table striped small fixed responsive="sm" :items="items($route.params.id)" :fields="fields">
-          <template slot="value" slot-scope="data">
-            <strong>{{data.item.value}}</strong>
-          </template>
-        </b-table>
-        <template slot="footer">
-          <b-button @click="goBack">Back</b-button>
-        </template>
+      <template slot="header">
+        <el-row>
+          <el-button icon="el-icon-circle-check" type="success" circle size="small" @click="onCheck"></el-button>
+          <el-button icon="el-icon-circle-close" type="warning" circle size="small" @click="onClose"></el-button>
+        </el-row>
+      </template>
+      <el-form ref="form" :model="form" label-width="120px">
+        <el-form-item label="title">
+          <el-input v-model="form.title"></el-input>
+        </el-form-item>
+        <el-form-item label="price">
+          <el-input v-model="form.price"></el-input>
+        </el-form-item>
+        <el-form-item label="created_at">
+          <el-col :span="11">
+            <el-date-picker type="date" placeholder="Pick a date" v-model="form.created_at" style="width: 100%;"></el-date-picker>
+          </el-col>
+          <el-col class="line text-center" :span="2">- </el-col>
+          <el-col :span="11">
+            <el-time-picker type="fixed-time" placeholder="Pick a time" v-model="form.created_at_time" style="width: 100%;"></el-time-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="tags">
+          <el-input type="textarea" v-model="form.tags"></el-input>
+        </el-form-item>
+      </el-form>
       </b-card>
     </b-col>
   </b-row>
 </template>
 
 <script>
-import usersData from '../users/UsersData'
+import {baseurl} from '../../config'
 export default {
   name: 'Product',
   props: {
@@ -30,13 +45,12 @@ export default {
   },
   data: () => {
     return {
-      items: function(id) {
-        alert("1");
-        const product = this.getProduct();
-        alert("4");
-        console.log(product);
-        const productDetails = product ? Object.entries(product) : [['id', 'Not found']]
-        return productDetails.map(([key, value]) => {return {key: key, value: value}})
+      form: {
+          title: '',
+          price: '',
+          created_at: '',
+          created_at_time: '',
+          tags: ''
       },
       fields: [
         {key: 'key'},
@@ -47,11 +61,12 @@ export default {
   computed: {
   },
   mounted(){
-    //this.getProduct();
+    this.getProduct();
   },
   methods: {
     getProduct(){
     var self = this;
+    var id = self.$route.params.id;
     var token = JSON.parse(localStorage.getItem("jwtoken"));
     let config = {
       headers: {
@@ -59,23 +74,27 @@ export default {
         'Authorization': token
       }
     }
-    this.$axios.get('http://127.0.0.1:9080/products/2', config )
+    this.$axios.get(baseurl() + '/products/' + id, config )
       .then(function (response) {
         if(response.status == 200){
-          alert("2");
-          console.log(response.data);
-          return response.data;
-          alert("3");
+          self.form = response.data;
         }
       }.bind(this))
       .catch(function (error) {
         self.$message.error(error);
       });
     },
-    goBack() {
+    onSubmit() {
+      console.log('submit!');
+    },
+    onClose() {
       this.$router.go(-1)
-      // this.$router.replace({path: '/products'})
     }
   }
 }
 </script>
+<style Scope>
+.el-form-item{
+  margin-bottom:0px;
+}
+</style>

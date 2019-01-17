@@ -1,17 +1,46 @@
 <template>
   <div class="app">
     <AppHeader fixed>
+      <SidebarToggler class="d-md-down-none" display="lg" />
       <SidebarToggler class="d-lg-none" display="md" mobile />
       <b-link class="navbar-brand" to="#">
         <img class="navbar-brand-full" src="img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
         <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
       </b-link>
-      <SidebarToggler class="d-md-down-none" display="lg" />
-      <b-navbar-nav class="d-md-down-none">
-        <b-nav-item class="px-3" to="/dashboard">Dashboard</b-nav-item>
-        <b-nav-item class="px-3" to="/products" exact>Products</b-nav-item>
-        <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item>
-        <b-nav-item class="px-3">Settings</b-nav-item>
+      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+      @select="handleSelect" router="true">
+        <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">Financial Accounting</template>
+          <el-menu-item index="2-1" route="/products">Products</el-menu-item>
+          <el-menu-item index="2-2">Users</el-menu-item>
+          <el-menu-item index="2-3">Units</el-menu-item>
+          <el-submenu index="2-4">
+            <template slot="title">Centers</template>
+            <el-menu-item index="2-4-1">Cost centers</el-menu-item>
+            <el-menu-item index="2-4-2">Project centers</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">Controlling</template>
+          <el-menu-item index="3-1" route="/products">Products</el-menu-item>
+          <el-menu-item index="3-2">Users</el-menu-item>
+          <el-menu-item index="3-3">Units</el-menu-item>
+        </el-submenu>
+        <el-submenu index="4">
+          <template slot="title">Material Management</template>
+          <el-menu-item index="4-1" route="/products">Products</el-menu-item>
+          <el-menu-item index="4-2">Users</el-menu-item>
+          <el-menu-item index="4-3">Units</el-menu-item>
+        </el-submenu>
+        <el-submenu index="5">
+          <template slot="title">Sales and Distribution</template>
+          <el-menu-item index="5-1" route="/products">Products</el-menu-item>
+          <el-menu-item index="5-2">Users</el-menu-item>
+          <el-menu-item index="5-3">Units</el-menu-item>
+        </el-submenu>
+        </el-menu>
+      <div class="line"></div>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-item class="d-md-down-none">
@@ -38,8 +67,7 @@
         <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
-        <Breadcrumb :list="list"/>
-        <div class="container-fluid">
+        <div class="container-full">
           <router-view></router-view>
         </div>
       </main>
@@ -51,7 +79,7 @@
     <TheFooter>
       <!--footer-->
       <div>
-        <a href="https://coreui.io">CoreUI</a>
+        <a href="https://coreui.io">AngrUI</a>
         <span class="ml-1">&copy; 2018 creativeLabs.</span>
       </div>
       <div class="ml-auto">
@@ -88,8 +116,14 @@ export default {
   },
   data () {
     return {
-      nav: nav.items
+      nav: nav.items,
+      activeIndex: '1',
     }
+  },
+  methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      }
   },
   mounted(){
     this.loading = true;
@@ -113,3 +147,18 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .el-menu-demo {
+    line-height:55px;
+    height:55px;
+    border-bottom: 1px solid #c8ced3;
+  }
+  .el-menu-item{
+    line-height:55px;
+    height:55px;
+  }
+  .el-menu--horizontal >>> .el-submenu .el-submenu__title{
+    line-height:55px;
+    height:55px;
+  }
+</style>

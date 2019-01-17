@@ -71,6 +71,7 @@
 var qs = require('qs');
 var uuid = require('uuid');
 var njwt = require('njwt');
+import {baseurl} from '../../config'
 export default {
   name: 'Register',
   data(){
@@ -96,7 +97,7 @@ export default {
       this.$validator.validateAll().then((result) => {
         if (result) {
           var data_request = JSON.stringify(this.formData);
-          this.$axios.post('http://127.0.0.1:9080/users', data_request, config )
+          this.$axios.post(baseurl() + '/users', data_request, config )
             .then(function (response) {
               self.disableClick = false;
               if(response.status == 200){
