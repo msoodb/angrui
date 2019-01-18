@@ -2,14 +2,31 @@
   <b-row>
     <b-col cols="12" lg="12">
       <b-card no-header>
-        <template slot="header">
-        <el-row>
-          <el-button icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
-          <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
-          <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
-          <el-button icon="el-icon-search" circle size="medium"></el-button>
-          <el-button icon="el-icon-more" circle size="medium"></el-button>
-        </el-row>
+        <template slot="header";>
+          <el-row >
+            <el-col :span="6">
+              <div class="text-left">
+                <el-button type="primary" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
+                <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
+                <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
+                <el-button icon="el-icon-search" circle size="medium"></el-button>
+                <el-button icon="el-icon-more" circle size="medium"></el-button>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="text-center">
+                <el-pagination class="text-center" background layout="prev, pager, next"
+                      :page-count="page_count" @current-change="handleCurrentChange">
+                </el-pagination>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="text-right">
+                <el-button icon="el-icon-question" circle size="medium"></el-button>
+                <el-button icon="el-icon-setting" circle size="medium"></el-button>
+              </div>
+            </el-col>
+          </el-row>
         </template>
         <el-table ref="productsTable" :data="items"  stripe style="width: 100%"
               @selection-change="handleSelectionChange" >
@@ -26,12 +43,6 @@
           <el-table-column prop="tags" label="tags">
           </el-table-column>
         </el-table>
-        <el-pagination class="text-center" background layout="prev, pager, next"
-              :page-count="page_count"
-          @current-change="handleCurrentChange">
-        </el-pagination>
-        <template slot="footer">
-        </template>
       </b-card>
     </b-col>
   </b-row>
@@ -126,10 +137,6 @@ export default {
           this.deleteRecord(id);
         }
         this.getProducts();
-        this.$message({
-          type: 'success',
-          message: 'Delete completed'
-        });
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -156,7 +163,7 @@ export default {
             })
             setTimeout(function () {
               currentMsg.close();
-            }, 300);
+            }, 1000);
           }
         }.bind(this))
         .catch(function (error) {

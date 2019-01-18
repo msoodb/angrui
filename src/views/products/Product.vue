@@ -15,15 +15,6 @@
         <el-form-item label="price">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
-        <el-form-item label="created_at">
-          <el-col :span="11">
-            <el-date-picker type="date" placeholder="Pick a date" v-model="form.created_at" style="width: 100%;"></el-date-picker>
-          </el-col>
-          <el-col class="line text-center" :span="2">- </el-col>
-          <el-col :span="11">
-            <el-time-picker type="fixed-time" placeholder="Pick a time" v-model="form.created_at_time" style="width: 100%;"></el-time-picker>
-          </el-col>
-        </el-form-item>
         <el-form-item label="tags">
           <el-input type="textarea" v-model="form.tags"></el-input>
         </el-form-item>
@@ -48,8 +39,6 @@ export default {
       form: {
           title: '',
           price: '',
-          created_at: '',
-          created_at_time: '',
           tags: ''
       },
       fields: [
@@ -95,8 +84,7 @@ export default {
           'Authorization': token
         }
       }
-      var myObj = {title: "John", price: 31.2, tags:"{book}"};
-      var data_request = JSON.stringify(myObj);
+      var data_request = JSON.stringify(this.form);
       this.$axios.post(baseurl() + '/products', data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -125,8 +113,7 @@ export default {
           'Authorization': token
         }
       }
-      var myObj = {title: "Johnupdate", price: 31.2, tags:"{book}"};
-      var data_request = JSON.stringify(myObj);
+      var data_request = JSON.stringify(this.form);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
