@@ -61,7 +61,9 @@ export default {
   computed: {
   },
   mounted(){
-    this.getProduct();
+    if(this.$route.params.id != -1){
+      this.getProduct();
+    }
   },
   methods: {
     getProduct(){
@@ -84,8 +86,71 @@ export default {
         self.$message.error(error);
       });
     },
-    onSubmit() {
-      console.log('submit!');
+    addProduct(){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var myObj = {title: "John", price: 31.2, tags:"{book}"};
+      var data_request = JSON.stringify(myObj);
+      this.$axios.post(baseurl() + '/products', data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Product added successfully',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              currentMsg.close();
+            }, 1000);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          self.$message.error(error);
+      });
+      this.onClose();
+    },
+    updateProduct(){
+      var self = this;
+      var id = self.$route.params.id;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var myObj = {title: "Johnupdate", price: 31.2, tags:"{book}"};
+      var data_request = JSON.stringify(myObj);
+      this.$axios.put(baseurl() + '/products/' + id, data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Product updated successfully',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              currentMsg.close();
+            }, 1000);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          self.$message.error(error);
+      });
+      this.onClose();
+    },
+    onCheck() {
+      if(this.$route.params.id == -1){
+        this.addProduct();
+      }else{
+        this.updateProduct();
+      }
     },
     onClose() {
       this.$router.go(-1)

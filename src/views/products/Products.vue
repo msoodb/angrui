@@ -4,7 +4,7 @@
       <b-card no-header>
         <template slot="header">
         <el-row>
-          <el-button icon="el-icon-circle-plus" circle size="medium"></el-button>
+          <el-button icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
           <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
           <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
           <el-button icon="el-icon-search" circle size="medium"></el-button>
@@ -96,6 +96,11 @@ export default {
     handleSelectionChange(val) {
        this.multipleSelection = val;
     },
+    onAdd(){
+      var id = -1;
+      const productLink = this.productLink(id);
+      this.$router.push({path: productLink})
+    },
     onEdit(){
       if(this.multipleSelection.length != 1){
         this.$message.warning('Please select one record to edit.');
@@ -173,8 +178,10 @@ export default {
 .card{
   margin-bottom: 0rem;
 }
-.card-header
-{
+.card-body{
+  padding: 0rem;
+}
+.card-header{
   padding: 0.25rem 1.25rem;
 }
 </style>
