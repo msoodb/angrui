@@ -2,7 +2,7 @@
   <b-row>
     <b-col cols="12" lg="12">
       <b-card no-header>
-        <template slot="header";>
+        <template slot="header">
           <el-row >
             <el-col :span="6">
               <div class="text-left">
@@ -15,8 +15,8 @@
             </el-col>
             <el-col :span="12">
               <div class="text-center">
-                <el-pagination class="text-center" background layout="prev, pager, next"
-                      :page-count="page_count" @current-change="handleCurrentChange">
+                <el-pagination id="products_paginator" class="text-center" background layout="prev, pager, next"
+                      :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
                 </el-pagination>
               </div>
             </el-col>
@@ -62,8 +62,20 @@ export default {
        multipleSelection: []
      }
   },
-  mounted(){
+  mounted(){    
     this.getProducts();
+  },
+  watch:{
+    $route (to, from){
+      this.page = this.$route.query.page;
+      if(this.page > this.page_count){
+        this.page = this.page_count;
+      }
+      if(this.page < 1){
+        this.page = 1;
+      }
+      this.getProducts();
+    }
   },
   computed: {
   },
@@ -75,14 +87,12 @@ export default {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token
-      },
-      params:{
-        'page': self.page
       }
     }
-    this.$axios.get(baseurl() + '/products', config )
+    this.$axios.get(baseurl() + '/products?page=' + self.page, config )
       .then(function (response) {
         if(response.status == 200){
+          this.$router.push({path: 'products?page=' + self.page});
           self.items = response.data.products;
           self.offset = Number(response.data.info.offset);
           self.page_count = Number(response.data.info.page_count);
@@ -94,7 +104,7 @@ export default {
       });
     },
     handleCurrentChange (val) {
-      this.page = val;
+      //this.page = val;
       this.getProducts();
     },
     productLink (id) {
