@@ -32,15 +32,34 @@
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>
-          <el-table-column  prop="id"  label="id"   width="80">
+          <el-table-column  prop="id"  label="id"  width="80">
           </el-table-column>
-          <el-table-column prop="title" label="title" width="280">
+          <el-table-column prop="name" label="name" width="120">
+          </el-table-column>
+          <el-table-column prop="title" label="title" width="180">
+          </el-table-column>
+          <el-table-column prop="code" label="code" width="120">
           </el-table-column>
           <el-table-column prop="price" label="price" width="120">
           </el-table-column>
-          <el-table-column prop="created_at" label="created_at">
+          <el-table-column  prop="expirable" label="expirable" width="90" align="center">
+            <template slot-scope="scope">
+              <el-checkbox size="medium" :checked="scope.row.expirable === 't' ? 1 : 0" disabled></el-checkbox>
+            </template>
           </el-table-column>
-          <el-table-column prop="tags" label="tags">
+          <el-table-column  prop="taxable"  label="taxable"  width="80" align="center">
+            <template slot-scope="scope">
+              <el-checkbox size="medium" :checked="scope.row.taxable === 't' ? 1 : 0" disabled></el-checkbox>
+            </template>
+          </el-table-column>
+          <el-table-column  prop="active"  label="active"  width="80" align="center">
+            <template slot-scope="scope">
+              <el-checkbox size="medium" :checked="scope.row.active === 't' ? 1 : 0" disabled></el-checkbox>
+            </template>
+          </el-table-column>
+          <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
+          </el-table-column>
+          <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
         </el-table>
       </b-card>
@@ -62,7 +81,7 @@ export default {
        multipleSelection: []
      }
   },
-  mounted(){    
+  mounted(){
     this.getProducts();
   },
   watch:{
@@ -179,6 +198,10 @@ export default {
         .catch(function (error) {
           self.$message.error('Unknown error.' + error);
       });
+    },
+    formatDateOnly(row, column, cellValue){
+      var date = cellValue.split(' ');
+      return date[0];
     }
   }
 }

@@ -2,18 +2,14 @@
   <div class="app">
     <AppHeader fixed>
       <SidebarToggler class="d-md-down-none" display="lg" />
-      <SidebarToggler class="d-lg-none" display="md" mobile />
-      <b-link class="navbar-brand" to="#">
-        <img class="navbar-brand-full" src="img/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
-        <img class="navbar-brand-minimized" src="img/brand/sygnet.svg" width="30" height="30" alt="CoreUI Logo">
-      </b-link>
+      <SidebarToggler class="d-lg-none" display="md" mobile />      
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
       @select="handleSelect" router="true">
         <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
         <el-submenu index="2">
           <template slot="title">Financial Accounting</template>
           <el-menu-item index="2-1" route="/products">Products</el-menu-item>
-          <el-menu-item index="2-2">Users</el-menu-item>
+          <el-menu-item index="2-2" route="/users">Users</el-menu-item>
           <el-menu-item index="2-3">Units</el-menu-item>
           <el-submenu index="2-4">
             <template slot="title">Centers</template>
