@@ -9,6 +9,7 @@
                 <el-button type="primary" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
                 <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
                 <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
+                <el-button icon="el-icon-picture" circle size="medium" @click="onChart"></el-button>
                 <el-button icon="el-icon-search" circle size="medium"></el-button>
                 <el-button icon="el-icon-more" circle size="medium"></el-button>
               </div>
@@ -43,19 +44,10 @@
           <el-table-column prop="price" label="price" width="120">
           </el-table-column>
           <el-table-column  prop="expirable" label="expirable" width="90" align="center">
-            <template slot-scope="scope">
-              <el-checkbox size="medium" :checked="scope.row.expirable === 't' ? 1 : 0" disabled></el-checkbox>
-            </template>
           </el-table-column>
-          <el-table-column  prop="taxable"  label="taxable"  width="80" align="center">
-            <template slot-scope="scope">
-              <el-checkbox size="medium" :checked="scope.row.taxable === 't' ? 1 : 0" disabled></el-checkbox>
-            </template>
+          <el-table-column  prop="taxable" label="taxable" width="90" align="center">
           </el-table-column>
-          <el-table-column  prop="active"  label="active"  width="80" align="center">
-            <template slot-scope="scope">
-              <el-checkbox size="medium" :checked="scope.row.active === 't' ? 1 : 0" disabled></el-checkbox>
-            </template>
+          <el-table-column  prop="active" label="active" width="90" align="center">
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
@@ -76,23 +68,21 @@ export default {
        items: [],
        page: 1,
        offset: 20,
-       page_count: 1,
+       page_count: 10000,
        result_count: 0,
        multipleSelection: []
      }
   },
   mounted(){
+    console.log(this.$route.query.page);
+    if(this.$route.query.page){
+      this.page = Number(this.$route.query.page);
+    }
     this.getProducts();
   },
   watch:{
     $route (to, from){
-      this.page = this.$route.query.page;
-      if(this.page > this.page_count){
-        this.page = this.page_count;
-      }
-      if(this.page < 1){
-        this.page = 1;
-      }
+      this.page = Number(this.$route.query.page);
       this.getProducts();
     }
   },
@@ -108,14 +98,21 @@ export default {
         'Authorization': token
       }
     }
+    if(self.page < 1){
+      self.page = 1;
+    }
     this.$axios.get(baseurl() + '/products?page=' + self.page, config )
       .then(function (response) {
         if(response.status == 200){
-          this.$router.push({path: 'products?page=' + self.page});
+          self.$router.push({path: 'products?page=' + self.page});
           self.items = response.data.products;
           self.offset = Number(response.data.info.offset);
           self.page_count = Number(response.data.info.page_count);
           self.result_count = Number(response.data.info.result_count);
+          if(self.page > self.page_count){
+            self.page = self.page_count;
+            self.getProducts();
+          }
         }
       }.bind(this))
       .catch(function (error) {
@@ -123,7 +120,7 @@ export default {
       });
     },
     handleCurrentChange (val) {
-      //this.page = val;
+      this.page = val;
       this.getProducts();
     },
     productLink (id) {
@@ -135,6 +132,9 @@ export default {
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;
+    },
+    onChart(){
+      this.$router.push('/charts/product');
     },
     onAdd(){
       var id = -1;
@@ -202,6 +202,11 @@ export default {
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
+    },
+    handleExpirableCheckbox(scope){
+      var value = scope.row.expirable == 't' ? true : false;
+      console.log(scope.row.id + " " + scope.row.expirable);
+      return value;
     }
   }
 }

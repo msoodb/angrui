@@ -38,11 +38,6 @@
           <el-form-item>
             <el-row>
               <el-col :span="6">
-                <el-form-item label="active">
-                  <el-switch v-model="productForm.active"></el-switch>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
                 <el-form-item label="expirable">
                   <el-checkbox v-model="productForm.expirable"></el-checkbox>
                 </el-form-item>
@@ -52,21 +47,18 @@
                   <el-checkbox v-model="productForm.taxable"></el-checkbox>
                 </el-form-item>
               </el-col>
+              <el-col :span="6">
+                <el-form-item label="active">
+                  <el-switch v-model="productForm.active"></el-switch>
+                </el-form-item>
+              </el-col>
             </el-row>
           </el-form-item>
           <el-form-item label="created_at">
-            <el-date-picker
-              v-model="productForm.created_at"
-              type="date"
-              placeholder="Pick a day">
-            </el-date-picker>
+            <el-date-picker v-model="productForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
           </el-form-item>
           <el-form-item label="updated_at">
-            <el-date-picker
-              v-model="productForm.updated_at"
-              type="date"
-              placeholder="Pick a day">
-            </el-date-picker>
+            <el-date-picker v-model="productForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
           </el-form-item>
           <el-form-item label="description">
             <el-input type="textarea" v-model="productForm.description"></el-input>
@@ -95,14 +87,14 @@
         </el-form>
         </el-tab-pane>
         <el-tab-pane label="Details">
-          <el-form ref="productFormDetails" :model="productFormDetails" label-width="120px">
+          <el-form label-width="120px">
             <el-form-item label="details">
               <el-table :data="detailsKeyValue"  style="width: 100%" border>
                 <el-table-column prop="key" label="key"  width="180">
                 </el-table-column>
                 <el-table-column prop="value" label="value" width="100">
                 </el-table-column>
-                <el-table-column label="Operations" width="180">
+                <el-table-column label="Operations" width="120" align="center">
                   <template slot-scope="scope">
                     <el-button icon="el-icon-edit"
                       size="mini"
@@ -114,10 +106,26 @@
                   </template>
                 </el-table-column>
               </el-table>
+              <el-button icon="el-icon-circle-plus" type="primary"
+                size="mini"
+                @click="handleAddDetails()">Add</el-button>
+                <el-dialog title="Product details" :visible.sync="dialogFormVisible">
+                  <el-form ref="productDetailsFormDialog" :model="productDetailsFormDialog" :rules="rulesDetails" label-width="120px" inline-message>
+                    <el-form-item label="key" porp="key">
+                      <el-input type="key" v-model="productDetailsFormDialog.key" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="value" porp="value">
+                      <el-input typr="value" v-model="productDetailsFormDialog.value" autocomplete="off"></el-input>
+                    </el-form-item>
+                  </el-form>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                  <el-button type="primary" @click="handleconfirmDetailsdialog">Confirm</el-button>
+                </span>
+              </el-dialog>
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="Orders">Role</el-tab-pane>
       </el-tabs>
       </b-card>
     </b-col>
@@ -165,12 +173,25 @@ export default {
         ]
       },
       detailsKeyValue: [],
-      fields: [
+      detailsForm: [
         {key: 'key'},
         {key: 'value'},
       ],
+      productDetailsFormDialog:{
+        key:'',
+        value:''
+      },
+      rulesDetails: {
+        key: [
+          { required: true, message: 'Please input key', trigger: 'blur' },
+        ],
+        value: [
+          { required: true, message: 'Please input value', trigger: 'change' }
+        ]
+      },
       inputVisible: false,
-      inputValue: ''
+      inputValue: '',
+      dialogFormVisible: false
     }
   },
   computed: {
@@ -349,6 +370,31 @@ export default {
          const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
          this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
        }
+     },
+     handleEditDetails(index, row){
+       var key = row.key;
+       this.productDetailsFormDialog.key = key;
+       this.productDetailsFormDialog.value = this.productForm.details[key];
+       this.dialogFormVisible = true;
+       if(this.productForm.details){
+         var det = this.productForm.details;
+         const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
+         this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
+       }
+     },
+     handleAddDetails(){
+       this.dialogFormVisible = true;
+     },
+     handleconfirmDetailsdialog(){
+       var key = this.productDetailsFormDialog.key;
+       var value = this.productDetailsFormDialog.value;
+       this.productForm.details[key] = value;
+       if(this.productForm.details){
+         var det = this.productForm.details;
+         const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
+         this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
+       }
+       this.dialogFormVisible = false;
      }
   }
 }

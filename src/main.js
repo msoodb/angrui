@@ -22,7 +22,9 @@ Vue.use(ElementUI)
 Vue.use(axios)
 Vue.prototype.$axios = axios
 Vue.use(qs)
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {
+  fieldsBagName: 'veeFields'
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

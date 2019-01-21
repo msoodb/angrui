@@ -10,7 +10,6 @@ const Dashboard = () => import('@/views/Dashboard')
 const Colors = () => import('@/views/theme/Colors')
 const Typography = () => import('@/views/theme/Typography')
 
-const Charts = () => import('@/views/Charts')
 const Widgets = () => import('@/views/Widgets')
 
 // Views - Components
@@ -62,6 +61,13 @@ const User = () => import('@/views/users/User')
 const Products = () => import('@/views/products/Products')
 const Product = () => import('@/views/products/Product')
 
+//Charts
+//const Charts = () => import('@/views/charts')
+const ProductChart = () => import('@/views/charts/ProductChart')
+const BarExample = () => import('@/views/charts/BarExample')
+
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -103,7 +109,23 @@ export default new Router({
         {
           path: 'charts',
           name: 'Charts',
-          component: Charts
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'product',
+              meta: { label: 'Product Chart'},
+              name: 'Product',
+              component: ProductChart,
+            },
+            {
+              path: 'bar',
+              meta: { label: 'Bar Example'},
+              name: 'Bar',
+              component: BarExample,
+            },
+          ]
         },
         {
           path: 'widgets',

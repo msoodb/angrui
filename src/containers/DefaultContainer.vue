@@ -2,9 +2,8 @@
   <div class="app">
     <AppHeader fixed>
       <SidebarToggler class="d-md-down-none" display="lg" />
-      <SidebarToggler class="d-lg-none" display="md" mobile />      
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-      @select="handleSelect" router="true">
+      <SidebarToggler class="d-lg-none" display="md" mobile />
+      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
         <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
         <el-submenu index="2">
           <template slot="title">Financial Accounting</template>
@@ -116,10 +115,7 @@ export default {
       activeIndex: '1',
     }
   },
-  methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      }
+  methods: {      
   },
   mounted(){
     this.loading = true;
@@ -128,9 +124,9 @@ export default {
         var self = this;
         self.$router.push('/pages/login');
       }
-      else {
-        console.log("Your browser does not support Web Storage");
-      }
+    }
+    else {
+      console.log("Your browser does not support Web Storage.");
     }
   },
   computed: {
