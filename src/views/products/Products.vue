@@ -74,7 +74,6 @@ export default {
      }
   },
   mounted(){
-    console.log(this.$route.query.page);
     if(this.$route.query.page){
       this.page = Number(this.$route.query.page);
     }
@@ -116,7 +115,11 @@ export default {
         }
       }.bind(this))
       .catch(function (error) {
-        self.$message.error('Unknown error.');
+        if(error.response.status == 401){
+          self.$router.push('/pages/login');
+        }else{
+          self.$message.error('Unknown error.');
+        }
       });
     },
     handleCurrentChange (val) {
@@ -196,7 +199,11 @@ export default {
           }
         }.bind(this))
         .catch(function (error) {
-          self.$message.error('Unknown error.' + error);
+          if(error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.');
+          }
       });
     },
     formatDateOnly(row, column, cellValue){

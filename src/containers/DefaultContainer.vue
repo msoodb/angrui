@@ -115,7 +115,7 @@ export default {
       activeIndex: '1',
     }
   },
-  methods: {      
+  methods: {
   },
   mounted(){
     this.loading = true;

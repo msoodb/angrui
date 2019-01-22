@@ -13,6 +13,13 @@
         <el-form ref="productForm" :model="productForm" :rules="rules" label-width="120px" inline-message>
           <el-row>
             <el-col :span="12">
+              <el-form-item label="id" prop="id">
+                <el-input v-model="productForm.id" disabled></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
               <el-form-item label="name" prop="name">
                 <el-input type="name" v-model="productForm.name"></el-input>
               </el-form-item>
@@ -109,7 +116,7 @@
               <el-button icon="el-icon-circle-plus" type="primary"
                 size="mini"
                 @click="handleAddDetails()">Add</el-button>
-                <el-dialog title="Product details" :visible.sync="dialogFormVisible">
+                <el-dialog title="Product details" :visible.sync="productDetailsFormDialogVisible">
                   <el-form ref="productDetailsFormDialog" :model="productDetailsFormDialog" :rules="rulesDetails" label-width="120px" inline-message>
                     <el-form-item label="key" porp="key">
                       <el-input type="key" v-model="productDetailsFormDialog.key" autocomplete="off"></el-input>
@@ -119,7 +126,7 @@
                     </el-form-item>
                   </el-form>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                  <el-button @click="productDetailsFormDialogVisible = false">Cancel</el-button>
                   <el-button type="primary" @click="handleconfirmDetailsdialog">Confirm</el-button>
                 </span>
               </el-dialog>
@@ -144,6 +151,7 @@ export default {
   data: () => {
     return {
       productForm: {
+        id: '',
         name: '',
         title: '',
         code: '',
@@ -159,8 +167,8 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: 'Please input name', trigger: 'blur' },
-          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'blur' }
+          { required: true, message: 'Please input name', trigger: 'change' },
+          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
         ],
         title: [
           { required: true, message: 'Please input title', trigger: 'change' }
@@ -169,14 +177,11 @@ export default {
           { required: true, message: 'Please input code', trigger: 'change' }
         ],
         price: [
-          { type: 'number', required: true, message: 'Please input price', trigger: 'change' }
+          { required: true, message: 'Please input price', trigger: 'change' },
+          { type: 'number', message: 'Price must be a number', trigger: 'change' }
         ]
       },
       detailsKeyValue: [],
-      detailsForm: [
-        {key: 'key'},
-        {key: 'value'},
-      ],
       productDetailsFormDialog:{
         key:'',
         value:''
@@ -191,7 +196,7 @@ export default {
       },
       inputVisible: false,
       inputValue: '',
-      dialogFormVisible: false
+      productDetailsFormDialogVisible: false
     }
   },
   computed: {
@@ -215,6 +220,7 @@ export default {
     this.$axios.get(baseurl() + '/products/' + id, config )
       .then(function (response) {
         if(response.status == 200){
+          self.productForm.id = response.data.id;
           self.productForm.name = response.data.name;
           self.productForm.title = response.data.title;
           self.productForm.code = response.data.code;
@@ -252,7 +258,11 @@ export default {
         }
       }.bind(this))
       .catch(function (error) {
-        self.$message.error(error);
+        if(error.response.status == 401){
+          self.$router.push('/pages/login');
+        }else{
+          self.$message.error('Unknown error.');
+        }
       });
     },
     getdetailsKeyValue(){
@@ -288,7 +298,11 @@ export default {
           }
         }.bind(this))
         .catch(function (error) {
-          self.$message.error(error);
+          if(error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.');
+          }
       });
       this.onClose();
     },
@@ -305,8 +319,10 @@ export default {
       if(this.productForm.tags){
         this.productForm.tags = JSON.stringify(this.productForm.tags);
       }
+      console.log(this.productForm.details);
       if(this.productForm.details){
         this.productForm.details = JSON.stringify(this.productForm.details);
+        console.log(this.productForm.details);
       }
       var data_request = JSON.stringify(this.productForm);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
@@ -323,7 +339,11 @@ export default {
           }
         }.bind(this))
         .catch(function (error) {
-          self.$message.error(error);
+          if(error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.');
+          }
       });
       this.onClose();
     },
@@ -356,7 +376,7 @@ export default {
      },
      handleInputConfirm() {
        let inputValue = this.inputValue;
-       if (inputValue) {
+       if (inputValue && this.productForm.tags.indexOf(inputValue) < 0) {
          this.productForm.tags.push(inputValue);
        }
        this.inputVisible = false;
@@ -375,7 +395,7 @@ export default {
        var key = row.key;
        this.productDetailsFormDialog.key = key;
        this.productDetailsFormDialog.value = this.productForm.details[key];
-       this.dialogFormVisible = true;
+       this.productDetailsFormDialogVisible = true;
        if(this.productForm.details){
          var det = this.productForm.details;
          const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
@@ -383,18 +403,19 @@ export default {
        }
      },
      handleAddDetails(){
-       this.dialogFormVisible = true;
+       this.productDetailsFormDialogVisible = true;
      },
      handleconfirmDetailsdialog(){
        var key = this.productDetailsFormDialog.key;
        var value = this.productDetailsFormDialog.value;
        this.productForm.details[key] = value;
+       console.log(this.productForm.details);
        if(this.productForm.details){
          var det = this.productForm.details;
          const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
          this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
        }
-       this.dialogFormVisible = false;
+       this.productDetailsFormDialogVisible = false;
      }
   }
 }

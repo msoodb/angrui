@@ -116,7 +116,7 @@ export default new Router({
             {
               path: 'product',
               meta: { label: 'Product Chart'},
-              name: 'Product',
+              name: 'ProductChart',
               component: ProductChart,
             },
             {
