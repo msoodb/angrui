@@ -319,10 +319,8 @@ export default {
       if(this.productForm.tags){
         this.productForm.tags = JSON.stringify(this.productForm.tags);
       }
-      console.log(this.productForm.details);
       if(this.productForm.details){
         this.productForm.details = JSON.stringify(this.productForm.details);
-        console.log(this.productForm.details);
       }
       var data_request = JSON.stringify(this.productForm);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
@@ -409,7 +407,6 @@ export default {
        var key = this.productDetailsFormDialog.key;
        var value = this.productDetailsFormDialog.value;
        this.productForm.details[key] = value;
-       console.log(this.productForm.details);
        if(this.productForm.details){
          var det = this.productForm.details;
          const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
