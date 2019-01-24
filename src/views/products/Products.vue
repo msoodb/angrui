@@ -3,7 +3,7 @@
     <b-col cols="12" lg="12">
       <b-card no-header>
         <template slot="header">
-          <el-row >            
+          <el-row >
             <el-col :span="6">
               <div class="text-left">
                 <el-button type="primary" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
@@ -29,7 +29,7 @@
             </el-col>
           </el-row>
         </template>
-        <el-table ref="productsTable" :data="items"  stripe style="width: 100%"
+        <el-table ref="productsTable" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>

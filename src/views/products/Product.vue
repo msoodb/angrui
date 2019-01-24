@@ -70,76 +70,22 @@
           <el-form-item label="description">
             <el-input type="textarea" v-model="productForm.description"></el-input>
           </el-form-item>
-          <el-form-item label="tags" v-model="productForm.tags">
-            <el-tag
-              :key="tag"
-              v-for="tag in productForm.tags"
-              closable
-              :disable-transitions="false"
-              @close="handleClose(tag)">
-              {{tag}}
-            </el-tag>
-            <el-input
-              class="input-new-tag"
-              v-if="inputVisible"
-              v-model="inputValue"
-              ref="saveTagInput"
-              size="mini"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-            >
-            </el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-          </el-form-item>
+          <Tag title="product tags" v-model=productForm.tags></Tag>
+          <keyValue title="product details" v-model="productForm.details"></keyValue>
         </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="Details">
-          <el-form label-width="120px">
-            <el-form-item label="details">
-              <el-table :data="detailsKeyValue"  style="width: 100%" border>
-                <el-table-column prop="key" label="key"  width="180">
-                </el-table-column>
-                <el-table-column prop="value" label="value" width="100">
-                </el-table-column>
-                <el-table-column label="Operations" width="120" align="center">
-                  <template slot-scope="scope">
-                    <el-button icon="el-icon-edit"
-                      size="mini"
-                      @click="handleEditDetails(scope.$index, scope.row)"></el-button>
-                    <el-button icon="el-icon-delete"
-                      size="mini"
-                      type="danger"
-                      @click="handleDeleteDetails(scope.$index, scope.row)"></el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <el-button icon="el-icon-circle-plus" type="primary"
-                size="mini"
-                @click="handleAddDetails()">Add</el-button>
-                <el-dialog title="Product details" :visible.sync="productDetailsFormDialogVisible">
-                  <el-form ref="productDetailsFormDialog" :model="productDetailsFormDialog" :rules="rulesDetails" label-width="120px" inline-message>
-                    <el-form-item label="key" porp="key">
-                      <el-input type="key" v-model="productDetailsFormDialog.key" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="value" porp="value">
-                      <el-input typr="value" v-model="productDetailsFormDialog.value" autocomplete="off"></el-input>
-                    </el-form-item>
-                  </el-form>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="productDetailsFormDialogVisible = false">Cancel</el-button>
-                  <el-button type="primary" @click="handleconfirmDetailsdialog">Confirm</el-button>
-                </span>
-              </el-dialog>
-            </el-form-item>
-          </el-form>
         </el-tab-pane>
       </el-tabs>
       </b-card>
     </b-col>
   </b-row>
   </template>
+
+
 <script>
 import {baseurl} from '../../config'
+import keyValue from '../../components/keyValue'
+import Tag from '../../components/Tag'
+
 export default {
   name: 'Product',
   props: {
@@ -156,7 +102,7 @@ export default {
         title: '',
         code: '',
         price: '',
-        details: [],
+        details: {},
         expirable: true,
         taxable: true,
         active: true,
@@ -181,25 +127,13 @@ export default {
           { type: 'number', message: 'Price must be a number', trigger: 'change' }
         ]
       },
-      detailsKeyValue: [],
-      productDetailsFormDialog:{
-        key:'',
-        value:''
-      },
-      rulesDetails: {
-        key: [
-          { required: true, message: 'Please input key', trigger: 'blur' },
-        ],
-        value: [
-          { required: true, message: 'Please input value', trigger: 'change' }
-        ]
-      },
       inputVisible: false,
-      inputValue: '',
-      productDetailsFormDialogVisible: false
+      inputValue: ''
     }
   },
-  computed: {
+  components: {
+    keyValue,
+    Tag
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -225,12 +159,7 @@ export default {
           self.productForm.title = response.data.title;
           self.productForm.code = response.data.code;
           self.productForm.price = Number(response.data.price);
-          if(response.data.details){
-            self.productForm.details = JSON.parse(response.data.details);
-            var det = self.productForm.details;
-            const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
-            this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
-          }
+          self.productForm.details = JSON.parse(response.data.details);
           if(response.data.expirable == 't'){
             self.productForm.expirable = true;
           }
@@ -264,13 +193,6 @@ export default {
           self.$message.error('Unknown error.');
         }
       });
-    },
-    getdetailsKeyValue(){
-      //var details = JSON.parse("{\"id\":10, \"name\":\"minus\"}");
-      console.log(this.productForm.details);
-      var details = JSON.parse(this.productForm.details);
-      const productDetails = details ? Object.entries(details) : [['id', 'Not found']]
-      this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
     },
     addProduct(){
       var self = this;
@@ -319,9 +241,7 @@ export default {
       if(this.productForm.tags){
         this.productForm.tags = JSON.stringify(this.productForm.tags);
       }
-      if(this.productForm.details){
-        this.productForm.details = JSON.stringify(this.productForm.details);
-      }
+      this.productForm.details = JSON.stringify(this.productForm.details);
       var data_request = JSON.stringify(this.productForm);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
         .then(function (response) {
@@ -362,58 +282,7 @@ export default {
     },
     onClose() {
       this.$router.go(-1)
-    },
-    handleClose(tag) {
-       this.productForm.tags.splice(this.productForm.tags.indexOf(tag), 1);
-     },
-    showInput() {
-      this.inputVisible = true;
-      this.$nextTick(_ => {
-         this.$refs.saveTagInput.$refs.input.focus();
-       });
-     },
-     handleInputConfirm() {
-       let inputValue = this.inputValue;
-       if (inputValue && this.productForm.tags.indexOf(inputValue) < 0) {
-         this.productForm.tags.push(inputValue);
-       }
-       this.inputVisible = false;
-       this.inputValue = '';
-     },
-     handleDeleteDetails(index, row){
-       var key = row.key;
-       delete this.productForm.details[key];
-       if(this.productForm.details){
-         var det = this.productForm.details;
-         const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
-         this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
-       }
-     },
-     handleEditDetails(index, row){
-       var key = row.key;
-       this.productDetailsFormDialog.key = key;
-       this.productDetailsFormDialog.value = this.productForm.details[key];
-       this.productDetailsFormDialogVisible = true;
-       if(this.productForm.details){
-         var det = this.productForm.details;
-         const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
-         this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
-       }
-     },
-     handleAddDetails(){
-       this.productDetailsFormDialogVisible = true;
-     },
-     handleconfirmDetailsdialog(){
-       var key = this.productDetailsFormDialog.key;
-       var value = this.productDetailsFormDialog.value;
-       this.productForm.details[key] = value;
-       if(this.productForm.details){
-         var det = this.productForm.details;
-         const productDetails = det ? Object.entries(det) : [['id', 'Not found']]
-         this.detailsKeyValue = productDetails.map(([key, value]) => {return {key: key, value: value}})
-       }
-       this.productDetailsFormDialogVisible = false;
-     }
+    }
   }
 }
 </script>
