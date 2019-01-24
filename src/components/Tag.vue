@@ -1,27 +1,25 @@
 <template>
-  <el-form label-width="120px">
-    <el-form-item :label=title v-model=value>
-      <el-tag
-        :key="tag"
-        v-for="tag in value"
-        closable
-        :disable-transitions="false"
-        @close="handleClose(tag)">
-        {{tag}}
-      </el-tag>
-      <el-input
-        class="input-new-tag"
-        v-if="inputVisible"
-        v-model="inputValue"
-        ref="saveTagInput"
-        size="mini"
-        @keyup.enter.native="handleInputConfirm"
-        @blur="handleInputConfirm"
-      >
-      </el-input>
-      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-    </el-form-item>
-  </el-form>
+  <div>
+    <el-tag
+      :key="tag"
+      v-for="tag in value"
+      closable
+      :disable-transitions="false"
+      @close="handleClose(tag)">
+      {{tag}}
+    </el-tag>
+    <el-input
+      class="input-new-tag"
+      v-if="inputVisible"
+      v-model="inputValue"
+      ref="saveTagInput"
+      size="mini"
+      @keyup.enter.native="handleInputConfirm"
+      @blur="handleInputConfirm"
+    >
+    </el-input>
+    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+  </div>
 </template>
 
 <script>

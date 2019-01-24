@@ -70,8 +70,12 @@
           <el-form-item label="description">
             <el-input type="textarea" v-model="productForm.description"></el-input>
           </el-form-item>
-          <Tag title="product tags" v-model=productForm.tags></Tag>
-          <keyValue title="product details" v-model="productForm.details"></keyValue>
+          <el-form-item label="tags">
+            <Tag title="product tags" v-model="productForm.tags"></Tag>
+          </el-form-item>
+          <el-form-item label="details">
+            <keyValue title="product details" v-model="productForm.details"></keyValue>
+          </el-form-item>
         </el-form>
         </el-tab-pane>
       </el-tabs>
