@@ -33,6 +33,11 @@
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>
+          <el-table-column prop="attachments" label="" width="35" align="center">
+            <template slot-scope="scope">
+              {{scope.row.attachments == 0 ? '&nbsp' : '&#x1f4ce' }}
+            </template>
+          </el-table-column>
           <el-table-column  prop="id"  label="id"  width="80">
           </el-table-column>
           <el-table-column prop="name" label="name" width="120">
@@ -44,10 +49,19 @@
           <el-table-column prop="price" label="price" width="120">
           </el-table-column>
           <el-table-column  prop="expirable" label="expirable" width="90" align="center">
+            <template slot-scope="scope">
+              <el-tag type="info" size="mini" disable-transitions>{{scope.row.expirable === 't' ? '✔' : "&nbsp&nbsp&nbsp" }}</el-tag>
+            </template>
           </el-table-column>
           <el-table-column  prop="taxable" label="taxable" width="90" align="center">
+            <template slot-scope="scope">
+              <el-tag type="info" size="mini" disable-transitions>{{scope.row.taxable === 't' ? '✔' : "&nbsp&nbsp&nbsp" }}</el-tag>
+            </template>
           </el-table-column>
           <el-table-column  prop="active" label="active" width="90" align="center">
+            <template slot-scope="scope">
+              <el-tag type="info" size="mini" disable-transitions>{{scope.row.active === 't' ? '✔' : "&nbsp&nbsp&nbsp" }}</el-tag>
+            </template>
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
@@ -117,7 +131,7 @@ export default {
         }
       }.bind(this))
       .catch(function (error) {
-        if(error.response.status == 401){
+        if(error.response && error.response.status == 401){
           self.$router.push('/pages/login');
         }else{
           self.$message.error('Unknown error.');
@@ -201,7 +215,7 @@ export default {
           }
         }.bind(this))
         .catch(function (error) {
-          if(error.response.status == 401){
+          if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
           }else{
             self.$message.error('Unknown error.');

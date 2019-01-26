@@ -9,31 +9,7 @@
           <template slot="title">Financial Accounting</template>
           <el-menu-item index="2-1" route="/products">Products</el-menu-item>
           <el-menu-item index="2-2" route="/users">Users</el-menu-item>
-          <el-menu-item index="2-3">Units</el-menu-item>
-          <el-submenu index="2-4">
-            <template slot="title">Centers</template>
-            <el-menu-item index="2-4-1">Cost centers</el-menu-item>
-            <el-menu-item index="2-4-2">Project centers</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-submenu index="3">
-          <template slot="title">Controlling</template>
-          <el-menu-item index="3-1" route="/products">Products</el-menu-item>
-          <el-menu-item index="3-2">Users</el-menu-item>
-          <el-menu-item index="3-3">Units</el-menu-item>
-        </el-submenu>
-        <el-submenu index="4">
-          <template slot="title">Material Management</template>
-          <el-menu-item index="4-1" route="/products">Products</el-menu-item>
-          <el-menu-item index="4-2">Users</el-menu-item>
-          <el-menu-item index="4-3">Units</el-menu-item>
-        </el-submenu>
-        <el-submenu index="5">
-          <template slot="title">Sales and Distribution</template>
-          <el-menu-item index="5-1" route="/products">Products</el-menu-item>
-          <el-menu-item index="5-2">Users</el-menu-item>
-          <el-menu-item index="5-3">Units</el-menu-item>
-        </el-submenu>
+        </el-submenu>      
         </el-menu>
       <div class="line"></div>
       </b-navbar-nav>

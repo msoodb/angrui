@@ -15,7 +15,7 @@
         </template>
       </el-table-column>
       </el-table>
-      <el-button icon="el-icon-circle-plus" type="primary" size="mini" @click="onAdd()">Add</el-button>
+      <el-button icon="el-icon-circle-plus" type="default" size="mini" @click="onAdd()">Add</el-button>
       <el-dialog :title=title :visible.sync="dialogVisible">
         <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="120px" inline-message>
           <el-form-item label="key" porp="key">
@@ -71,15 +71,6 @@ export default {
       },
       dialogVisible: false
     }
-  },
-  beforCreate(){
-  },
-  created(){
-    this.updated = true;
-  },
-  mounted(){
-  },
-  updated(){
   },
   methods:{
     onDelete(index, row){

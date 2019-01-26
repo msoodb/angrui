@@ -2,12 +2,6 @@
   <b-row>
     <b-col cols="12" lg="12">
       <b-card no-header>
-      <template slot="header">
-        <el-row>
-          <el-button icon="el-icon-circle-check" type="success" circle size="small" @click="onCheck"></el-button>
-          <el-button icon="el-icon-circle-close" type="warning" circle size="small" @click="onClose"></el-button>
-        </el-row>
-      </template>
       <el-tabs type="border-card">
         <el-tab-pane label="General">
         <el-form ref="productForm" :model="productForm" :rules="rules" label-width="120px" inline-message>
@@ -71,32 +65,53 @@
             <el-input type="textarea" v-model="productForm.description"></el-input>
           </el-form-item>
           <el-form-item label="tags">
-            <Tag title="product tags" v-model="productForm.tags"></Tag>
+            <div style="border:1px solid #dcdfe6; border-radius:4px; padding:5px;">
+              <Tag title="product tags" v-model="productForm.tags"></Tag>
+            </div>
           </el-form-item>
           <el-form-item label="details">
             <keyValue title="product details" v-model="productForm.details"></keyValue>
           </el-form-item>
+          <hr/>
+          <el-form-item>
+            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
+            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
+          </el-form-item>
         </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="Attachments">
+          <el-form label-width="120px" inline-message>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="attachments">
+                  <ProductDocument :product_id="product_id"></ProductDocument>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
         </el-tab-pane>
       </el-tabs>
       </b-card>
     </b-col>
   </b-row>
-  </template>
-
+</template>
 
 <script>
 import {baseurl} from '../../config'
 import keyValue from '../../components/keyValue'
 import Tag from '../../components/Tag'
+import ProductDocument from '../products/ProductDocument'
+
 
 export default {
   name: 'Product',
-  props: {
-    caption: {
-      type: String,
-      default: 'Product id'
-    },
+  computed:{
+    product_id: {
+      get: function () {
+        return this.$route.params.id;
+      }
+    }
   },
   data: () => {
     return {
@@ -130,14 +145,13 @@ export default {
           { required: true, message: 'Please input price', trigger: 'change' },
           { type: 'number', message: 'Price must be a number', trigger: 'change' }
         ]
-      },
-      inputVisible: false,
-      inputValue: ''
+      }
     }
   },
   components: {
     keyValue,
-    Tag
+    Tag,
+    ProductDocument
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -163,7 +177,9 @@ export default {
           self.productForm.title = response.data.title;
           self.productForm.code = response.data.code;
           self.productForm.price = Number(response.data.price);
-          self.productForm.details = JSON.parse(response.data.details);
+          if(response.data.details){
+            self.productForm.details = JSON.parse(response.data.details);
+          }
           if(response.data.expirable == 't'){
             self.productForm.expirable = true;
           }
@@ -191,7 +207,7 @@ export default {
         }
       }.bind(this))
       .catch(function (error) {
-        if(error.response.status == 401){
+        if(error.response && error.response.status == 401){
           self.$router.push('/pages/login');
         }else{
           self.$message.error('Unknown error.');
@@ -224,13 +240,12 @@ export default {
           }
         }.bind(this))
         .catch(function (error) {
-          if(error.response.status == 401){
+          if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
           }else{
             self.$message.error('Unknown error.');
           }
       });
-      this.onClose();
     },
     updateProduct(){
       var self = this;
@@ -242,9 +257,7 @@ export default {
           'Authorization': token
         }
       }
-      if(this.productForm.tags){
-        this.productForm.tags = JSON.stringify(this.productForm.tags);
-      }
+      this.productForm.tags = JSON.stringify(this.productForm.tags);
       this.productForm.details = JSON.stringify(this.productForm.details);
       var data_request = JSON.stringify(this.productForm);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
@@ -261,15 +274,31 @@ export default {
           }
         }.bind(this))
         .catch(function (error) {
-          if(error.response.status == 401){
+          if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
           }else{
             self.$message.error('Unknown error.');
           }
       });
-      this.onClose();
     },
-    onCheck() {
+    onSaveClose() {
+      this.$refs["productForm"].validate((valid) => {
+        if (valid) {
+          if(this.$route.params.id == -1){
+            this.addProduct();
+            this.onCancel();
+          }
+          else{
+            this.updateProduct();
+            this.onCancel();
+          }
+        }
+        else{
+          this.$message.error('Please fill in the required fields.');
+        }
+      });
+    },
+    onSave() {
       this.$refs["productForm"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
@@ -284,7 +313,7 @@ export default {
         }
       });
     },
-    onClose() {
+    onCancel() {
       this.$router.go(-1)
     }
   }
