@@ -3,7 +3,7 @@
     <el-upload
       class="upload-demo"
       drag
-      action="http://127.0.0.1:9080/files"
+      :action="action"
       :headers="headers"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
@@ -32,6 +32,11 @@ export default {
     }
   },
   computed:{
+    action: {
+      get: function () {
+        return baseurl() + '/files';
+      }
+    },
     headers: {
       get: function () {
         var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -77,7 +82,7 @@ export default {
         }
       });
     },
-    deleteProductDocument(id){
+    deleteProductDocument(file){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -86,10 +91,10 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.delete(baseurl() + '/products/' + this.product_id + '/documents/' + id, config )
+      this.$axios.delete(baseurl() + '/products/' + this.product_id + '/documents/' + file.id, config )
         .then(function (response) {
           if(response.status == 200){
-            let currentMsg =  self.$message  ({
+              let currentMsg =  self.$message  ({
               message : 'document successfully deleted',
               duration:0,
               type:'success'
@@ -107,7 +112,8 @@ export default {
           }
       });
     },
-    addProductDocument(file){
+    addProductDocument(response, file){
+      console.log(JSON.stringify(response));
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -116,18 +122,10 @@ export default {
           'Authorization': token
         }
       };
-      var file_name_extention = file.name.split('.');
-      var file_name = file_name_extention[0];
-      var file_extention = '';
-      if(file_name_extention.length > 1){
-        file_extention = file_name_extention[1];
-      }
       let filet = {
           'product_id': this.product_id,
           'name': file.name,
-          'title': file_name,
-          'path': '/server/decs',
-          'extention': file_extention,
+          'path': response.path,
           'size': file.size,
           'tags': '[]',
           'details': '{}',
@@ -135,6 +133,7 @@ export default {
           'description': ''
       };
       var data_request = JSON.stringify(filet);
+      console.log(data_request);
       this.$axios.post(baseurl() + '/products/' + this.product_id +'/documents', data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -157,7 +156,7 @@ export default {
       });
     },
     handleRemove(file, fileList) {
-      this.deleteProductDocument(file.id)
+      this.deleteProductDocument(file);      
     },
     handlePreview(file) {
       console.log(JSON.stringify(file));
@@ -169,7 +168,7 @@ export default {
       return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
     },
     handleSuccess(response, file, fileList) {
-      this.addProductDocument(file)
+      this.addProductDocument(response, file)
     }
   }
 }
