@@ -3,7 +3,8 @@
     <el-upload
       class="upload-demo"
       drag
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="http://127.0.0.1:9080/files"
+      :headers="headers"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
       :before-remove="beforeRemove"
@@ -28,6 +29,18 @@ export default {
     product_id: {
       type: String,
       required: true
+    }
+  },
+  computed:{
+    headers: {
+      get: function () {
+        var token = JSON.parse(localStorage.getItem("jwtoken"));
+        var headers = {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': token
+        }
+        return headers;
+      }
     }
   },
   data: () => {
