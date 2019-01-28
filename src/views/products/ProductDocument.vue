@@ -113,7 +113,6 @@ export default {
       });
     },
     addProductDocument(response, file){
-      console.log(JSON.stringify(response));
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -133,10 +132,10 @@ export default {
           'description': ''
       };
       var data_request = JSON.stringify(filet);
-      console.log(data_request);
       this.$axios.post(baseurl() + '/products/' + this.product_id +'/documents', data_request, config )
         .then(function (response) {
           if(response.status == 200){
+            file.id = response.data.id;
             let currentMsg =  self.$message  ({
               message : 'Product added successfully',
               duration:0,
@@ -156,10 +155,11 @@ export default {
       });
     },
     handleRemove(file, fileList) {
-      this.deleteProductDocument(file);      
+      console.log(file);
+      this.deleteProductDocument(file);
     },
     handlePreview(file) {
-      console.log(JSON.stringify(file));
+      //console.log(JSON.stringify(file));
     },
     handleExceed(files, fileList) {
       this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
@@ -168,7 +168,10 @@ export default {
       return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
     },
     handleSuccess(response, file, fileList) {
-      this.addProductDocument(response, file)
+      console.log(file);
+      if(response.message == "success"){
+        this.addProductDocument(response, file);
+      }
     }
   }
 }
