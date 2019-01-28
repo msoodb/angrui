@@ -10,6 +10,7 @@
       :before-remove="beforeRemove"
       :on-success="handleSuccess"
       multiple
+      limit
       :on-exceed="handleExceed"
       :file-list="documents">
       <i class="el-icon-upload"></i>
@@ -155,7 +156,6 @@ export default {
       });
     },
     handleRemove(file, fileList) {
-      console.log(file);
       this.deleteProductDocument(file);
     },
     handlePreview(file) {
@@ -168,7 +168,6 @@ export default {
       return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
     },
     handleSuccess(response, file, fileList) {
-      console.log(file);
       if(response.message == "success"){
         this.addProductDocument(response, file);
       }
