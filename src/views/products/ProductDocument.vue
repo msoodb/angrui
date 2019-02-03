@@ -10,7 +10,6 @@
       :before-remove="beforeRemove"
       :on-success="handleSuccess"
       multiple
-      limit
       :on-exceed="handleExceed"
       :file-list="documents">
       <i class="el-icon-upload"></i>
@@ -162,7 +161,7 @@ export default {
       //console.log(JSON.stringify(file));
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
+      //this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
