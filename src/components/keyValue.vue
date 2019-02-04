@@ -5,7 +5,7 @@
       </el-table-column>
       <el-table-column prop="value" label="value" width="100">
       </el-table-column>
-      <el-table-column label="Operations" width="120" align="center">
+      <el-table-column label="Operations" width="140" align="center">
         <template slot-scope="scope">
           <el-button icon="el-icon-edit" size="mini"
             @click="onEdit(scope.$index, scope.row)">
