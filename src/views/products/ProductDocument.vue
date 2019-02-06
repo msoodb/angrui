@@ -34,6 +34,10 @@ export default {
   computed:{
     action: {
       get: function () {
+        if(!this.product_id || this.product_id == "undefined" || this.product_id == "-1"){
+          //this.$message.error('Save products befor upload attachments.');
+          return;
+        }
         return baseurl() + '/files';
       }
     },
@@ -108,7 +112,7 @@ export default {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
           }else{
-            self.$message.error('Unknown error.' + error);
+            self.$message.error('Unknown error.');
           }
       });
     },
@@ -124,11 +128,12 @@ export default {
       let filet = {
           'product_id': this.product_id,
           'name': file.name,
+          'title': '',
           'path': response.path,
           'size': file.size,
           'tags': '[]',
           'details': '{}',
-          'active': true,
+          'status': 1,
           'description': ''
       };
       var data_request = JSON.stringify(filet);
@@ -165,6 +170,9 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
+    },
+    handleBeforeUpload(file) {
+      return false;
     },
     handleSuccess(response, file, fileList) {
       if(response.message == "success"){

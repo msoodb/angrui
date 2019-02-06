@@ -6,21 +6,38 @@
         <el-tab-pane label="General">
         <el-form ref="content_providerForm" :model="content_providerForm" :rules="rules" label-width="120px" inline-message>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="id" prop="id">
                 <el-input v-model="content_providerForm.id" disabled></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="6">
+              <el-form-item label="status" prop="status">
+                <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
+                  <el-option
+                    v-for="item in statuses"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="name" prop="name">
                 <el-input type="name" v-model="content_providerForm.name"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="title" prop="title">
                 <el-input v-model="content_providerForm.title"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="code" prop="code">
+                <el-input v-model="content_providerForm.code"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -81,20 +98,30 @@ export default {
         id: '',
         name: '',
         title: '',
+        code: '',
         phone: '',
         email: '',
-        details: {},
-        description: '',
         created_at: '',
-        updated_at: ''
+        updated_at: '',
+        details: {},
+        status: '1',
+        description: ''
       },
+      statuses: [
+        {
+          value: '0',
+          label: 'disable'
+        },
+        {
+          value: '1',
+          label: 'enable'
+        }
+      ],
+      value : null,
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-        ],
-        title: [
-          { required: true, message: 'Please input title', trigger: 'change' }
         ],
         phone: [
           { required: true, message: 'Please input code', trigger: 'change' }
@@ -106,6 +133,9 @@ export default {
       }
     }
   },
+  created() {
+     this.value = this.statuses[1];
+  },
   components: {
     keyValue
   },
@@ -115,6 +145,10 @@ export default {
     }
   },
   methods: {
+    onStatusChange(selected){
+      this.value = selected;
+      this.content_providerForm.status = this.value['value'];
+    },
     getContentProvider(){
     var self = this;
     var id = self.$route.params.id;
@@ -131,14 +165,17 @@ export default {
           self.content_providerForm.id = response.data.id;
           self.content_providerForm.name = response.data.name;
           self.content_providerForm.title = response.data.title;
+          self.content_providerForm.code = response.data.code;
           self.content_providerForm.phone = response.data.phone;
           self.content_providerForm.email = response.data.email;
+          self.content_providerForm.created_at = response.data.created_at;
+          self.content_providerForm.updated_at = response.data.updated_at;
           if(response.data.details){
             self.content_providerForm.details = JSON.parse(response.data.details);
           }
+          self.content_providerForm.status = Number(response.data.status);
+          self.value = self.statuses[response.data.status];
           self.content_providerForm.description = response.data.description;
-          self.content_providerForm.created_at = response.data.created_at;
-          self.content_providerForm.updated_at = response.data.updated_at;
         }
       }.bind(this))
       .catch(function (error) {

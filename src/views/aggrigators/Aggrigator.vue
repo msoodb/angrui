@@ -6,21 +6,38 @@
         <el-tab-pane label="General">
         <el-form ref="aggrigatorForm" :model="aggrigatorForm" :rules="rules" label-width="120px" inline-message>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="id" prop="id">
                 <el-input v-model="aggrigatorForm.id" disabled></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="6">
+              <el-form-item label="status" prop="status">
+                <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
+                  <el-option
+                    v-for="item in statuses"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="name" prop="name">
                 <el-input type="name" v-model="aggrigatorForm.name"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="title" prop="title">
                 <el-input v-model="aggrigatorForm.title"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="code" prop="code">
+                <el-input v-model="aggrigatorForm.code"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -81,20 +98,30 @@ export default {
         id: '',
         name: '',
         title: '',
+        code: '',
         phone: '',
         email: '',
-        details: {},
-        description: '',
         created_at: '',
-        updated_at: ''
+        updated_at: '',
+        details: {},
+        status: '1',
+        description: ''
       },
+      statuses: [
+        {
+          value: '0',
+          label: 'disable'
+        },
+        {
+          value: '1',
+          label: 'enable'
+        }
+      ],
+      value : null,
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-        ],
-        title: [
-          { required: true, message: 'Please input title', trigger: 'change' }
         ],
         phone: [
           { required: true, message: 'Please input code', trigger: 'change' }
@@ -106,6 +133,9 @@ export default {
       }
     }
   },
+  created() {
+     this.value = this.statuses[1];
+  },
   components: {
     keyValue
   },
@@ -115,6 +145,10 @@ export default {
     }
   },
   methods: {
+    onStatusChange(selected){
+      this.value = selected;
+      this.aggrigatorForm.status = this.value['value'];
+    },
     getAggrigator(){
     var self = this;
     var id = self.$route.params.id;
@@ -131,21 +165,24 @@ export default {
           self.aggrigatorForm.id = response.data.id;
           self.aggrigatorForm.name = response.data.name;
           self.aggrigatorForm.title = response.data.title;
+          self.aggrigatorForm.code = response.data.code;
           self.aggrigatorForm.phone = response.data.phone;
           self.aggrigatorForm.email = response.data.email;
+          self.aggrigatorForm.created_at = response.data.created_at;
+          self.aggrigatorForm.updated_at = response.data.updated_at;
           if(response.data.details){
             self.aggrigatorForm.details = JSON.parse(response.data.details);
           }
+          self.aggrigatorForm.status = Number(response.data.status);
+          self.value = self.statuses[response.data.status];
           self.aggrigatorForm.description = response.data.description;
-          self.aggrigatorForm.created_at = response.data.created_at;
-          self.aggrigatorForm.updated_at = response.data.updated_at;
         }
       }.bind(this))
       .catch(function (error) {
         if(error.response && error.response.status == 401){
           self.$router.push('/pages/login');
         }else{
-          self.$message.error('Unknown error.');
+          self.$message.error('Unknown error.' + error);
         }
       });
     },

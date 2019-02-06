@@ -11,6 +11,18 @@
                 <el-input v-model="productForm.id" disabled></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item label="status" prop="status">
+                <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
+                  <el-option
+                    v-for="item in statuses"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
@@ -46,11 +58,6 @@
               <el-col :span="6">
                 <el-form-item label="taxable">
                   <el-checkbox v-model="productForm.taxable"></el-checkbox>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6">
-                <el-form-item label="active">
-                  <el-switch v-model="productForm.active"></el-switch>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -121,15 +128,26 @@ export default {
         title: '',
         code: '',
         price: '',
-        details: {},
-        expirable: true,
-        taxable: true,
-        active: true,
-        description: '',
         created_at: '',
         updated_at: '',
-        tags: []
+        expirable: true,
+        taxable: true,
+        tags: [],
+        details: {},
+        status: '1',
+        description: ''
       },
+      statuses: [
+        {
+          value: '0',
+          label: 'disable'
+        },
+        {
+          value: '1',
+          label: 'enable'
+        }
+      ],
+      value : null,
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
@@ -148,6 +166,9 @@ export default {
       }
     }
   },
+  created() {
+     this.value = this.statuses[1];
+  },
   components: {
     keyValue,
     Tag,
@@ -159,6 +180,10 @@ export default {
     }
   },
   methods: {
+    onStatusChange(selected){
+      this.value = selected;
+      this.productForm.status = this.value['value'];
+    },
     getProduct(){
     var self = this;
     var id = self.$route.params.id;
@@ -192,15 +217,11 @@ export default {
           else{
             self.productForm.taxable = false;
           }
-          if(response.data.active == 't'){
-            self.productForm.active = true;
-          }
-          else{
-            self.productForm.active = false;
-          }
           self.productForm.description = response.data.description;
           self.productForm.created_at = response.data.created_at;
           self.productForm.updated_at = response.data.updated_at;
+          self.productForm.status = Number(response.data.status);
+          this.value = this.statuses[response.data.status];
           if(response.data.tags){
             self.productForm.tags = JSON.parse(response.data.tags);
           }
@@ -322,24 +343,6 @@ export default {
 <style Scope>
 .el-form-item{
   margin-bottom:0px;
-}
-.el-tag{
-  margin-right: 10px;
-}
-.el-tag + .el-tag {
-    margin-right: 10px;
-}
-.button-new-tag {
-  margin-right: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 90px;
-  margin-right: 10px;
-  vertical-align: bottom;
 }
 .card-body{
   padding: 0rem;

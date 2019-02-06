@@ -58,14 +58,14 @@
               <el-tag type="info" size="mini" disable-transitions>{{scope.row.taxable === 't' ? '✔' : "&nbsp&nbsp&nbsp" }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column  prop="active" label="active" width="90" align="center">
-            <template slot-scope="scope">
-              <el-tag type="info" size="mini" disable-transitions>{{scope.row.active === 't' ? '✔' : "&nbsp&nbsp&nbsp" }}</el-tag>
-            </template>
-          </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
           <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
+          </el-table-column>
+          <el-table-column prop="status" label="status" width="120" align="center">
+            <template slot-scope="scope">
+              {{scope.row.status == 0 ? 'disable' : 'enable' }}
+            </template>
           </el-table-column>
         </el-table>
       </b-card>
