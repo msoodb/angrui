@@ -61,6 +61,15 @@ const User = () => import('@/views/users/User')
 const Products = () => import('@/views/products/Products')
 const Product = () => import('@/views/products/Product')
 
+// Aggrigators
+const Aggrigators = () => import('@/views/aggrigators/Aggrigators')
+const Aggrigator = () => import('@/views/aggrigators/Aggrigator')
+
+// Aggrigators
+const ContentProviders = () => import('@/views/content_providers/ContentProviders')
+const ContentProvider = () => import('@/views/content_providers/ContentProvider')
+
+
 //Charts
 //const Charts = () => import('@/views/charts')
 const ProductChart = () => import('@/views/charts/ProductChart')
@@ -167,6 +176,44 @@ export default new Router({
               meta: { label: 'Product Details'},
               name: 'Product',
               component: Product,
+            },
+          ]
+        },
+        {
+          path: 'aggrigators',
+          meta: { label: 'Aggrigators'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Aggrigators,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Aggrigator Details'},
+              name: 'Aggrigator',
+              component: Aggrigator,
+            },
+          ]
+        },
+        {
+          path: 'content_providers',
+          meta: { label: 'ContentProvider'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: ContentProviders,
+            },
+            {
+              path: ':id',
+              meta: { label: 'ContentProvider Details'},
+              name: 'ContentProvider',
+              component: ContentProvider,
             },
           ]
         },

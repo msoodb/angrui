@@ -4,29 +4,49 @@
       <b-card no-header>
       <el-tabs type="border-card">
         <el-tab-pane label="General">
-        <el-form ref="userForm" :model="userForm" :rules="rules" label-width="120px" inline-message>
+        <el-form ref="content_providerForm" :model="content_providerForm" :rules="rules" label-width="120px" inline-message>
           <el-row>
             <el-col :span="12">
               <el-form-item label="id" prop="id">
-                <el-input v-model="userForm.id" disabled></el-input>
+                <el-input v-model="content_providerForm.id" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
+              <el-form-item label="name" prop="name">
+                <el-input type="name" v-model="content_providerForm.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="title" prop="title">
+                <el-input v-model="content_providerForm.title"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="phone" prop="phone">
+                <el-input type="phone" v-model="content_providerForm.phone"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item label="email" prop="email">
-                <el-input type="email" v-model.number="userForm.email"></el-input>
+                <el-input type="email" v-model.number="content_providerForm.email"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="created_at">
-            <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            <el-date-picker v-model="content_providerForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
           </el-form-item>
           <el-form-item label="updated_at">
-            <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            <el-date-picker v-model="content_providerForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+          </el-form-item>
+          <el-form-item label="description">
+            <el-input type="textarea" v-model="content_providerForm.description"></el-input>
           </el-form-item>
           <el-form-item label="details">
-            <keyValue title="user details" v-model="userForm.details"></keyValue>
+            <keyValue title="content_provider details" v-model="content_providerForm.details"></keyValue>
           </el-form-item>
           <hr/>
           <el-form-item>
@@ -47,9 +67,9 @@ import {baseurl} from '../../config'
 import keyValue from '../../components/keyValue'
 
 export default {
-  name: 'User',
+  name: 'ContentProvider',
   computed:{
-    user_id: {
+    content_provider_id: {
       get: function () {
         return this.$route.params.id;
       }
@@ -57,14 +77,28 @@ export default {
   },
   data: () => {
     return {
-      userForm: {
+      content_providerForm: {
         id: '',
+        name: '',
+        title: '',
+        phone: '',
         email: '',
         details: {},
+        description: '',
         created_at: '',
         updated_at: ''
       },
       rules: {
+        name: [
+          { required: true, message: 'Please input name', trigger: 'change' },
+          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
+        ],
+        title: [
+          { required: true, message: 'Please input title', trigger: 'change' }
+        ],
+        phone: [
+          { required: true, message: 'Please input code', trigger: 'change' }
+        ],
         email: [
           { required: true, message: 'Please input email', trigger: 'change' },
           { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
@@ -77,11 +111,11 @@ export default {
   },
   mounted(){
     if(this.$route.params.id != -1){
-      this.getUser();
+      this.getContentProvider();
     }
   },
   methods: {
-    getUser(){
+    getContentProvider(){
     var self = this;
     var id = self.$route.params.id;
     var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -91,16 +125,20 @@ export default {
         'Authorization': token
       }
     }
-    this.$axios.get(baseurl() + '/users/' + id, config )
+    this.$axios.get(baseurl() + '/content_providers/' + id, config )
       .then(function (response) {
         if(response.status == 200){
-          self.userForm.id = response.data.id;
-          self.userForm.email = response.data.email;
+          self.content_providerForm.id = response.data.id;
+          self.content_providerForm.name = response.data.name;
+          self.content_providerForm.title = response.data.title;
+          self.content_providerForm.phone = response.data.phone;
+          self.content_providerForm.email = response.data.email;
           if(response.data.details){
-            self.userForm.details = JSON.parse(response.data.details);
-          }        
-          self.userForm.created_at = response.data.created_at;
-          self.userForm.updated_at = response.data.updated_at;
+            self.content_providerForm.details = JSON.parse(response.data.details);
+          }
+          self.content_providerForm.description = response.data.description;
+          self.content_providerForm.created_at = response.data.created_at;
+          self.content_providerForm.updated_at = response.data.updated_at;
         }
       }.bind(this))
       .catch(function (error) {
@@ -111,7 +149,7 @@ export default {
         }
       });
     },
-    addUser(){
+    addContentProvider(){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -120,13 +158,13 @@ export default {
           'Authorization': token
         }
       }
-      this.userForm.details = JSON.stringify(this.userForm.details);
-      var data_request = JSON.stringify(this.userForm);
-      this.$axios.post(baseurl() + '/users', data_request, config )
+      this.content_providerForm.details = JSON.stringify(this.content_providerForm.details);
+      var data_request = JSON.stringify(this.content_providerForm);
+      this.$axios.post(baseurl() + '/content_providers', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
-              message : 'User added successfully',
+              message : 'ContentProvider added successfully',
               duration:0,
               type:'success'
             })
@@ -143,7 +181,7 @@ export default {
           }
       });
     },
-    updateUser(){
+    updateContentProvider(){
       var self = this;
       var id = self.$route.params.id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -153,13 +191,13 @@ export default {
           'Authorization': token
         }
       }
-      this.userForm.details = JSON.stringify(this.userForm.details);
-      var data_request = JSON.stringify(this.userForm);
-      this.$axios.put(baseurl() + '/users/' + id, data_request, config )
+      this.content_providerForm.details = JSON.stringify(this.content_providerForm.details);
+      var data_request = JSON.stringify(this.content_providerForm);
+      this.$axios.put(baseurl() + '/content_providers/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
-              message : 'User updated successfully',
+              message : 'ContentProvider updated successfully',
               duration:0,
               type:'success'
             })
@@ -177,14 +215,14 @@ export default {
       });
     },
     onSaveClose() {
-      this.$refs["userForm"].validate((valid) => {
+      this.$refs["content_providerForm"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
-            this.addUser();
+            this.addContentProvider();
             this.onCancel();
           }
           else{
-            this.updateUser();
+            this.updateContentProvider();
             this.onCancel();
           }
         }
@@ -194,13 +232,13 @@ export default {
       });
     },
     onSave() {
-      this.$refs["userForm"].validate((valid) => {
+      this.$refs["content_providerForm"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
-            this.addUser();
+            this.addContentProvider();
           }
           else{
-            this.updateUser();
+            this.updateContentProvider();
           }
         }
         else{

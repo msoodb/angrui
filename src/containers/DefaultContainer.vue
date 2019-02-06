@@ -6,10 +6,12 @@
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
         <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
         <el-submenu index="2">
-          <template slot="title">Financial Accounting</template>
-          <el-menu-item index="2-1" route="/products">Products</el-menu-item>
-          <el-menu-item index="2-2" route="/users">Users</el-menu-item>
-        </el-submenu>      
+          <template slot="title">Data</template>
+          <el-menu-item index="2-1" route="/aggrigators">Aggrigators</el-menu-item>
+          <el-menu-item index="2-2" route="/content_providers">ContentProviders</el-menu-item>
+          <el-menu-item index="2-3" route="/products">Products</el-menu-item>
+          <el-menu-item index="2-4" route="/users">Users</el-menu-item>
+        </el-submenu>
         </el-menu>
       <div class="line"></div>
       </b-navbar-nav>

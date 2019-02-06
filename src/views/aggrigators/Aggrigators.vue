@@ -16,7 +16,7 @@
             </el-col>
             <el-col :span="12">
               <div class="text-center">
-                <el-pagination id="users_paginator" class="text-center" background layout="prev, pager, next"
+                <el-pagination id="aggrigators_paginator" class="text-center" background layout="prev, pager, next"
                       :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
                 </el-pagination>
               </div>
@@ -29,13 +29,19 @@
             </el-col>
           </el-row>
         </template>
-        <el-table ref="usersTable" :data="items"  stripe style="width: 100%" border
+        <el-table ref="aggrigatorsTable" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>
           <el-table-column  prop="id"  label="id"  width="80">
           </el-table-column>
-          <el-table-column prop="email" label="email" width="300">
+          <el-table-column prop="name" label="name" width="120">
+          </el-table-column>
+          <el-table-column prop="title" label="title" width="180">
+          </el-table-column>
+          <el-table-column prop="phone" label="phone" width="180">
+          </el-table-column>
+          <el-table-column prop="email" label="email" width="180">
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
@@ -52,7 +58,7 @@
 <script>
 import {baseurl} from '../../config'
 export default {
-  name: 'Users',
+  name: 'Aggrigators',
   data() {
      return {
        items: [],
@@ -65,18 +71,18 @@ export default {
   },
   mounted(){
     this.page = Number(this.$route.query.page);
-    this.getUsers();
+    this.getAggrigators();
   },
   watch:{
     $route (to, from){
       this.page = Number(this.$route.query.page);
-      this.getUsers();
+      this.getAggrigators();
     }
   },
   computed: {
   },
   methods: {
-    getUsers(){
+    getAggrigators(){
     var self = this;
     var token = JSON.parse(localStorage.getItem("jwtoken"));
     let config = {
@@ -88,17 +94,17 @@ export default {
     if(!self.page || self.page == "undefined" || self.page < 1){
       self.page = 1;
     }
-    this.$axios.get(baseurl() + '/users?page=' + self.page, config )
+    this.$axios.get(baseurl() + '/aggrigators?page=' + self.page, config )
       .then(function (response) {
         if(response.status == 200){
-          self.$router.push({path: 'users?page=' + self.page});
-          self.items = response.data.users;
+          self.$router.push({path: 'aggrigators?page=' + self.page});
+          self.items = response.data.aggrigators;
           self.offset = Number(response.data.info.offset);
           self.page_count = Number(response.data.info.page_count);
           self.result_count = Number(response.data.info.result_count);
           if(self.page > self.page_count){
             self.page = self.page_count;
-            self.getUsers();
+            self.getAggrigators();
           }
         }
       }.bind(this))
@@ -112,25 +118,25 @@ export default {
     },
     handleCurrentChange (val) {
       this.page = val;
-      this.getUsers();
+      this.getAggrigators();
     },
-    userLink (id) {
-      return `users/${id.toString()}`
+    aggrigatorLink (id) {
+      return `aggrigators/${id.toString()}`
     },
     rowClicked (item) {
-      const userLink = this.userLink(item.id)
-      this.$router.push({path: userLink})
+      const aggrigatorLink = this.aggrigatorLink(item.id)
+      this.$router.push({path: aggrigatorLink})
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;
     },
     onChart(){
-      this.$router.push('/charts/user');
+      this.$router.push('/charts/aggrigator');
     },
     onAdd(){
       var id = -1;
-      const userLink = this.userLink(id);
-      this.$router.push({path: userLink})
+      const aggrigatorLink = this.aggrigatorLink(id);
+      this.$router.push({path: aggrigatorLink})
     },
     onEdit(){
       if(this.multipleSelection.length != 1){
@@ -138,15 +144,15 @@ export default {
         return;
       }
       var id = this.multipleSelection[0].id;
-      const userLink = this.userLink(id);
-      this.$router.push({path: userLink})
+      const aggrigatorLink = this.aggrigatorLink(id);
+      this.$router.push({path: aggrigatorLink})
     },
     onDelete(){
       if(this.multipleSelection.length == 0){
         this.$message.warning('There is no selected record(s) to delete.');
         return;
       }
-      this.$confirm('Selected user(s) will be permanently deleted. Continue?', 'Warning', {
+      this.$confirm('Selected aggrigator(s) will be permanently deleted. Continue?', 'Warning', {
           confirmButtonText: 'OK',
           cancelButtonText: 'Cancel',
           type: 'warning',
@@ -156,7 +162,7 @@ export default {
           var id = this.multipleSelection[i].id;
           this.deleteRecord(id);
         }
-        this.getUsers();
+        this.getAggrigators();
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -173,11 +179,11 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.delete(baseurl() + '/users/' + id, config )
+      this.$axios.delete(baseurl() + '/aggrigators/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
-              message : 'User successfully deleted',
+              message : 'Aggrigator successfully deleted',
               duration:0,
               type:'success'
             })

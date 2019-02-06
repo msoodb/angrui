@@ -90,9 +90,7 @@ export default {
      }
   },
   mounted(){
-    if(this.$route.query.page){
-      this.page = Number(this.$route.query.page);
-    }
+    this.page = Number(this.$route.query.page);
     this.getProducts();
   },
   watch:{
@@ -113,7 +111,7 @@ export default {
         'Authorization': token
       }
     }
-    if(self.page < 1){
+    if(!self.page || self.page == "undefined" || self.page < 1){
       self.page = 1;
     }
     this.$axios.get(baseurl() + '/products?page=' + self.page, config )

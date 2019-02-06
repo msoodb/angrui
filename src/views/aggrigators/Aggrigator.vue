@@ -4,29 +4,49 @@
       <b-card no-header>
       <el-tabs type="border-card">
         <el-tab-pane label="General">
-        <el-form ref="userForm" :model="userForm" :rules="rules" label-width="120px" inline-message>
+        <el-form ref="aggrigatorForm" :model="aggrigatorForm" :rules="rules" label-width="120px" inline-message>
           <el-row>
             <el-col :span="12">
               <el-form-item label="id" prop="id">
-                <el-input v-model="userForm.id" disabled></el-input>
+                <el-input v-model="aggrigatorForm.id" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
+              <el-form-item label="name" prop="name">
+                <el-input type="name" v-model="aggrigatorForm.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="title" prop="title">
+                <el-input v-model="aggrigatorForm.title"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="phone" prop="phone">
+                <el-input type="phone" v-model="aggrigatorForm.phone"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item label="email" prop="email">
-                <el-input type="email" v-model.number="userForm.email"></el-input>
+                <el-input type="email" v-model.number="aggrigatorForm.email"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-form-item label="created_at">
-            <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            <el-date-picker v-model="aggrigatorForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
           </el-form-item>
           <el-form-item label="updated_at">
-            <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            <el-date-picker v-model="aggrigatorForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+          </el-form-item>
+          <el-form-item label="description">
+            <el-input type="textarea" v-model="aggrigatorForm.description"></el-input>
           </el-form-item>
           <el-form-item label="details">
-            <keyValue title="user details" v-model="userForm.details"></keyValue>
+            <keyValue title="aggrigator details" v-model="aggrigatorForm.details"></keyValue>
           </el-form-item>
           <hr/>
           <el-form-item>
@@ -47,9 +67,9 @@ import {baseurl} from '../../config'
 import keyValue from '../../components/keyValue'
 
 export default {
-  name: 'User',
+  name: 'Aggrigator',
   computed:{
-    user_id: {
+    aggrigator_id: {
       get: function () {
         return this.$route.params.id;
       }
@@ -57,14 +77,28 @@ export default {
   },
   data: () => {
     return {
-      userForm: {
+      aggrigatorForm: {
         id: '',
+        name: '',
+        title: '',
+        phone: '',
         email: '',
         details: {},
+        description: '',
         created_at: '',
         updated_at: ''
       },
       rules: {
+        name: [
+          { required: true, message: 'Please input name', trigger: 'change' },
+          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
+        ],
+        title: [
+          { required: true, message: 'Please input title', trigger: 'change' }
+        ],
+        phone: [
+          { required: true, message: 'Please input code', trigger: 'change' }
+        ],
         email: [
           { required: true, message: 'Please input email', trigger: 'change' },
           { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
@@ -77,11 +111,11 @@ export default {
   },
   mounted(){
     if(this.$route.params.id != -1){
-      this.getUser();
+      this.getAggrigator();
     }
   },
   methods: {
-    getUser(){
+    getAggrigator(){
     var self = this;
     var id = self.$route.params.id;
     var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -91,16 +125,20 @@ export default {
         'Authorization': token
       }
     }
-    this.$axios.get(baseurl() + '/users/' + id, config )
+    this.$axios.get(baseurl() + '/aggrigators/' + id, config )
       .then(function (response) {
         if(response.status == 200){
-          self.userForm.id = response.data.id;
-          self.userForm.email = response.data.email;
+          self.aggrigatorForm.id = response.data.id;
+          self.aggrigatorForm.name = response.data.name;
+          self.aggrigatorForm.title = response.data.title;
+          self.aggrigatorForm.phone = response.data.phone;
+          self.aggrigatorForm.email = response.data.email;
           if(response.data.details){
-            self.userForm.details = JSON.parse(response.data.details);
-          }        
-          self.userForm.created_at = response.data.created_at;
-          self.userForm.updated_at = response.data.updated_at;
+            self.aggrigatorForm.details = JSON.parse(response.data.details);
+          }
+          self.aggrigatorForm.description = response.data.description;
+          self.aggrigatorForm.created_at = response.data.created_at;
+          self.aggrigatorForm.updated_at = response.data.updated_at;
         }
       }.bind(this))
       .catch(function (error) {
@@ -111,7 +149,7 @@ export default {
         }
       });
     },
-    addUser(){
+    addAggrigator(){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -120,13 +158,13 @@ export default {
           'Authorization': token
         }
       }
-      this.userForm.details = JSON.stringify(this.userForm.details);
-      var data_request = JSON.stringify(this.userForm);
-      this.$axios.post(baseurl() + '/users', data_request, config )
+      this.aggrigatorForm.details = JSON.stringify(this.aggrigatorForm.details);
+      var data_request = JSON.stringify(this.aggrigatorForm);
+      this.$axios.post(baseurl() + '/aggrigators', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
-              message : 'User added successfully',
+              message : 'Aggrigator added successfully',
               duration:0,
               type:'success'
             })
@@ -143,7 +181,7 @@ export default {
           }
       });
     },
-    updateUser(){
+    updateAggrigator(){
       var self = this;
       var id = self.$route.params.id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -153,13 +191,13 @@ export default {
           'Authorization': token
         }
       }
-      this.userForm.details = JSON.stringify(this.userForm.details);
-      var data_request = JSON.stringify(this.userForm);
-      this.$axios.put(baseurl() + '/users/' + id, data_request, config )
+      this.aggrigatorForm.details = JSON.stringify(this.aggrigatorForm.details);
+      var data_request = JSON.stringify(this.aggrigatorForm);
+      this.$axios.put(baseurl() + '/aggrigators/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
-              message : 'User updated successfully',
+              message : 'Aggrigator updated successfully',
               duration:0,
               type:'success'
             })
@@ -177,14 +215,14 @@ export default {
       });
     },
     onSaveClose() {
-      this.$refs["userForm"].validate((valid) => {
+      this.$refs["aggrigatorForm"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
-            this.addUser();
+            this.addAggrigator();
             this.onCancel();
           }
           else{
-            this.updateUser();
+            this.updateAggrigator();
             this.onCancel();
           }
         }
@@ -194,13 +232,13 @@ export default {
       });
     },
     onSave() {
-      this.$refs["userForm"].validate((valid) => {
+      this.$refs["aggrigatorForm"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
-            this.addUser();
+            this.addAggrigator();
           }
           else{
-            this.updateUser();
+            this.updateAggrigator();
           }
         }
         else{
