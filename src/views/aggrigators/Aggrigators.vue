@@ -6,11 +6,11 @@
           <el-row >
             <el-col :span="6">
               <div class="text-left">
-                <el-button type="primary" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
-                <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
-                <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
-                <el-button icon="el-icon-search" circle size="medium"></el-button>
-                <el-button icon="el-icon-more" circle size="medium"></el-button>
+                <el-button type="info" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
+                <el-button type="info" icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
+                <el-button type="danger" icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
+                <el-button type="info" icon="el-icon-search" circle size="medium"></el-button>
+                <el-button type="info" icon="el-icon-more" circle size="medium"></el-button>
               </div>
             </el-col>
             <el-col :span="12">
@@ -22,7 +22,18 @@
             </el-col>
             <el-col :span="6">
               <div class="text-left">
-                <el-button icon="el-icon-plus" size="medium" @click="onFilter"></el-button>
+                <el-button :type="filterButtonPrimary ? 'primary' : 'default'" size="medium" @click="onFilter">☘</el-button>
+                <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible">
+                  <el-form :model="form">
+                    <el-form-item label="Filter String" :label-width="formLabelWidth">
+                      <el-input v-model="form.filter_string" autocomplete="off"></el-input>
+                    </el-form-item>
+                  </el-form>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="onFilterConfirm">Confirm</el-button>
+                  </span>
+                </el-dialog>
                 <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
                   <el-option-group
                     v-for="group in filters"
@@ -32,7 +43,8 @@
                       v-for="item in group.options"
                       :key="item.value"
                       :label="item.label"
-                      :value="item">
+                      :value="item"
+                      :disabled="item.disabled">
                     </el-option>
                   </el-option-group>
                 </el-select>
@@ -107,23 +119,18 @@ export default {
           label: 'Custom filters',
           options: [
             {
-              value: 'Chengdu',
-              label: 'Chengdu'
-            },
-            {
-              value: 'Shenzhen',
-              label: 'Shenzhen'
-            },
-            {
-              value: 'Guangzhou',
-              label: 'Guangzhou'
-            },
-            {
-              value: 'Dalian',
-              label: 'Dalian'
+              value: '',
+              label: 'Ad hoc',
+              disabled: true
             }]
         }],
-        value : null
+        value : null,
+        dialogFormVisible: false,
+        form: {
+          filter_string: ''
+        },
+        formLabelWidth: '120px',
+        filterButtonPrimary: false
      }
   },
   created() {
@@ -139,6 +146,7 @@ export default {
     $route (to, from){
       this.page = Number(this.$route.query.page);
       var simple_filter = this.value['value'];
+      console.log("watch: " + simple_filter);
       this.filter = btoa(simple_filter);
       this.getAggrigators();
     }
@@ -151,6 +159,7 @@ export default {
       var simple_filter = this.value['value'];
       this.filter = btoa(simple_filter);
       this.page = 1;
+      this.filterButtonPrimary = false;
       this.getAggrigators();
     },
     getAggrigators(){
@@ -165,7 +174,6 @@ export default {
     if(!self.page || self.page == "undefined" || self.page < 1){
       self.page = 1;
     }
-    console.log(self.filter);
     var url = 'aggrigators?page=' + self.page;
     if(self.filter && self.filter != "undefined" && self.filter != ""){
       url = url + '&filter=' + self.filter;
@@ -207,10 +215,16 @@ export default {
        this.multipleSelection = val;
     },
     onFilter(){
-      //this.$router.push('/charts/aggrigator');
-      var simple_filter = "status=1 and id<250";
+      this.dialogFormVisible = true;
+    },
+    onFilterConfirm(){
+      this.dialogFormVisible = false;
+      var simple_filter = this.form.filter_string;
+      this.filters[1].options[0]['value'] = simple_filter;
+      this.value = this.filters[1].options[0];
       this.filter = btoa(simple_filter);
       this.page = 1;
+      this.filterButtonPrimary = true;
       this.getAggrigators();
     },
     onAdd(){
@@ -283,11 +297,6 @@ export default {
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
-    },
-    handleExpirableCheckbox(scope){
-      var value = scope.row.expirable == 't' ? true : false;
-      console.log(scope.row.id + " " + scope.row.expirable);
-      return value;
     }
   }
 }
