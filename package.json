@@ -21,6 +21,7 @@
     "ajv": "^6.7.0",
     "ajv-keywords": "^3.2.0",
     "axios": "^0.18.0",
+    "base-64": "^0.1.0",
     "bootstrap": "^4.2.1",
     "bootstrap-vue": "^2.0.0-rc.11",
     "chart.js": "^2.7.3",
@@ -37,12 +38,13 @@
     "vee-validate": "^2.1.5",
     "vue": "^2.5.21",
     "vue-chartjs": "^3.4.0",
+    "vue-file-base64": "^1.0.2",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-router": "^3.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-plugin-e2e-nightwatch": "^3.3.0",
+    "@vue/cli-plugin-e2e-nightwatch": "^3.4.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-plugin-unit-jest": "^3.3.0",
     "@vue/cli-service": "^3.3.0",

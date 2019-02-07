@@ -9,22 +9,33 @@
                 <el-button type="primary" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
                 <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
                 <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
-                <el-button icon="el-icon-picture" circle size="medium" @click="onChart"></el-button>
                 <el-button icon="el-icon-search" circle size="medium"></el-button>
                 <el-button icon="el-icon-more" circle size="medium"></el-button>
               </div>
             </el-col>
             <el-col :span="12">
-              <div class="text-center">
+              <div class="text-center" vertical-align="middle">
                 <el-pagination id="aggrigators_paginator" class="text-center" background layout="prev, pager, next"
                       :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
                 </el-pagination>
               </div>
             </el-col>
             <el-col :span="6">
-              <div class="text-right">
-                <el-button icon="el-icon-question" circle size="medium"></el-button>
-                <el-button icon="el-icon-setting" circle size="medium"></el-button>
+              <div class="text-left">
+                <el-button icon="el-icon-plus" size="medium" @click="onFilter"></el-button>
+                <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
+                  <el-option-group
+                    v-for="group in filters"
+                    :key="group.label"
+                    :label="group.label">
+                    <el-option
+                      v-for="item in group.options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item">
+                    </el-option>
+                  </el-option-group>
+                </el-select>
               </div>
             </el-col>
           </el-row>
@@ -73,22 +84,75 @@ export default {
        offset: 20,
        page_count: 10000,
        result_count: 0,
-       multipleSelection: []
+       filter:'',
+       multipleSelection: [],
+       filters: [
+        {
+          label: 'System filters',
+          options: [
+            {
+              value: 'status=1',
+              label: 'enable'
+            },
+            {
+              value: 'status=0',
+              label: 'disable'
+            },
+            {
+              value: '',
+              label: 'all'
+            }]
+        },
+        {
+          label: 'Custom filters',
+          options: [
+            {
+              value: 'Chengdu',
+              label: 'Chengdu'
+            },
+            {
+              value: 'Shenzhen',
+              label: 'Shenzhen'
+            },
+            {
+              value: 'Guangzhou',
+              label: 'Guangzhou'
+            },
+            {
+              value: 'Dalian',
+              label: 'Dalian'
+            }]
+        }],
+        value : null
      }
+  },
+  created() {
+     this.value = this.filters[0].options[0];
   },
   mounted(){
     this.page = Number(this.$route.query.page);
+    var simple_filter = this.value['value'];
+    this.filter = btoa(simple_filter);
     this.getAggrigators();
   },
   watch:{
     $route (to, from){
       this.page = Number(this.$route.query.page);
+      var simple_filter = this.value['value'];
+      this.filter = btoa(simple_filter);
       this.getAggrigators();
     }
   },
   computed: {
   },
   methods: {
+    onStatusChange(selected){
+      this.value = selected;
+      var simple_filter = this.value['value'];
+      this.filter = btoa(simple_filter);
+      this.page = 1;
+      this.getAggrigators();
+    },
     getAggrigators(){
     var self = this;
     var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -101,10 +165,15 @@ export default {
     if(!self.page || self.page == "undefined" || self.page < 1){
       self.page = 1;
     }
-    this.$axios.get(baseurl() + '/aggrigators?page=' + self.page, config )
+    console.log(self.filter);
+    var url = 'aggrigators?page=' + self.page;
+    if(self.filter && self.filter != "undefined" && self.filter != ""){
+      url = url + '&filter=' + self.filter;
+    }
+    this.$axios.get(baseurl() + '/' + url , config )
       .then(function (response) {
         if(response.status == 200){
-          self.$router.push({path: 'aggrigators?page=' + self.page});
+          self.$router.push({path: url});
           self.items = response.data.aggrigators;
           self.offset = Number(response.data.info.offset);
           self.page_count = Number(response.data.info.page_count);
@@ -137,8 +206,12 @@ export default {
     handleSelectionChange(val) {
        this.multipleSelection = val;
     },
-    onChart(){
-      this.$router.push('/charts/aggrigator');
+    onFilter(){
+      //this.$router.push('/charts/aggrigator');
+      var simple_filter = "status=1 and id<250";
+      this.filter = btoa(simple_filter);
+      this.page = 1;
+      this.getAggrigators();
     },
     onAdd(){
       var id = -1;
