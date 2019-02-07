@@ -22,7 +22,7 @@
             <el-input type="key" v-model="detailsFormDialog.key" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="value" porp="value">
-            <el-input typr="value" v-model="detailsFormDialog.value" autocomplete="off"></el-input>
+            <el-input type="value" v-model="detailsFormDialog.value" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
       <span slot="footer" class="dialog-footer">

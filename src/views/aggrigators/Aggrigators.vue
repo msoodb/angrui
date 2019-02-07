@@ -22,32 +22,7 @@
             </el-col>
             <el-col :span="6">
               <div class="text-left">
-                <el-button :type="filterButtonPrimary ? 'primary' : 'default'" size="medium" @click="onFilter">☘</el-button>
-                <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible">
-                  <el-form :model="form">
-                    <el-form-item label="Filter String" :label-width="formLabelWidth">
-                      <el-input v-model="form.filter_string" autocomplete="off"></el-input>
-                    </el-form-item>
-                  </el-form>
-                  <span slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="onFilterConfirm">Confirm</el-button>
-                  </span>
-                </el-dialog>
-                <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
-                  <el-option-group
-                    v-for="group in filters"
-                    :key="group.label"
-                    :label="group.label">
-                    <el-option
-                      v-for="item in group.options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item"
-                      :disabled="item.disabled">
-                    </el-option>
-                  </el-option-group>
-                </el-select>
+                <au-filter v-model="filter_string_64" @change="handleFilterChange"></au-filter>
               </div>
             </el-col>
           </el-row>
@@ -83,10 +58,10 @@
   </b-row>
 </template>
 
-
-
 <script>
 import {baseurl} from '../../config'
+import AUFilter from '../../components/AU-Filter'
+
 export default {
   name: 'Aggrigators',
   data() {
@@ -96,70 +71,31 @@ export default {
        offset: 20,
        page_count: 10000,
        result_count: 0,
-       filter:'',
-       multipleSelection: [],
-       filters: [
-        {
-          label: 'System filters',
-          options: [
-            {
-              value: 'status=1',
-              label: 'enable'
-            },
-            {
-              value: 'status=0',
-              label: 'disable'
-            },
-            {
-              value: '',
-              label: 'all'
-            }]
-        },
-        {
-          label: 'Custom filters',
-          options: [
-            {
-              value: '',
-              label: 'Ad hoc',
-              disabled: true
-            }]
-        }],
-        value : null,
-        dialogFormVisible: false,
-        form: {
-          filter_string: ''
-        },
-        formLabelWidth: '120px',
-        filterButtonPrimary: false
+       filter_string_64:'',
+       multipleSelection: []
      }
   },
   created() {
-     this.value = this.filters[0].options[0];
+     //this.value = this.filters[0].options[0];
+  },
+  components: {
+    'au-filter' : AUFilter
   },
   mounted(){
     this.page = Number(this.$route.query.page);
-    var simple_filter = this.value['value'];
-    this.filter = btoa(simple_filter);
     this.getAggrigators();
   },
   watch:{
     $route (to, from){
       this.page = Number(this.$route.query.page);
-      var simple_filter = this.value['value'];
-      console.log("watch: " + simple_filter);
-      this.filter = btoa(simple_filter);
       this.getAggrigators();
     }
   },
   computed: {
   },
   methods: {
-    onStatusChange(selected){
-      this.value = selected;
-      var simple_filter = this.value['value'];
-      this.filter = btoa(simple_filter);
-      this.page = 1;
-      this.filterButtonPrimary = false;
+    handleFilterChange(value){
+      this.filter_string_64 = value;
       this.getAggrigators();
     },
     getAggrigators(){
@@ -175,8 +111,8 @@ export default {
       self.page = 1;
     }
     var url = 'aggrigators?page=' + self.page;
-    if(self.filter && self.filter != "undefined" && self.filter != ""){
-      url = url + '&filter=' + self.filter;
+    if(self.filter_string_64 && self.filter_string_64 != "undefined" && self.filter_string_64 != ""){
+      url = url + '&filter=' + self.filter_string_64;
     }
     this.$axios.get(baseurl() + '/' + url , config )
       .then(function (response) {
@@ -213,19 +149,6 @@ export default {
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;
-    },
-    onFilter(){
-      this.dialogFormVisible = true;
-    },
-    onFilterConfirm(){
-      this.dialogFormVisible = false;
-      var simple_filter = this.form.filter_string;
-      this.filters[1].options[0]['value'] = simple_filter;
-      this.value = this.filters[1].options[0];
-      this.filter = btoa(simple_filter);
-      this.page = 1;
-      this.filterButtonPrimary = true;
-      this.getAggrigators();
     },
     onAdd(){
       var id = -1;
