@@ -3,7 +3,7 @@
     <el-button :type="filterButtonPrimary ? 'primary' : 'default'" size="medium" @click="onFilter">☘</el-button>
     <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="Filter String" :label-width="formLabelWidth">
+        <el-form-item label="Raw query" :label-width="formLabelWidth">
           <el-input v-model="form.filter_string" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -74,7 +74,7 @@ export default {
          options: [
            {
              key:'Adhoc',
-             value: '',
+             value: 'nothing',
              label: 'Ad hoc',
              disabled: true
            }]
@@ -88,6 +88,15 @@ export default {
        filterButtonPrimary: false
     }
   },
+  created() {
+    this.value2 = this.filters[0].options['2'];
+    // console.log(this.value);
+    var simple_filter = atob(this.value);
+    console.log(simple_filter);
+    //this.filters[1].options[0]['value'] = simple_filter;
+    // this.value2 = this.filters[1].options[0];
+    // this.mutedvalue = this.value;
+  },
   methods:{
     onStatusChange(selected){
       this.value2 = selected;
@@ -97,6 +106,7 @@ export default {
       this.$emit('change', this.mutedvalue);
     },
     onFilter(){
+      this.form.filter_string = "id < 20 and id > 8";
       this.dialogFormVisible = true;
     },
     onFilterConfirm(){

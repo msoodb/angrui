@@ -94,6 +94,7 @@ export default {
   },
   data: () => {
     return {
+      from: null,
       aggrigatorForm: {
         id: '',
         name: '',
@@ -133,6 +134,16 @@ export default {
       }
     }
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+        vm.from = from;
+    });
+  },
+  // beforeRouteUpdate (to, from, next) {
+  //   this.from = from.fullpath;
+  //   console.log(this.from);
+  //   next()
+  // },
   created() {
      this.value = this.statuses[1];
   },
@@ -284,7 +295,7 @@ export default {
       });
     },
     onCancel() {
-      this.$router.go(-1)
+      this.$router.push({path: this.from.fullPath})
     }
   }
 }

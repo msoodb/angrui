@@ -11,12 +11,11 @@
                   <p class="text-muted">Sign In to your account</p>
                   <b-input-group class="mb-3">
                     <b-input-group-prepend><b-input-group-text><i class="icon-user"></i></b-input-group-text></b-input-group-prepend>
-                    <b-form-input type="email" name="email" id="email" class="form-control" placeholder="email"
-                      autocomplete="username email" v-model="formData.email"
-                      v-validate="'required|email'" required="required"/>
+                    <b-form-input type="input" name="input" id="input" class="form-control" placeholder="username or email"
+                      v-model="formData.input" v-validate="'required'" required="required"/>
                   </b-input-group>
                   <div class="msg_holder mb-3" v-if="errors">
-                    <span v-show="errors.has('email')"><i  class="fa fa-warning"></i>{{ errors.first('email') }}</span>
+                    <span v-show="errors.has('input')"><i  class="fa fa-warning"></i>{{ errors.first('input') }}</span>
                   </div>
                   <b-input-group class="mb-4">
                     <b-input-group-prepend><b-input-group-text><i class="icon-lock"></i></b-input-group-text></b-input-group-prepend>

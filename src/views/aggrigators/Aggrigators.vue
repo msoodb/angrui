@@ -83,11 +83,13 @@ export default {
   },
   mounted(){
     this.page = Number(this.$route.query.page);
+    this.filter_string_64 = this.$route.query.filter;
     this.getAggrigators();
   },
   watch:{
     $route (to, from){
       this.page = Number(this.$route.query.page);
+      this.filter_string_64 = this.$route.query.filter;
       this.getAggrigators();
     }
   },
@@ -96,6 +98,7 @@ export default {
   methods: {
     handleFilterChange(value){
       this.filter_string_64 = value;
+      this.page = 1;
       this.getAggrigators();
     },
     getAggrigators(){
@@ -156,6 +159,7 @@ export default {
       this.$router.push({path: aggrigatorLink})
     },
     onEdit(){
+      console.log(this.$route);
       if(this.multipleSelection.length != 1){
         this.$message.warning('Please select one record to edit.');
         return;
