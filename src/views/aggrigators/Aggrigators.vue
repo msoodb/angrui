@@ -268,5 +268,10 @@ export default {
 .el-icon-arrow-down {
   font-size: 12px;
 }
+.el-pagination {
+    padding: 5px 5px;
+    font-weight: 600;
+    color: #88898c;
+}
 
 </style>
