@@ -6,25 +6,30 @@
           <el-row >
             <el-col :span="6">
               <div class="text-left">
-                <el-button type="primary" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
-                <el-button icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
-                <el-button icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
-                <el-button icon="el-icon-picture" circle size="medium" @click="onChart"></el-button>
-                <el-button icon="el-icon-search" circle size="medium"></el-button>
-                <el-button icon="el-icon-more" circle size="medium"></el-button>
+                <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
+                <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>
+                <el-button icon="el-icon-delete" circle @click="onDelete"></el-button>
+                <el-button icon="el-icon-search" circle></el-button>
+                <el-dropdown @command="handleMoreCommand" trigger="click">
+                  <el-button icon="el-icon-more" circle>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="ChangePassword">change password</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </div>
             </el-col>
             <el-col :span="12">
               <div class="text-center">
-                <el-pagination id="users_paginator" class="text-center" background layout="prev, pager, next"
+                <el-pagination id="users_paginator" class="text-center" layout="prev, pager, next"
                       :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
                 </el-pagination>
               </div>
             </el-col>
             <el-col :span="6">
               <div class="text-right">
-                <el-button icon="el-icon-question" circle size="medium"></el-button>
-                <el-button icon="el-icon-setting" circle size="medium"></el-button>
+                <el-button icon="el-icon-question" circle></el-button>
+                <el-button icon="el-icon-setting" circle></el-button>
               </div>
             </el-col>
           </el-row>
@@ -33,7 +38,14 @@
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>
-          <el-table-column  prop="user_name"  label="user name"  width="160">
+          <el-table-column prop="situation" label="situation" width="100" align="center">
+            <template slot-scope="scope">
+              {{scope.row.situation == 0 ? 'waiting' : 'active' }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="type" label="type" width="100" align="center" :formatter="formatType">
+          </el-table-column>
+          <el-table-column  prop="username"  label="username"  width="160">
           </el-table-column>
           <el-table-column prop="first_name" label="first name" width="160">
           </el-table-column>
@@ -203,6 +215,23 @@ export default {
           }
       });
     },
+    formatType(row, column, cellValue){
+      var type = cellValue;
+      switch (type) {
+        case '0':
+          return 'zeus';
+          break;
+        case '1':
+          return 'god';
+          break;
+        case '2':
+          return 'human';
+          break;
+        default:
+          return 'unknown';
+      }
+      return date[0];
+    },
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
@@ -231,6 +260,24 @@ export default {
   padding: 0rem;
 }
 .card-header{
-  padding: 0.25rem 1.25rem;
+  padding: 0rem;
+  border: 0rem;
+  background-color: white;
 }
+.el-button{
+  background-color: transparent;
+  border: none;
+}
+.el-button:hover{
+  color: black;
+  background-color: #f5f5f5;
+  border: none;
+}
+.el-dropdown {
+  vertical-align: top;
+}
+.el-dropdown + .el-dropdown {
+  margin-left: 15px;
+}
+
 </style>

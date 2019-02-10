@@ -4,19 +4,25 @@
       <b-card no-header>
       <el-tabs type="border-card">
         <el-tab-pane label="General">
-        <el-form ref="userForm" :model="userForm" :rules="rules" label-width="120px" inline-message>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="id" prop="id">
-                <el-input v-model="userForm.id" disabled></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="status" prop="status">
-                <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
-                  <el-option
+          <el-form ref="userForm" :model="userForm" :rules="rules" label-width="120px" inline-message>
+            <el-form-item label="id" prop="id">
+              <el-input v-model="userForm.id" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="created by" prop="created_by">
+              <el-input v-model="created_by" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="updated by" prop="updated_by">
+              <el-input v-model="updated_by" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="created_at">
+              <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            </el-form-item>
+            <el-form-item label="updated_at">
+              <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            </el-form-item>
+            <el-form-item label="status" prop="status">
+              <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
+                <el-option
                     v-for="item in statuses"
                     :key="item.value"
                     :label="item.label"
@@ -24,10 +30,6 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
               <el-form-item label="type" prop="type">
                 <el-select v-model="type" value-key="value" placeholder="Select" @change="onTypeChange">
                   <el-option
@@ -38,82 +40,52 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
+              <el-form-item label="situation" prop="situation">
+                <el-select v-model="situation" value-key="value" placeholder="Select" @change="onSituationChange">
+                  <el-option
+                    v-for="item in situations"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </el-form-item>
               <el-form-item label="first name" prop="first_name">
                 <el-input type="first_name" v-model="userForm.first_name"></el-input>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-            <el-form-item label="middle name" prop="middle_name">
-              <el-input type="middle_name" v-model="userForm.middle_name"></el-input>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-            <el-form-item label="last name" prop="last_name">
-              <el-input type="last_name" v-model="userForm.last_name"></el-input>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-            <el-form-item label="username" prop="user_name">
-              <el-input type="user_name" v-model="userForm.user_name"></el-input>
-            </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="email" prop="email">
-                <el-input type="email" v-model="userForm.email"></el-input>
+              <el-form-item label="middle name" prop="middle_name">
+                <el-input type="middle_name" v-model="userForm.middle_name"></el-input>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
+              <el-form-item label="last name" prop="last_name">
+                <el-input type="last_name" v-model="userForm.last_name"></el-input>
+              </el-form-item>
+              <el-form-item label="username" prop="username">
+                <el-input type="username" v-model="userForm.username"></el-input>
+              </el-form-item>
+              <el-form-item label="email" prop="email">
+                  <el-input type="email" v-model="userForm.email"></el-input>
+                </el-form-item>
               <el-form-item label="password" prop="password">
                 <el-input type="password" v-model="userForm.password"></el-input>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
               <el-form-item label="repeat password" prop="repassword">
-                <el-input type="repassword"></el-input>
+                <el-input type="password"></el-input>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="created_at">
-            <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-          </el-form-item>
-          <el-form-item label="updated_at">
-            <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-          </el-form-item>
-          <el-row>
-            <el-col :span="12">
+              <el-form-item label="description">
+                <el-input type="textarea" v-model="userForm.description"></el-input>
+              </el-form-item>
               <el-form-item label="details">
                 <keyValue title="user details" v-model="userForm.details"></keyValue>
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="description">
-            <el-input type="textarea" v-model="userForm.description"></el-input>
-          </el-form-item>
-          <hr/>
-          <el-form-item>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
-          </el-form-item>
-        </el-form>
-        </el-tab-pane>
-      </el-tabs>
+              <hr/>
+              <el-form-item>
+                <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
+                <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+         </el-tabs>
       </b-card>
     </b-col>
   </b-row>
@@ -139,16 +111,19 @@ export default {
         first_name: '',
         middle_name: '',
         last_name: '',
-        user_name: '',
+        username: '',
         email: '',
         password:'',
         type: '2',
         details: {},
         status:'1',
+        situation:'0',
         created_at: '',
         updated_at: '',
         description:''
       },
+      created_by:'',
+      updated_by:'',
       statuses: [
         {
           value: '0',
@@ -167,10 +142,21 @@ export default {
         },
         {
           value: '2',
-          label: ' human'
+          label: 'human'
         }
       ],
       type : null,
+      situations: [
+        {
+          value: '0',
+          label: 'waiting'
+        },
+        {
+          value: '1',
+          label: 'active'
+        }
+      ],
+      situation : null,
       rules: {
         email: [
           { required: true, message: 'Please input email', trigger: 'change' },
@@ -185,6 +171,7 @@ export default {
   created() {
      this.status = this.statuses[1];
      this.type = this.types[1];
+     this.situation = this.situations[0];
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -193,12 +180,16 @@ export default {
   },
   methods: {
     onStatusChange(selected){
-      this.value = selected;
-      this.userForm.status = this.value['value'];
+      this.status = selected;
+      this.userForm.status = this.status['value'];
     },
     onTypeChange(selected){
-      this.value = selected;
+      this.type = selected;
       this.userForm.type = this.type['value'];
+    },
+    onSituationChange(selected){
+      this.situation = selected;
+      this.userForm.situation = this.situation['value'];
     },
     getUser(){
     var self = this;
@@ -218,7 +209,7 @@ export default {
           self.userForm.first_name = response.data.first_name;
           self.userForm.middle_name = response.data.middle_name;
           self.userForm.last_name = response.data.last_name;
-          self.userForm.user_name = response.data.user_name;
+          self.userForm.username = response.data.username;
           self.userForm.email = response.data.email;
           self.userForm.type = Number(response.data.type);
           self.type = self.types[response.data.type-1];
@@ -227,9 +218,14 @@ export default {
           }
           self.userForm.status = Number(response.data.status);
           self.status = self.statuses[response.data.status];
+          self.userForm.situation = Number(response.data.situation);
+          self.situation = self.situations[response.data.situation];
           self.userForm.created_at = response.data.created_at;
           self.userForm.updated_at = response.data.updated_at;
           self.userForm.description = response.data.description;
+          //----------------------------------------------------
+          self.created_by = response.data.created_by;
+          self.updated_by = response.data.updated_by;
         }
       }.bind(this))
       .catch(function (error) {

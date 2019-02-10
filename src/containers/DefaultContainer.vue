@@ -119,16 +119,19 @@ export default {
 </script>
 <style scoped>
   .el-menu-demo {
-    line-height:55px;
-    height:55px;
-    border-bottom: 1px solid #c8ced3;
+    line-height:54px;
+    height:54px;
+    border-bottom: 0px solid #c8ced3;
   }
   .el-menu-item{
-    line-height:55px;
-    height:55px;
+    line-height:54px;
+    height:54px;
   }
   .el-menu--horizontal >>> .el-submenu .el-submenu__title{
-    line-height:55px;
-    height:55px;
+    line-height:54px;
+    height:54px;
+  }
+  .header-fixed .app-header{
+    height:56px;
   }
 </style>

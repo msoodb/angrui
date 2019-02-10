@@ -6,16 +6,16 @@
           <el-row >
             <el-col :span="6">
               <div class="text-left">
-                <el-button type="info" icon="el-icon-circle-plus" circle size="medium" @click="onAdd"></el-button>
-                <el-button type="info" icon="el-icon-edit" circle size="medium" @click="onEdit"></el-button>
-                <el-button type="danger" icon="el-icon-delete" circle size="medium" @click="onDelete" ></el-button>
-                <el-button type="info" icon="el-icon-search" circle size="medium"></el-button>
-                <el-button type="info" icon="el-icon-more" circle size="medium"></el-button>
+                <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
+                <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>
+                <el-button icon="el-icon-delete" circle @click="onDelete" ></el-button>
+                <el-button icon="el-icon-search" circle></el-button>
+                <el-button icon="el-icon-more" circle></el-button>
               </div>
             </el-col>
             <el-col :span="12">
               <div class="text-center" vertical-align="middle">
-                <el-pagination id="aggrigators_paginator" class="text-center" background layout="prev, pager, next"
+                <el-pagination id="aggrigators_paginator" class="text-center" layout="prev, pager, next"
                       :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
                 </el-pagination>
               </div>
@@ -242,8 +242,31 @@ export default {
 }
 .card-body{
   padding: 0rem;
+  padding-top: 40px;
 }
 .card-header{
-  padding: 0.25rem 1.25rem;
+  padding: 0rem;
+  border: 0rem;
+  background-color: white;
+  position: fixed;
+  z-index: 1020;
+  width: -moz-available;
+  border-bottom: 1px solid #c8ced3;
 }
+.el-button{
+  background-color: transparent;
+  border: none;
+}
+.el-button:hover{
+  color: black;
+  background-color: #f5f5f5;
+  border: none;
+}
+.el-dropdown {
+  margin-left: 10px;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+
 </style>
