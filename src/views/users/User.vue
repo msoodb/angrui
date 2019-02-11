@@ -202,6 +202,7 @@ export default {
   mounted(){
     if(this.$route.params.id != -1){
       this.getUser();
+      this.getAvatar();
     }
   },
   methods: {
@@ -362,6 +363,31 @@ export default {
     },
     onCancel() {
       this.$router.go(-1);
+    },
+    getAvatar(){
+      var self = this;
+      var id = self.$route.params.id;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Authorization': token
+        }
+      }
+      this.$axios.get(baseurl() + '/users/' + id + '/avatars', config )
+        .then(function (response) {
+          if(response.status == 200){
+            //this.avatarUrl = response.data;
+            var avatar_path= baseurl() + '/users/' + id + '/avatars';
+            this.avatarUrl = avatar_path;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.' + ': ' + error);
+          }
+      });
     },
     handleAvatarChange(file, fileList){
       this.avatarUrl = URL.createObjectURL(file.raw);
