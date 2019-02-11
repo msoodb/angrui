@@ -45,7 +45,6 @@ export default {
       get: function () {
         var token = JSON.parse(localStorage.getItem("jwtoken"));
         var headers = {
-          'Content-Type': 'multipart/form-data',
           'Authorization': token
         }
         return headers;

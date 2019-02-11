@@ -38,10 +38,7 @@
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>
-          <el-table-column prop="situation" label="situation" width="100" align="center">
-            <template slot-scope="scope">
-              {{scope.row.situation == 0 ? 'waiting' : 'active' }}
-            </template>
+          <el-table-column prop="situation" label="situation" width="100" align="center" :formatter="formatSituation">
           </el-table-column>
           <el-table-column prop="type" label="type" width="100" align="center" :formatter="formatType">
           </el-table-column>
@@ -63,6 +60,20 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-dialog title="change password" :visible.sync="dialogChangePasswordVisible">
+          <el-form>
+            <el-form-item label="password" prop="password">
+              <el-input type="password" v-model="newPassword"></el-input>
+            </el-form-item>
+            <el-form-item label="repeat password" prop="repassword">
+              <el-input type="password"></el-input>
+            </el-form-item>
+          </el-form>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogChangePasswordVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onChangePasswordConfirm">Confirm</el-button>
+          </span>
+        </el-dialog>
       </b-card>
     </b-col>
   </b-row>
@@ -81,7 +92,9 @@ export default {
        offset: 20,
        page_count: 10000,
        result_count: 0,
-       multipleSelection: []
+       multipleSelection: [],
+       newPassword:'',
+       dialogChangePasswordVisible: false
      }
   },
   mounted(){
@@ -232,6 +245,26 @@ export default {
       }
       return date[0];
     },
+    formatSituation(row, column, cellValue){
+      var type = cellValue;
+      switch (type) {
+        case '0':
+          return 'waiting';
+          break;
+        case '1':
+          return 'active';
+          break;
+        case '2':
+          return 'suspend';
+          break;
+        case '3':
+          return 'locked';
+          break;
+        default:
+          return 'unknown';
+      }
+      return date[0];
+    },
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
@@ -240,7 +273,60 @@ export default {
       var value = scope.row.expirable == 't' ? true : false;
       console.log(scope.row.id + " " + scope.row.expirable);
       return value;
-    }
+    },
+    handleMoreCommand(command) {
+      switch (command) {
+        case 'ChangePassword':
+          if(this.multipleSelection.length != 1){
+            this.$message.warning('Please select one record to change password.');
+            break;
+          }
+          this.dialogChangePasswordVisible = true;
+          break;
+        default:
+          break;
+      }
+    },
+    onChangePasswordConfirm(){
+      this.dialogChangePasswordVisible = false;
+      var id = this.multipleSelection[0].id;
+      this.changePassword(id);
+
+    },
+    changePassword(id){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      let password = {
+        'password' : this.newPassword
+      }
+      var data_request = JSON.stringify(password);
+      this.$axios.put(baseurl() + '/users/' + id + '/password', data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'User successfully deleted',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              currentMsg.close();
+            }, 1000);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
   }
 }
 </script>
