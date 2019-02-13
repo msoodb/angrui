@@ -5,35 +5,29 @@
         <el-tabs type="border-card">
           <el-tab-pane label="General">
             <el-form ref="userForm" :model="userForm" :rules="rules" label-width="140px" inline-message>
-              <el-row :gutter="20">
-                <el-col :span="8">
-                  <el-form-item label="created by" prop="created_by">
-                    <el-input v-model="created_by" disabled></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="created_at">
-                    <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="id" prop="id">
-                    <el-input v-model="userForm.id" disabled></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="8">
-                  <el-form-item label="updated by" prop="updated_by">
-                    <el-input v-model="updated_by" disabled></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="updated_at">
-                    <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <el-form-item label="created by" prop="created_by">
+                  <el-input v-model="created_by" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="updated by" prop="updated_by">
+                  <el-input v-model="updated_by" disabled></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="created_at">
+                  <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+                </el-form-item>
+                <el-form-item label="updated_at">
+                  <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="id" prop="id">
+                  <el-input v-model="userForm.id" disabled></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
               <hr/>
               <el-row :gutter="20">
                 <el-col :span="8">

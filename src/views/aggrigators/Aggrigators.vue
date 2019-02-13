@@ -30,9 +30,7 @@
         <el-table ref="aggrigatorsTable" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
-          </el-table-column>
-          <el-table-column  prop="id"  label="id"  width="80">
-          </el-table-column>
+          </el-table-column>          
           <el-table-column prop="name" label="name" width="120">
           </el-table-column>
           <el-table-column prop="title" label="title" width="180">

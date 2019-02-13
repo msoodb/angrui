@@ -1,82 +1,92 @@
 <template>
-  <b-row>
-    <b-col cols="12" lg="12">
-      <b-card no-header>
-      <el-tabs type="border-card">
-        <el-tab-pane label="General">
-        <el-form ref="aggrigatorForm" :model="aggrigatorForm" :rules="rules" label-width="120px" inline-message>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="id" prop="id">
-                <el-input v-model="aggrigatorForm.id" disabled></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="status" prop="status">
-                <el-select v-model="value" value-key="value" placeholder="Select" @change="onStatusChange">
-                  <el-option
-                    v-for="item in statuses"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="6">
-              <el-form-item label="name" prop="name">
-                <el-input type="name" v-model="aggrigatorForm.name"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="title" prop="title">
-                <el-input v-model="aggrigatorForm.title"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="code" prop="code">
-                <el-input v-model="aggrigatorForm.code"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="phone" prop="phone">
-                <el-input type="phone" v-model="aggrigatorForm.phone"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="email" prop="email">
-                <el-input type="email" v-model.number="aggrigatorForm.email"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item label="created_at">
-            <el-date-picker v-model="aggrigatorForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-          </el-form-item>
-          <el-form-item label="updated_at">
-            <el-date-picker v-model="aggrigatorForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-          </el-form-item>
-          <el-form-item label="description">
-            <el-input type="textarea" v-model="aggrigatorForm.description"></el-input>
-          </el-form-item>
-          <el-form-item label="details">
-            <keyValue title="aggrigator details" v-model="aggrigatorForm.details"></keyValue>
-          </el-form-item>
-          <hr/>
-          <el-form-item>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
-          </el-form-item>
-        </el-form>
-        </el-tab-pane>
-      </el-tabs>
-      </b-card>
-    </b-col>
-  </b-row>
+  <el-container>
+    <el-main>
+      <el-row :gutter="20">
+        <el-tabs type="border-card">
+          <el-tab-pane label="General">
+            <el-form ref="aggrigatorForm" :model="aggrigatorForm" :rules="rules" label-width="140px" inline-message>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  <el-form-item label="created by" prop="created_by">
+                    <el-input v-model="created_by" disabled></el-input>
+                  </el-form-item>
+                  <el-form-item label="updated by" prop="updated_by">
+                    <el-input v-model="updated_by" disabled></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="created_at">
+                    <el-date-picker v-model="aggrigatorForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+                  </el-form-item>
+                  <el-form-item label="updated_at">
+                    <el-date-picker v-model="aggrigatorForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="id" prop="id">
+                    <el-input v-model="aggrigatorForm.id" disabled></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <hr/>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  <el-form-item label="status" prop="status">
+                    <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
+                      <el-option
+                        v-for="item in statuses"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <hr/>
+              <el-row :gutter="20">
+                <el-col :span="8">
+                  <el-form-item label="name" prop="name">
+                    <el-input type="name" v-model="aggrigatorForm.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="title" prop="title">
+                    <el-input type="title" v-model="aggrigatorForm.title"></el-input>
+                  </el-form-item>
+                  <el-form-item label="code" prop="code">
+                    <el-input type="code" v-model="aggrigatorForm.code"></el-input>
+                  </el-form-item>
+                  <el-form-item label="phone" prop="phone">
+                    <el-input type="phone" v-model="aggrigatorForm.phone"></el-input>
+                  </el-form-item>
+                  <el-form-item label="email" prop="email">
+                    <el-input type="email" v-model="aggrigatorForm.email"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="16">
+                  <el-form-item label="description">
+                    <el-input type="textarea" v-model="aggrigatorForm.description"></el-input>
+                  </el-form-item>
+                  <el-form-item label="details">
+                    <keyValue title="user details" v-model="aggrigatorForm.details"></keyValue>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <hr/>
+              <el-row :gutter="20">
+                <el-col :span="16">
+                  <el-form-item>
+                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
+                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                    <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
+                 </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -106,8 +116,12 @@ export default {
         updated_at: '',
         details: {},
         status: '1',
+        type: '0',
+        situation:'0',
         description: ''
       },
+      created_by:'',
+      updated_by:'',
       statuses: [
         {
           value: '0',
@@ -118,17 +132,13 @@ export default {
           label: 'enable'
         }
       ],
-      value : null,
+      status : null,
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
         ],
-        phone: [
-          { required: true, message: 'Please input code', trigger: 'change' }
-        ],
         email: [
-          { required: true, message: 'Please input email', trigger: 'change' },
           { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
         ]
       }
@@ -145,7 +155,7 @@ export default {
   //   next()
   // },
   created() {
-     this.value = this.statuses[1];
+     this.status = this.statuses[1];
   },
   components: {
     keyValue
@@ -157,8 +167,8 @@ export default {
   },
   methods: {
     onStatusChange(selected){
-      this.value = selected;
-      this.aggrigatorForm.status = this.value['value'];
+      this.status = selected;
+      this.aggrigatorForm.status = this.status['value'];
     },
     getAggrigator(){
     var self = this;
@@ -179,14 +189,20 @@ export default {
           self.aggrigatorForm.code = response.data.code;
           self.aggrigatorForm.phone = response.data.phone;
           self.aggrigatorForm.email = response.data.email;
-          self.aggrigatorForm.created_at = response.data.created_at;
-          self.aggrigatorForm.updated_at = response.data.updated_at;
           if(response.data.details){
             self.aggrigatorForm.details = JSON.parse(response.data.details);
           }
           self.aggrigatorForm.status = Number(response.data.status);
-          self.value = self.statuses[response.data.status];
+          self.status = self.statuses[response.data.status];
+          self.aggrigatorForm.type = response.data.type;
+          self.aggrigatorForm.situation = response.data.situation;
           self.aggrigatorForm.description = response.data.description;
+          self.aggrigatorForm.created_at = response.data.created_at;
+          self.aggrigatorForm.updated_at = response.data.updated_at;
+          self.aggrigatorForm.description = response.data.description;
+          //----------------------------------------------------
+          self.created_by = response.data.created_by;
+          self.updated_by = response.data.updated_by;
         }
       }.bind(this))
       .catch(function (error) {
