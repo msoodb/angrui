@@ -38,21 +38,21 @@
               @selection-change="handleSelectionChange" >
           <el-table-column  type="selection"  width="45">
           </el-table-column>
-          <el-table-column prop="situation" label="situation" width="100" align="center" :formatter="formatSituation">
-          </el-table-column>
-          <el-table-column prop="type" label="type" width="100" align="center" :formatter="formatType">
-          </el-table-column>
           <el-table-column  prop="username"  label="username"  width="160">
+          </el-table-column>
+          <el-table-column prop="email" label="email" width="200">
           </el-table-column>
           <el-table-column prop="first_name" label="first name" width="160">
           </el-table-column>
           <el-table-column prop="last_name" label="last name" width="160">
           </el-table-column>
-          <el-table-column prop="email" label="email" width="200">
-          </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
           <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
+          </el-table-column>
+          <el-table-column prop="type" label="type" width="100" align="center" :formatter="formatType">
+          </el-table-column>
+          <el-table-column prop="situation" label="situation" width="100" align="center" :formatter="formatSituation">
           </el-table-column>
           <el-table-column prop="status" label="status" width="120" align="center">
             <template slot-scope="scope">

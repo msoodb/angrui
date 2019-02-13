@@ -249,7 +249,7 @@ export default {
   border: 0rem;
   background-color: white;
   position: fixed;
-  z-index: 1020;
+  z-index: 20;
   width: -moz-available;
   border-bottom: 1px solid #c8ced3;
 }

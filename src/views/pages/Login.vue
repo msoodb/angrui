@@ -87,7 +87,8 @@ export default {
             .then(function (response) {
               self.disableClick = false;
               if(response.status == 200){
-                localStorage.setItem("jwtoken", JSON.stringify(response.data));
+                localStorage.setItem("jwtoken", JSON.stringify(response.data.token));
+                localStorage.setItem("user_id", JSON.stringify(response.data.user_id));
                 let currentMsg =  self.$message  ({
                   message : 'You are successfully logged in',
                   duration:0,

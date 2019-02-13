@@ -2,7 +2,7 @@
   <AppHeaderDropdown right no-caret>
     <template slot="header">
       <img
-        src="img/avatars/6.jpg"
+        :src="user_avatar"
         class="img-avatar"
         alt="admin@bootstrapmaster.com" />
     </template>\
@@ -25,7 +25,7 @@
         class="text-center">
         <strong>Settings</strong>
       </b-dropdown-header>
-      <b-dropdown-item><i class="fa fa-user" /> Profile</b-dropdown-item>
+      <b-dropdown-item @click="profile"><i class="fa fa-user"/> Profile</b-dropdown-item>
       <b-dropdown-item><i class="fa fa-wrench" /> Settings</b-dropdown-item>
       <b-dropdown-item><i class="fa fa-usd" /> Payments
         <b-badge variant="secondary">{{ itemsCount }}</b-badge>
@@ -50,11 +50,26 @@ export default {
   data: () => {
     return { itemsCount: 42 }
   },
+  computed:{
+    user_avatar: {
+      get: function () {
+        var user_id = JSON.parse(localStorage.getItem("user_id"));
+        return 'http://127.0.0.1:9081/users/' + user_id + '/avatars';
+      }
+    }
+  },
   methods:{
     logout(){
       var self = this;
       localStorage.removeItem("jwtoken");
+      localStorage.removeItem("user_id");
       self.$router.push('/pages/login');
+    },
+    profile(){
+      var self = this;
+      var user_id = JSON.parse(localStorage.getItem("user_id"));
+      const userLink = '/users/' + user_id.toString();
+      self.$router.push(userLink);
     }
   }
 }
