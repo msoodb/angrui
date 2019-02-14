@@ -1,12 +1,17 @@
 export default {
   items: [
     {
+      name: 'Mobile Operators',
+      url: '/mobile_operators',
+      icon: 'icon-speedometer'
+    },
+    {
       name: 'Aggrigators',
       url: '/aggrigators',
       icon: 'icon-speedometer'
     },
     {
-      name: 'ContentProviders',
+      name: 'Content Providers',
       url: '/content_providers',
       icon: 'icon-speedometer'
     },

@@ -92,7 +92,7 @@ export default {
     this.value2 = this.filters[0].options['2'];
     // console.log(this.value);
     var simple_filter = atob(this.value);
-    console.log(simple_filter);
+    //console.log(simple_filter);
     //this.filters[1].options[0]['value'] = simple_filter;
     // this.value2 = this.filters[1].options[0];
     // this.mutedvalue = this.value;

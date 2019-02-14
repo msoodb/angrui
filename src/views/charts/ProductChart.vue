@@ -6,8 +6,8 @@
 </template>
 
 <script>
-  import keyValue from '../../components/keyValue'
-  import Tag from '../../components/Tag'
+  import AUKeyValue from '../../components/AU-KeyValue'
+  import AUTag from '../../components/AU-Tag'
 
   export default{
     name : 'ProductChart',

@@ -7,10 +7,11 @@
         <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
         <el-submenu index="2">
           <template slot="title">Data</template>
-          <el-menu-item index="2-1" route="/aggrigators">Aggrigators</el-menu-item>
-          <el-menu-item index="2-2" route="/content_providers">ContentProviders</el-menu-item>
-          <el-menu-item index="2-3" route="/products">Products</el-menu-item>
-          <el-menu-item index="2-4" route="/users">Users</el-menu-item>
+          <el-menu-item index="2-1" route="/mobile_operators">Mobile Operators</el-menu-item>
+          <el-menu-item index="2-2" route="/aggrigators">Aggrigators</el-menu-item>
+          <el-menu-item index="2-3" route="/content_providers">Content Providers</el-menu-item>
+          <el-menu-item index="2-4" route="/products">Products</el-menu-item>
+          <el-menu-item index="2-5" route="/users">Users</el-menu-item>
         </el-submenu>
         </el-menu>
       <div class="line"></div>

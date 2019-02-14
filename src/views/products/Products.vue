@@ -118,7 +118,7 @@ export default {
       .then(function (response) {
         if(response.status == 200){
           self.$router.push({path: 'products?page=' + self.page});
-          self.items = response.data.products;
+          self.items = response.data.items;
           self.offset = Number(response.data.info.offset);
           self.page_count = Number(response.data.info.page_count);
           self.result_count = Number(response.data.info.result_count);

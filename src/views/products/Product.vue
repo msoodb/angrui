@@ -106,8 +106,8 @@
 
 <script>
 import {baseurl} from '../../config'
-import keyValue from '../../components/keyValue'
-import Tag from '../../components/Tag'
+import AUKeyValue from '../../components/AU-KeyValue'
+import AUTag from '../../components/AU-Tag'
 import ProductDocument from '../products/ProductDocument'
 
 
@@ -170,8 +170,8 @@ export default {
      this.value = this.statuses[1];
   },
   components: {
-    keyValue,
-    Tag,
+    'au-keyValue' : AUKeyValue,
+    'au-tag' : AUTag,
     ProductDocument
   },
   mounted(){

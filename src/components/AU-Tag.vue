@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'Tag',
+  name: 'AU-Tag',
   props: {
     value:{},
     title: {

@@ -81,7 +81,7 @@
 
 <script>
 import {baseurl} from '../../config'
-import keyValue from '../../components/keyValue'
+import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
   name: 'ContentProvider',

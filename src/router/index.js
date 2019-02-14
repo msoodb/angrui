@@ -61,6 +61,10 @@ const User = () => import('@/views/users/User')
 const Products = () => import('@/views/products/Products')
 const Product = () => import('@/views/products/Product')
 
+// Operators
+const MobileOperators = () => import('@/views/mobile_operators/MobileOperators')
+const MobileOperator = () => import('@/views/mobile_operators/MobileOperator')
+
 // Aggrigators
 const Aggrigators = () => import('@/views/aggrigators/Aggrigators')
 const Aggrigator = () => import('@/views/aggrigators/Aggrigator')
@@ -176,6 +180,25 @@ export default new Router({
               meta: { label: 'Product Details'},
               name: 'Product',
               component: Product,
+            },
+          ]
+        },
+        {
+          path: 'mobile_operators',
+          meta: { label: 'MobileOperators'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: MobileOperators,
+            },
+            {
+              path: ':id',
+              meta: { label: 'MobileOperator Details'},
+              name: 'MobileOperator',
+              component: MobileOperator,
             },
           ]
         },

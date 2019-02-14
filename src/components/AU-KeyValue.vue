@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: 'KeyValue',
+  name: 'AU-KeyValue',
   props: {
     value:{},
     title: {
