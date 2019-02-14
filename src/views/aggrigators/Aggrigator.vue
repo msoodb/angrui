@@ -67,7 +67,7 @@
                     <el-input type="textarea" v-model="aggrigatorForm.description"></el-input>
                   </el-form-item>
                   <el-form-item label="details">
-                    <keyValue title="user details" v-model="aggrigatorForm.details"></keyValue>
+                    <au-keyValue title="user details" v-model="aggrigatorForm.details"></au-keyValue>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -158,7 +158,7 @@ export default {
      this.status = this.statuses[1];
   },
   components: {
-    keyValue
+    'au-keyValue':AUKeyValue
   },
   mounted(){
     if(this.$route.params.id != -1){

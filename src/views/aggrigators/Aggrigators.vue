@@ -3,9 +3,14 @@
     <b-col cols="12" lg="12">
       <b-card no-header>
         <template slot="header">
-          <au-listheader handler="aggrigators" @change="itemschanged"></au-listheader>
+          <au-listheader
+            handler="aggrigators"
+            :multipleSelection="multipleSelection"
+            @change="itemsChanged">
+          </au-listheader>
         </template>
-        <el-table ref="table" :data="items"  stripe style="width: 100%" border>
+        <el-table ref="table" :data="items"  stripe style="width: 100%" border
+              @selection-change="handleSelectionChange">
           <el-table-column  type="selection"  width="45">
           </el-table-column>
           <el-table-column prop="name" label="name" width="150">
@@ -49,9 +54,12 @@ export default {
   components: {
     'au-listheader': AUListHeader
   },
-  methods: {    
-    itemschanged(items){
+  methods: {
+    itemsChanged(items){
       this.items = items;
+    },
+    handleSelectionChange(val) {
+       this.multipleSelection = val;
     },
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
@@ -62,13 +70,6 @@ export default {
 </script>
 
 <style scoped>
-.card-body >>> table > tbody > tr > td {
-  cursor: pointer;
-  padding: 0px;
-}
-.card-body >>> table > tbody > tr > th {
-  padding: 0px;
-}
 .card{
   margin-bottom: 0rem;
 }
@@ -85,25 +86,11 @@ export default {
   width: -moz-available;
   border-bottom: 1px solid #c8ced3;
 }
-.el-button{
-  background-color: transparent;
-  border: none;
+.card-body >>> table > tbody > tr > td {
+  cursor: pointer;
+  padding: 0px;
 }
-.el-button:hover{
-  color: black;
-  background-color: #f5f5f5;
-  border: none;
+.card-body >>> table > tbody > tr > th {
+  padding: 0px;
 }
-.el-dropdown {
-  margin-left: 10px;
-}
-.el-icon-arrow-down {
-  font-size: 12px;
-}
-.el-pagination {
-    padding: 5px 5px;
-    font-weight: 600;
-    color: #88898c;
-}
-
 </style>

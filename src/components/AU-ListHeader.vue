@@ -6,7 +6,6 @@
           <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
           <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>
           <el-button icon="el-icon-delete" circle @click="onDelete"></el-button>
-          <el-button icon="el-icon-search" circle></el-button>
           <el-button icon="el-icon-more" circle></el-button>
         </div>
       </el-col>
@@ -33,7 +32,8 @@ import AUFilter from '../components/AU-Filter'
 export default {
   name: 'AU-ListHeader',
   props: {
-    handler:''
+    handler:String,
+    multipleSelection:Array
   },
   computed:{
   },
@@ -44,8 +44,7 @@ export default {
       offset: 20,
       page_count: 10000,
       result_count: 0,
-      filter_string_64:'',
-      multipleSelection: []
+      filter_string_64:''
     }
   },
   components: {
@@ -70,8 +69,25 @@ export default {
       this.getItems();
     },
     handleCurrentChange (val) {
-      this.page = val;
-      this.getItems();
+      var url = this.createUrl();
+      this.$router.push({path: url});
+    },
+    createUrl(){
+      var self = this;
+      if(!self.page || self.page == "undefined" || self.page < 1){
+        self.page = 1;
+      }
+      if(self.page > self.page_count){
+        self.page = self.page_count;
+      }
+      var url = '/' + this.handler + '?page=' + self.page;
+      if(self.filter_string_64 && self.filter_string_64 != "undefined" && self.filter_string_64 != ""){
+        url = url + '&filter=' + self.filter_string_64;
+      }
+      return url;
+    },
+    formLink (id) {
+      return this.handler + `/${id.toString()}`
     },
     getItems(){
       var self = this;
@@ -82,26 +98,15 @@ export default {
           'Authorization': token
         }
       }
-      if(!self.page || self.page == "undefined" || self.page < 1){
-        self.page = 1;
-      }
-      var url = '/' + this.handler + '?page=' + self.page;
-      if(self.filter_string_64 && self.filter_string_64 != "undefined" && self.filter_string_64 != ""){
-        url = url + '&filter=' + self.filter_string_64;
-      }
+      var url = this.createUrl();
       this.$axios.get(baseurl() + url , config )
         .then(function (response) {
           if(response.status == 200){
-            self.$router.push({path: url});
             self.items = response.data.items;
             self.offset = Number(response.data.info.offset);
             self.page_count = Number(response.data.info.page_count);
             self.result_count = Number(response.data.info.result_count);
-            if(self.page > self.page_count){
-              self.page = self.page_count;
-              self.getItems();
-            }
-            this.$emit('change', this.items);
+            self.$emit('change', this.items);
           }
         }.bind(this))
         .catch(function (error) {
@@ -118,7 +123,6 @@ export default {
       this.$router.push({path: form_link})
     },
     onEdit(){
-      console.log(this.$route);
       if(this.multipleSelection.length != 1){
         this.$message.warning('Please select one record to edit.');
         return;
@@ -186,36 +190,13 @@ export default {
 </script>
 
 <style scoped>
-.card-body >>> table > tbody > tr > td {
-  cursor: pointer;
-  padding: 0px;
-}
-.card-body >>> table > tbody > tr > th {
-  padding: 0px;
-}
-.card{
-  margin-bottom: 0rem;
-}
-.card-body{
-  padding: 0rem;
-  padding-top: 40px;
-}
-.card-header{
-  padding: 0rem;
-  border: 0rem;
-  background-color: white;
-  position: fixed;
-  z-index: 20;
-  width: -moz-available;
-  border-bottom: 1px solid #c8ced3;
-}
 .el-button{
   background-color: transparent;
   border: none;
 }
 .el-button:hover{
   color: black;
-  background-color: #f5f5f5;
+  background-color: #efefef;
   border: none;
 }
 .el-dropdown {
