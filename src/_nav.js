@@ -14,11 +14,6 @@ export default {
       name: 'Content Providers',
       url: '/content_providers?page=1',
       icon: 'icon-speedometer'
-    },
-    {
-      name: 'Users',
-      url: '/users?page=1',
-      icon: 'icon-user'
     }
   ]
 }

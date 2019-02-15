@@ -12,7 +12,7 @@
         <el-button type="primary" @click="onFilterConfirm">Confirm</el-button>
       </span>
     </el-dialog>
-    <el-select v-model="value" value-key="key" placeholder="Select" @change="onStatusChange">
+    <el-select v-model="filter" value-key="key" placeholder="Select" @change="onStatusChange">
       <el-option-group
         v-for="group in filters"
         :key="group.label"
@@ -32,9 +32,9 @@
 <script>
 export default {
   name: 'AU-Filter',
-  // props: {
-  //   value:null
-  // },
+  props: {
+    value:null
+  },
   computed:{
     // dataInKeyValue: {
     //   get: function () {
@@ -48,7 +48,7 @@ export default {
   },
   data: function () {
     return {
-      mutedvalue:'',
+      filter_string64:'',
       filters: [
        {
          label: 'System filters',
@@ -79,17 +79,21 @@ export default {
              disabled: true
            }]
        }],
-       value : null,
+       filter : null,
        dialogFormVisible: false,
        form: {
          filter_string: ''
        },
-       formLabelWidth: '120px',
+       formLabelWidth: '140px',
        filterButtonPrimary: false
     }
   },
   created() {
-    //this.value = this.filters[0].options['0'];
+    if(this.vale){
+      var simple_filter = atob(this.value);
+      this.filters[1].options[0]['value'] = simple_filter;
+    }
+    //this.filter = this.filters[0].options['0'];
     // console.log(this.value);
     //var simple_filter = atob(this.value);
     //console.log(simple_filter);
@@ -99,11 +103,11 @@ export default {
   },
   methods:{
     onStatusChange(selected){
-      this.value = selected;
-      var simple_filter = this.value['value'];
-      this.mutedvalue = btoa(simple_filter);
+      this.filter = selected;
+      var simple_filter = this.filter['value'];
+      this.filter_string64 = btoa(simple_filter);
       this.filterButtonPrimary = false;
-      this.$emit('change', this.mutedvalue);
+      this.$emit('change', this.filter_string64);
     },
     onFilter(){
       this.form.filter_string = "id > 8 and id < 20";
@@ -113,7 +117,7 @@ export default {
       this.dialogFormVisible = false;
       var simple_filter = this.form.filter_string;
       this.filters[1].options[0]['value'] = simple_filter;
-      this.value = this.filters[1].options[0];
+      this.filter = this.filters[1].options[0];
       this.mutedvalue = btoa(simple_filter);
       this.filterButtonPrimary = true;
       this.$emit('change', this.mutedvalue);

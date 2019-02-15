@@ -6,12 +6,19 @@
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
         <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
         <el-submenu index="2">
+          <template slot="title">Security</template>
+          <el-menu-item index="2-1" route="/users?page=1">Users</el-menu-item>
+          <el-menu-item index="2-2" route="/security_roles?page=1">Security Roles</el-menu-item>
+          <el-menu-item index="2-3" route="/users_security_roles?page=1">Users Security Roles</el-menu-item>
+          <el-menu-item index="2-4" route="/privileges?page=1">Privileges</el-menu-item>
+          <el-menu-item index="2-5" route="/entities?page=1">Entities</el-menu-item>
+        </el-submenu>
+        <el-submenu index="3">
           <template slot="title">Data</template>
-          <el-menu-item index="2-1" route="/mobile_operators?page=1">Mobile Operators</el-menu-item>
-          <el-menu-item index="2-2" route="/aggrigators?page=1">Aggrigators</el-menu-item>
-          <el-menu-item index="2-3" route="/content_providers?page=1">Content Providers</el-menu-item>
-          <el-menu-item index="2-4" route="/products?page=1">Products</el-menu-item>
-          <el-menu-item index="2-5" route="/users?page=1">Users</el-menu-item>
+          <el-menu-item index="3-1" route="/mobile_operators?page=1">Mobile Operators</el-menu-item>
+          <el-menu-item index="3-2" route="/aggrigators?page=1">Aggrigators</el-menu-item>
+          <el-menu-item index="3-3" route="/content_providers?page=1">Content Providers</el-menu-item>
+          <el-menu-item index="3-4" route="/products?page=1">Products</el-menu-item>
         </el-submenu>
         </el-menu>
       <div class="line"></div>

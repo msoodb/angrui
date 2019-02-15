@@ -57,6 +57,22 @@ const Register = () => import('@/views/pages/Register')
 const Users = () => import('@/views/users/Users')
 const User = () => import('@/views/users/User')
 
+// Entities
+const Entities = () => import('@/views/entities/Entities')
+const Entity = () => import('@/views/entities/Entity')
+
+// SecurityRoles
+const SecurityRoles = () => import('@/views/security_roles/SecurityRoles')
+const SecurityRole = () => import('@/views/security_roles/SecurityRole')
+
+// UsersSecurityRoles
+const UsersSecurityRoles = () => import('@/views/users_security_roles/UsersSecurityRoles')
+const UsersSecurityRole = () => import('@/views/users_security_roles/UsersSecurityRole')
+
+// Privileges
+const Privileges = () => import('@/views/privileges/Privileges')
+const Privilege = () => import('@/views/privileges/Privilege')
+
 // Products
 const Products = () => import('@/views/products/Products')
 const Product = () => import('@/views/products/Product')
@@ -161,6 +177,82 @@ export default new Router({
               meta: { label: 'User Details'},
               name: 'User',
               component: User,
+            },
+          ]
+        },
+        {
+          path: 'entities',
+          meta: { label: 'Entities'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Entities,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Entity Details'},
+              name: 'Entity',
+              component: Entity,
+            },
+          ]
+        },
+        {
+          path: 'privileges',
+          meta: { label: 'Privileges'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Privileges,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Privilege Details'},
+              name: 'Privilege',
+              component: Privilege,
+            },
+          ]
+        },
+        {
+          path: 'security_roles',
+          meta: { label: 'SecurityRoles'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: SecurityRoles,
+            },
+            {
+              path: ':id',
+              meta: { label: 'SecurityRole Details'},
+              name: 'SecurityRole',
+              component: SecurityRole,
+            },
+          ]
+        },
+        {
+          path: 'users_security_roles',
+          meta: { label: 'UsersSecurityRoles'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: UsersSecurityRoles,
+            },
+            {
+              path: ':id',
+              meta: { label: 'UsersSecurityRole Details'},
+              name: 'UsersSecurityRole',
+              component: UsersSecurityRole,
             },
           ]
         },

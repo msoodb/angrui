@@ -135,7 +135,7 @@
               <el-row :gutter="20">
                 <el-col :span="16">
                   <el-form-item label="details">
-                    <keyValue title="user details" v-model="userForm.details"></keyValue>
+                    <au-keyValue title="user details" v-model="userForm.details"></au-keyValue>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -257,7 +257,7 @@ export default {
     }
   },
   components: {
-    keyValue
+    'au-keyValue':AUKeyValue
   },
   created() {
      this.status = this.statuses[1];

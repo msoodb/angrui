@@ -66,7 +66,10 @@ export default {
     handleFilterChange(value){
       this.filter_string_64 = value;
       this.page = 1;
-      this.getItems();
+      var url = this.createUrl();
+      this.$router.push({path: url});
+      // this.page = 1;
+      // this.getItems();
     },
     handleCurrentChange (val) {
       var url = this.createUrl();
