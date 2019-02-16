@@ -45,7 +45,13 @@
               </el-row>
               <hr/>
               <el-row :gutter="20">
-                <el-col :span="16">
+                <el-col :span="12">
+                  <el-form-item label="user" prop="user">
+                    <el-input type="user" v-model="form._user_"></el-input>
+                  </el-form-item>
+                  <el-form-item label="security role" prop="security_role">
+                    <el-input type="security_role" v-model="form.security_role"></el-input>
+                  </el-form-item>
                   <el-form-item label="description">
                     <el-input type="textarea" v-model="form.description"></el-input>
                   </el-form-item>
@@ -86,6 +92,8 @@ export default {
       from: null,
       form: {
         id: '',
+        _user_:'',
+        security_role: '',
         created_at: '',
         updated_at: '',
         details: {},
@@ -148,9 +156,8 @@ export default {
       .then(function (response) {
         if(response.status == 200){
           self.form.id = response.data.id;
-          if(response.data.details){
-            self.form.details = JSON.parse(response.data.details);
-          }
+          self.form._user_ = response.data._user_;
+          self.form.security_role = response.data.security_role;
           self.form.status = Number(response.data.status);
           self.status = self.statuses[response.data.status];
           self.form.type = response.data.type;

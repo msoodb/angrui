@@ -14,9 +14,7 @@
           <el-table-column  type="selection"  width="45">
           </el-table-column>
           <el-table-column prop="name" label="name" width="180">
-          </el-table-column>
-          <el-table-column prop="title" label="title" width="180">
-          </el-table-column>
+          </el-table-column>        
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
           <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">

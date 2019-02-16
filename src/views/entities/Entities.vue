@@ -15,7 +15,10 @@
           </el-table-column>
           <el-table-column prop="name" label="name" width="180">
           </el-table-column>
-          <el-table-column prop="title" label="title" width="180">
+          <el-table-column prop="type" label="type" width="120" align="center">
+            <template slot-scope="scope">
+              {{scope.row.type == 0 ? 'table' : 'table' }}
+            </template>
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>

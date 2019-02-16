@@ -115,9 +115,13 @@ export default {
         .catch(function (error) {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
-          }else{
+          }
+          else if(error.response && error.response.status == 403){
+            self.$message.error('Forbidden request.');
+          }
+          else{
             self.$message.error('Unknown error.');
-        }
+          }
       });
     },
     onAdd(){
