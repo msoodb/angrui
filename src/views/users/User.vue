@@ -153,6 +153,8 @@
           </el-tab-pane>
           <el-tab-pane label="Security Roles">
             <el-table ref="table" :data="security_roles"  stripe style="width: 100%" border>
+              <el-table-column  type="index"  width="40">
+              </el-table-column>
               <el-table-column prop="security_role" label="security role" width="180">
               </el-table-column>
               <el-table-column prop="status" label="status" width="120" align="center">
@@ -163,7 +165,7 @@
             </el-table>
           </el-tab-pane>
           <el-tab-pane label="Privileges">
-            <el-table ref="table" :data="privileges"  stripe style="width: 100%" border>              
+            <el-table ref="table" :data="privileges"  stripe style="width: 100%" border>
               <el-table-column prop="security_role" label="security role" width="180">
               </el-table-column>
               <el-table-column prop="status" label="status" width="120" align="center">
@@ -360,7 +362,8 @@ export default {
         'Authorization': token
       }
     }
-    var user_id = JSON.parse(localStorage.getItem("user_id"));
+    //var user_id = JSON.parse(localStorage.getItem("user_id"));
+    var user_id = self.userForm.id;
     var filter = btoa('_user_=\'' + user_id + '\'');
     var url = '/users_security_roles?page=1' + '&filter=' + filter;
     this.$axios.get(baseurl() + url, config )
