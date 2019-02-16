@@ -46,11 +46,11 @@
               <hr/>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="user" prop="user">
-                    <el-input type="user" v-model="form._user_"></el-input>
+                  <el-form-item label="user" prop="user_lookup">
+                    <au-user-lookup handler="users" :id="form._user_" @select="userLookupSelect"></au-user-lookup>
                   </el-form-item>
                   <el-form-item label="security role" prop="security_role">
-                    <el-input type="security_role" v-model="form.security_role"></el-input>
+                    <au-lookup handler="security_roles" :id="form.security_role" @select="SecurityRoleLookupSelect"></au-lookup>
                   </el-form-item>
                   <el-form-item label="description">
                     <el-input type="textarea" v-model="form.description"></el-input>
@@ -77,6 +77,9 @@
 
 <script>
 import {baseurl} from '../../config'
+import AULookup from '../../components/AU-Lookup'
+import AUUserLookup from '../../components/AU-UserLookup'
+
 
 export default {
   name: 'UsersSecurityRole',
@@ -119,6 +122,10 @@ export default {
       }
     }
   },
+  components: {
+    'au-lookup' : AULookup,
+    'au-user-lookup' : AUUserLookup
+  },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
         vm.from = from;
@@ -138,6 +145,12 @@ export default {
     }
   },
   methods: {
+    userLookupSelect(id){
+      this.form._user_ = id;
+    },
+    SecurityRoleLookupSelect(id){
+      this.form.security_role = id;
+    },
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
@@ -291,5 +304,8 @@ export default {
 }
 .el-table td, .el-table th{
   padding: 0px;
+}
+.el-form-item__content{
+  line-height:0px;
 }
 </style>

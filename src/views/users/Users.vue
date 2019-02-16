@@ -36,7 +36,9 @@
         </template>
         <el-table ref="usersTable" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange" >
-          <el-table-column  type="selection"  width="45">
+          <el-table-column  type="selection"  width="40" align="center">
+          </el-table-column>
+          <el-table-column  type="index"  width="40" align="center">
           </el-table-column>
           <el-table-column  prop="username"  label="username"  width="160">
           </el-table-column>

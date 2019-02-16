@@ -11,10 +11,12 @@
         </template>
         <el-table ref="table" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange">
-          <el-table-column  type="selection"  width="45">
+          <el-table-column  type="selection"  width="40" align="center">
+          </el-table-column>
+          <el-table-column  type="index"  width="40" align="center">
           </el-table-column>
           <el-table-column prop="name" label="name" width="180">
-          </el-table-column>        
+          </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
           <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
