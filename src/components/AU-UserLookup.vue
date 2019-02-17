@@ -47,6 +47,11 @@ export default {
         required: true
     }
   },
+  watch: {
+      id: function(newVal, oldVal) {
+        this.getItem();
+      }
+  },
   data: function () {
     return {
        columns:[
@@ -70,18 +75,7 @@ export default {
        dialogFormVisible: false,
        username:''
     }
-  },
-  created(){
-    //this.username = this.getItem();
-    //this.getName();
-  },
-  mounted(){
-    this.username = this.getItem();
-    //console.log("mounted");
-    // if(this.id){
-    //   this.username = 'mmeeee';
-    // }
-  },
+  },  
   methods:{
     getName()
     {

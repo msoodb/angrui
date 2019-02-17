@@ -38,8 +38,19 @@ import {baseurl} from '../config'
 export default {
   name: 'AU-Lookup',
   props: {
-    handler:String,
-    id:String
+    handler: {
+        type: String,
+        required: true
+    },
+    id: {
+        type: String,
+        required: true
+    }
+  },
+  watch: {
+      id: function(newVal, oldVal) {
+        this.getItem();
+      }
   },
   data: function () {
     return {
@@ -65,17 +76,7 @@ export default {
        name:''
     }
   },
-  created(){
-    this.getName();
-  },
   methods:{
-    getName()
-    {
-      console.log(this);
-      if(this.id){
-        this.name = 'sme';
-      }
-    },
     onLookup(){
       this.dialogFormVisible = true;
       this.getItems();
@@ -123,6 +124,30 @@ export default {
         }
       });
     },
+    getItem(){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var url = '/' + this.handler + '/' + self.id;
+      this.$axios.get(baseurl() + url, config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.name = response.data.name;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    }
   }
 }
 </script>
