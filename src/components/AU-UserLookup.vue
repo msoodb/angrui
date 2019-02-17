@@ -1,7 +1,7 @@
 <template>
     <el-row :gutter="0">
       <el-col :span="3">
-        <el-button class="lookup" type="default" @click="onLookup"></el-button>
+        <el-button class="lookup" type="default" @click="onLookup">+</el-button>
       </el-col>
       <el-col :span="21">
         <el-input readonly v-model="this.username"></el-input>
@@ -12,9 +12,9 @@
                 :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
           </el-pagination>
         </div>
-        <el-table ref="table" :data="items" stripe style="width:100%" height="300" border
-            @selection-change="handleSelectionChange">
-          <el-table-column  type="selection"  width="40">
+        <el-table ref="table" :data="items" style="width:100%" height="300" border
+            @current-change="handleCurrentRowChange" highlight-current-row>
+          <el-table-column  type="index"  width="40">
           </el-table-column>
           <el-table-column
             v-for="{ prop, label } in columns"
@@ -38,8 +38,14 @@ import {baseurl} from '../config'
 export default {
   name: 'AU-UserLookup',
   props: {
-    handler:String,
-    id:String
+    handler: {
+        type: String,
+        required: true
+    },
+    id: {
+        type: String,
+        required: true
+    }
   },
   data: function () {
     return {
@@ -60,15 +66,17 @@ export default {
        offset: 20,
        page_count: 10000,
        result_count: 0,
-       multipleSelection: [],
+       currentRow: null,
        dialogFormVisible: false,
        username:''
     }
   },
   created(){
-    this.getName();
+    //this.username = this.getItem();
+    //this.getName();
   },
   mounted(){
+    this.username = this.getItem();
     //console.log("mounted");
     // if(this.id){
     //   this.username = 'mmeeee';
@@ -88,16 +96,16 @@ export default {
     },
     onLookupConfirm(){
       this.dialogFormVisible = false;
-      var id = this.multipleSelection[0].id;
-      this.username = this.multipleSelection[0].username;
+      var id = this.currentRow.id;
+      this.username = this.currentRow.username;
       this.$emit('select', id);
     },
     handleCurrentChange (val) {
       this.page = val;
       this.getItems()
     },
-    handleSelectionChange(val) {
-       this.multipleSelection = val;
+    handleCurrentRowChange(val) {
+       this.currentRow = val;
     },
     getItems(){
     var self = this;
@@ -129,6 +137,29 @@ export default {
         }
       });
     },
+    getItem(){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      this.$axios.get(baseurl() + '/users/' + self.id, config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.username = response.data.username;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    }
   }
 }
 </script>

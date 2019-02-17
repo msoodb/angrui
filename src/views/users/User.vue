@@ -1,36 +1,11 @@
 <template>
   <el-container>
     <el-main>
-      <el-row :gutter="20">
         <el-tabs type="border-card">
           <el-tab-pane label="General">
-            <el-form ref="userForm" :model="userForm" :rules="rules" label-width="140px" inline-message>
-            <el-row :gutter="20">
-              <el-col :span="8">
-                <el-form-item label="created by" prop="created_by">
-                  <el-input v-model="created_by" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="updated by" prop="updated_by">
-                  <el-input v-model="updated_by" disabled></el-input>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="created_at">
-                  <el-date-picker v-model="userForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                </el-form-item>
-                <el-form-item label="updated_at">
-                  <el-date-picker v-model="userForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="id" prop="id">
-                  <el-input v-model="userForm.id" disabled></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-              <hr/>
+            <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
               <el-row :gutter="20">
-                <el-col :span="8">
+                <el-col :span="16">
                   <el-form-item label="type" prop="type">
                     <el-select v-model="type" value-key="value" placeholder="Select" @change="onTypeChange">
                       <el-option
@@ -41,8 +16,6 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                </el-col>
-                <el-col :span="8">
                   <el-form-item label="situation" prop="situation">
                     <el-select v-model="situation" value-key="value" placeholder="Select" @change="onSituationChange">
                       <el-option
@@ -53,101 +26,113 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
+                  <el-row :gutter="20">
+                    <el-col :span="8">
+                      <el-form-item label="avatar">
+                        <el-upload
+                          class="avatar-uploader"
+                          ref="avatar_upload"
+                          :action="avatar_action"
+                          :auto-upload="false"
+                          :headers="avatar_headers"
+                          :show-file-list="false"
+                          :on-change="handleAvatarChange"
+                          :before-upload="beforeAvatarUpload">
+                          <img v-if="avatarUrl" :src="avatarUrl" class="avatar"></img>
+                          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-row :gutter="20">
+                        <el-form-item label="first name" prop="first_name">
+                          <el-input type="first_name" v-model="form.first_name"></el-input>
+                        </el-form-item>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-form-item label="middle name" prop="middle_name">
+                          <el-input type="middle_name" v-model="form.middle_name"></el-input>
+                        </el-form-item>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-form-item label="last name" prop="last_name">
+                          <el-input type="last_name" v-model="form.last_name"></el-input>
+                        </el-form-item>
+                      </el-row>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="8">
+                      <el-row :gutter="20">
+                          <el-form-item label="username" prop="username">
+                            <el-input type="username" v-model="form.username"></el-input>
+                          </el-form-item>
+                      </el-row>
+                      <el-row :gutter="20">
+                          <el-form-item label="email" prop="email">
+                            <el-input type="email" v-model="form.email"></el-input>
+                          </el-form-item>
+                      </el-row>
+                      <el-row :gutter="20">
+                          <el-form-item label="password" prop="password" :hidden="hidePassword">
+                            <el-input type="password" v-model="form.password"></el-input>
+                          </el-form-item>
+                      </el-row>
+                      <el-row :gutter="20">
+                          <el-form-item label="confirm" prop="confirm" :hidden="hidePassword">
+                            <el-input type="password" v-model="confirm"></el-input>
+                          </el-form-item>
+                      </el-row>
+                    </el-col>
+                    <el-col :span="16">
+                      <el-form-item label="description">
+                        <el-input type="textarea" v-model="form.description"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :span="16">
+                      <el-form-item label="details">
+                        <au-keyValue title="user details" v-model="form.details"></au-keyValue>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>                  
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="status" prop="status">
                     <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
                       <el-option
-                          v-for="item in statuses"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item">
+                        v-for="item in statuses"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item">
                       </el-option>
                     </el-select>
                   </el-form-item>
-                </el-col>
-              </el-row>
-              <hr/>
-              <el-row :gutter="20">
-                <el-col :span="8">
-                  <el-form-item label="avatar">
-                    <el-upload
-                      class="avatar-uploader"
-                      ref="avatar_upload"
-                      :action="avatar_action"
-                      :auto-upload="false"
-                      :headers="avatar_headers"
-                      :show-file-list="false"
-                      :on-change="handleAvatarChange"
-                      :before-upload="beforeAvatarUpload">
-                      <img v-if="avatarUrl" :src="avatarUrl" class="avatar"></img>
-                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                  <el-form-item label="id" prop="id">
+                    <el-input v-model="form.id" disabled></el-input>
                   </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-row :gutter="20">
-                    <el-form-item label="first name" prop="first_name">
-                      <el-input type="first_name" v-model="userForm.first_name"></el-input>
-                    </el-form-item>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-form-item label="middle name" prop="middle_name">
-                      <el-input type="middle_name" v-model="userForm.middle_name"></el-input>
-                    </el-form-item>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-form-item label="last name" prop="last_name">
-                      <el-input type="last_name" v-model="userForm.last_name"></el-input>
-                    </el-form-item>
-                  </el-row>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="8">
-                  <el-row :gutter="20">
-                      <el-form-item label="username" prop="username">
-                        <el-input type="username" v-model="userForm.username"></el-input>
-                      </el-form-item>
-                  </el-row>
-                  <el-row :gutter="20">
-                      <el-form-item label="email" prop="email">
-                        <el-input type="email" v-model="userForm.email"></el-input>
-                      </el-form-item>
-                  </el-row>
-                  <el-row :gutter="20">
-                      <el-form-item label="password" prop="password" :hidden="hidePassword">
-                        <el-input type="password" v-model="userForm.password"></el-input>
-                      </el-form-item>
-                  </el-row>
-                  <el-row :gutter="20">
-                      <el-form-item label="confirm" prop="confirm" :hidden="hidePassword">
-                        <el-input type="password" v-model="confirm"></el-input>
-                      </el-form-item>
-                  </el-row>
-                </el-col>
-                <el-col :span="16">
-                  <el-form-item label="description">
-                    <el-input type="textarea" v-model="userForm.description"></el-input>
+                  <el-form-item label="created by" prop="created_by">
+                    <el-input v-model="created_by" disabled></el-input>
                   </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :span="16">
-                  <el-form-item label="details">
-                    <au-keyValue title="user details" v-model="userForm.details"></au-keyValue>
+                  <el-form-item label="updated by" prop="updated_by">
+                    <el-input v-model="updated_by" disabled></el-input>
+                  </el-form-item>
+                  <el-form-item label="created_at">
+                    <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+                  </el-form-item>
+                  <el-form-item label="updated_at">
+                    <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
               <hr/>
               <el-row :gutter="20">
-                <el-col :span="16">
-                  <el-form-item>
-                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
-                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-                    <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
-                 </el-form-item>
-                </el-col>
+                <el-form-item>
+                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
+                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
+                </el-form-item>
               </el-row>
             </el-form>
           </el-tab-pane>
@@ -176,7 +161,6 @@
             </el-table>
           </el-tab-pane>
         </el-tabs>
-      </el-row>
     </el-main>
   </el-container>
 </template>
@@ -206,7 +190,7 @@ export default {
   },
   data: () => {
     return {
-      userForm: {
+      form: {
         id: '',
         first_name: '',
         middle_name: '',
@@ -298,15 +282,15 @@ export default {
   methods: {
     onStatusChange(selected){
       this.status = selected;
-      this.userForm.status = this.status['value'];
+      this.form.status = this.status['value'];
     },
     onTypeChange(selected){
       this.type = selected;
-      this.userForm.type = this.type['value'];
+      this.form.type = this.type['value'];
     },
     onSituationChange(selected){
       this.situation = selected;
-      this.userForm.situation = this.situation['value'];
+      this.form.situation = this.situation['value'];
     },
     getUser(){
       var self = this;
@@ -321,24 +305,24 @@ export default {
       this.$axios.get(baseurl() + '/users/' + id, config )
         .then(function (response) {
           if(response.status == 200){
-            self.userForm.id = response.data.id;
-            self.userForm.first_name = response.data.first_name;
-            self.userForm.middle_name = response.data.middle_name;
-            self.userForm.last_name = response.data.last_name;
-            self.userForm.username = response.data.username;
-            self.userForm.email = response.data.email;
-            self.userForm.type = Number(response.data.type);
+            self.form.id = response.data.id;
+            self.form.first_name = response.data.first_name;
+            self.form.middle_name = response.data.middle_name;
+            self.form.last_name = response.data.last_name;
+            self.form.username = response.data.username;
+            self.form.email = response.data.email;
+            self.form.type = Number(response.data.type);
             self.type = self.types[response.data.type-1];
             if(response.data.details){
-              self.userForm.details = JSON.parse(response.data.details);
+              self.form.details = JSON.parse(response.data.details);
             }
-            self.userForm.status = Number(response.data.status);
+            self.form.status = Number(response.data.status);
             self.status = self.statuses[response.data.status];
-            self.userForm.situation = Number(response.data.situation);
+            self.form.situation = Number(response.data.situation);
             self.situation = self.situations[response.data.situation];
-            self.userForm.created_at = response.data.created_at;
-            self.userForm.updated_at = response.data.updated_at;
-            self.userForm.description = response.data.description;
+            self.form.created_at = response.data.created_at;
+            self.form.updated_at = response.data.updated_at;
+            self.form.description = response.data.description;
             //----------------------------------------------------
             self.created_by = response.data.created_by;
             self.updated_by = response.data.updated_by;
@@ -363,7 +347,7 @@ export default {
       }
     }
     //var user_id = JSON.parse(localStorage.getItem("user_id"));
-    var user_id = self.userForm.id;
+    var user_id = self.form.id;
     var filter = btoa('_user_=\'' + user_id + '\'');
     var url = '/users_security_roles?page=1' + '&filter=' + filter;
     this.$axios.get(baseurl() + url, config )
@@ -382,12 +366,12 @@ export default {
           'Authorization': token
         }
       }
-      this.userForm.details = JSON.stringify(this.userForm.details);
-      var data_request = JSON.stringify(this.userForm);
+      this.form.details = JSON.stringify(this.form.details);
+      var data_request = JSON.stringify(this.form);
       this.$axios.post(baseurl() + '/users', data_request, config )
         .then(function (response) {
           if(response.status == 200){
-            self.userForm.id = response.id;
+            self.form.id = response.id;
             let currentMsg =  self.$message  ({
               message : 'User added successfully',
               duration:0,
@@ -416,8 +400,8 @@ export default {
           'Authorization': token
         }
       }
-      this.userForm.details = JSON.stringify(this.userForm.details);
-      var data_request = JSON.stringify(this.userForm);
+      this.form.details = JSON.stringify(this.form.details);
+      var data_request = JSON.stringify(this.form);
       this.$axios.put(baseurl() + '/users/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -440,7 +424,7 @@ export default {
       });
     },
     onSaveClose() {
-      this.$refs["userForm"].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
             this.addUser();
@@ -457,7 +441,7 @@ export default {
       });
     },
     onSave() {
-      this.$refs["userForm"].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
             this.addUser();
@@ -494,7 +478,7 @@ export default {
       });
     },
     handleAvatarChange(file, fileList){
-      this.avatar_action = baseurl() + '/users/' + this.userForm.id + '/avatars';
+      this.avatar_action = baseurl() + '/users/' + this.form.id + '/avatars';
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       this.avatar_headers = {
         'Content-Type': 'multipart/form-data',

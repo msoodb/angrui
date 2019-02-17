@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="0">
     <el-col :span="3">
-      <el-button class="lookup" type="default" size="medium" @click="onLookup"></el-button>
+      <el-button class="lookup" type="default" size="medium" @click="onLookup">+</el-button>
     </el-col>
     <el-col :span="21">
       <el-input readonly v-model="this.name"></el-input>
@@ -12,9 +12,9 @@
               :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
         </el-pagination>
       </div>
-      <el-table ref="table" :data="items" stripe style="width:100%" height="300" border
-          @selection-change="handleSelectionChange">
-        <el-table-column  type="selection"  width="40">
+      <el-table ref="table" :data="items" style="width:100%" height="300" border
+          @current-change="handleCurrentRowChange" highlight-current-row>
+        <el-table-column  type="index" width="40">
         </el-table-column>
         <el-table-column
           v-for="{ prop, label } in columns"
@@ -60,7 +60,7 @@ export default {
        offset: 20,
        page_count: 10000,
        result_count: 0,
-       multipleSelection: [],
+       currentRow: null,
        dialogFormVisible: false,
        name:''
     }
@@ -82,16 +82,16 @@ export default {
     },
     onLookupConfirm(){
       this.dialogFormVisible = false;
-      var id = this.multipleSelection[0].id;
-      this.name = this.multipleSelection[0].name;
+      var id = this.currentRow.id;
+      this.name = this.currentRow.name;
       this.$emit('select', id);
     },
     handleCurrentChange (val) {
       this.page = val;
       this.getItems()
     },
-    handleSelectionChange(val) {
-       this.multipleSelection = val;
+    handleCurrentRowChange(val) {
+       this.currentRow = val;
     },
     getItems(){
     var self = this;
