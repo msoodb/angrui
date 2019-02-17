@@ -96,7 +96,7 @@
                         <au-keyValue title="user details" v-model="form.details"></au-keyValue>
                       </el-form-item>
                     </el-col>
-                  </el-row>                  
+                  </el-row>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="status" prop="status">
@@ -332,6 +332,8 @@ export default {
         .catch(function (error) {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
           }else{
             self.$message.error('Unknown error.');
           }
@@ -385,6 +387,8 @@ export default {
         .catch(function (error) {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
           }else{
             self.$message.error('Unknown error.');
           }
@@ -418,6 +422,8 @@ export default {
         .catch(function (error) {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
           }else{
             self.$message.error('Unknown error.');
           }
@@ -472,6 +478,8 @@ export default {
         .catch(function (error) {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
           }else{
             self.$message.error('Unknown error.' + ': ' + error);
           }

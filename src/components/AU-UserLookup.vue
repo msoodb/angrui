@@ -75,7 +75,7 @@ export default {
        dialogFormVisible: false,
        username:''
     }
-  },  
+  },
   methods:{
     getName()
     {
@@ -126,6 +126,8 @@ export default {
       .catch(function (error) {
         if(error.response && error.response.status == 401){
           self.$router.push('/pages/login');
+        }else if(error.response && error.response.status == 403){
+          self.$message.warning('Forbidden request.');
         }else{
           self.$message.error('Unknown error.');
         }
@@ -149,6 +151,8 @@ export default {
         .catch(function (error) {
           if(error.response && error.response.status == 401){
             self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
           }else{
             self.$message.error('Unknown error.');
           }
