@@ -67,7 +67,7 @@
                     <el-input type="textarea" v-model="form.description"></el-input>
                   </el-form-item>
                   <el-form-item label="details">
-                    <au-keyValue title="user details" v-model="form.details"></au-keyValue>
+                    <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -75,8 +75,7 @@
               <el-row :gutter="20">
                 <el-col :span="16">
                   <el-form-item>
-                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
-                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save</el-button>
                     <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
                  </el-form-item>
                 </el-col>
@@ -113,7 +112,7 @@ export default {
         email: '',
         created_at: '',
         updated_at: '',
-        details: {},
+        details: '',
         status: '1',
         type: '0',
         situation:'0',
@@ -155,6 +154,9 @@ export default {
     }
   },
   methods: {
+    onChangeDetails(val){
+      this.form.details = val;
+    },
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
@@ -178,9 +180,7 @@ export default {
           self.form.code = response.data.code;
           self.form.phone = response.data.phone;
           self.form.email = response.data.email;
-          if(response.data.details){
-            self.form.details = JSON.parse(response.data.details);
-          }
+          self.form.details = response.data.details;
           self.form.status = Number(response.data.status);
           self.status = self.statuses[response.data.status];
           self.form.type = response.data.type;
@@ -189,7 +189,6 @@ export default {
           self.form.created_at = response.data.created_at;
           self.form.updated_at = response.data.updated_at;
           self.form.description = response.data.description;
-          //----------------------------------------------------
           self.created_by = response.data.created_by;
           self.updated_by = response.data.updated_by;
         }
@@ -213,7 +212,6 @@ export default {
           'Authorization': token
         }
       }
-      this.form.details = JSON.stringify(this.form.details);
       var data_request = JSON.stringify(this.form);
       this.$axios.post(baseurl() + '/mobile_operators', data_request, config )
         .then(function (response) {
@@ -248,7 +246,6 @@ export default {
           'Authorization': token
         }
       }
-      this.form.details = JSON.stringify(this.form.details);
       var data_request = JSON.stringify(this.form);
       this.$axios.put(baseurl() + '/mobile_operators/' + id, data_request, config )
         .then(function (response) {

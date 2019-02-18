@@ -77,12 +77,11 @@
             </div>
           </el-form-item>
           <el-form-item label="details">
-            <keyValue title="product details" v-model="productForm.details"></keyValue>
+            <au-keyValue title="details" :data="productForm.details" @change="onChangeDetails"></au-keyValue>
           </el-form-item>
           <hr/>
           <el-form-item>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save</el-button>
             <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
           </el-form-item>
         </el-form>
@@ -133,7 +132,7 @@ export default {
         expirable: true,
         taxable: true,
         tags: [],
-        details: {},
+        details: '',
         status: '1',
         description: ''
       },
@@ -180,6 +179,9 @@ export default {
     }
   },
   methods: {
+    onChangeDetails(val){
+      this.productForm.details = val;
+    },
     onStatusChange(selected){
       this.value = selected;
       this.productForm.status = this.value['value'];
@@ -202,9 +204,7 @@ export default {
           self.productForm.title = response.data.title;
           self.productForm.code = response.data.code;
           self.productForm.price = Number(response.data.price);
-          if(response.data.details){
-            self.productForm.details = JSON.parse(response.data.details);
-          }
+          self.productForm.details = response.data.details;
           if(response.data.expirable == 't'){
             self.productForm.expirable = true;
           }
@@ -247,7 +247,6 @@ export default {
         }
       }
       this.productForm.tags = JSON.stringify(this.productForm.tags);
-      this.productForm.details = JSON.stringify(this.productForm.details);
       var data_request = JSON.stringify(this.productForm);
       this.$axios.post(baseurl() + '/products', data_request, config )
         .then(function (response) {
@@ -283,7 +282,6 @@ export default {
         }
       }
       this.productForm.tags = JSON.stringify(this.productForm.tags);
-      this.productForm.details = JSON.stringify(this.productForm.details);
       var data_request = JSON.stringify(this.productForm);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
         .then(function (response) {

@@ -75,8 +75,7 @@
               <el-row :gutter="20">
                 <el-col :span="16">
                   <el-form-item>
-                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save and Close</el-button>
-                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                    <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save</el-button>
                     <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
                  </el-form-item>
                 </el-col>

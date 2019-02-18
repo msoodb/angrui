@@ -1,6 +1,8 @@
 <template>
   <div>
-    <el-table :data=dataInKeyValue border>
+    <el-table :data=itemsKeyValue border>
+      <el-table-column type="index"  width="40" align="center">
+      </el-table-column>
       <el-table-column prop="key" label="key"  width="180">
       </el-table-column>
       <el-table-column prop="value" label="value" width="100">
@@ -16,13 +18,13 @@
       </el-table-column>
       </el-table>
       <el-button icon="el-icon-circle-plus" type="default" size="mini" @click="onAdd()">Add</el-button>
-      <el-dialog :title=title :visible.sync="dialogVisible">
-        <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="120px" inline-message>
-          <el-form-item label="key" porp="key">
-            <el-input type="key" v-model="detailsFormDialog.key" autocomplete="off"></el-input>
+      <el-dialog ref="detailsDialog" :title=title :visible.sync="dialogVisible">
+        <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="70px" inline-message>
+          <el-form-item label="key" prop="key">
+            <el-input type="key" v-model="detailsFormDialog.key"></el-input>
           </el-form-item>
-          <el-form-item label="value" porp="value">
-            <el-input type="value" v-model="detailsFormDialog.value" autocomplete="off"></el-input>
+          <el-form-item label="value" prop="value">
+            <el-input type="value" v-model="detailsFormDialog.value"></el-input>
           </el-form-item>
         </el-form>
       <span slot="footer" class="dialog-footer">
@@ -37,33 +39,34 @@
 export default {
   name: 'AU-KeyValue',
   props: {
-    value:{},
+    data:{
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
     }
   },
-  computed:{
-    dataInKeyValue: {
-      get: function () {
-        if(this.updated == true){
-          this.updated = false;
+  watch: {
+      data: function(newVal, oldVal) {
+        if(this.data && this.data!="{}"){
+          this.items =JSON.parse(this.data);
+          this.getItems();
         }
-        const keyValue = this.value ? Object.entries(this.value) : [['id', 'Not found']];
-        return keyValue.map(([key, value]) => {return {key: key, value: value}});
       }
-    }
   },
   data: function () {
     return {
-      updated:true,
+      items:{},
+      itemsKeyValue:[],
       detailsFormDialog:{
-        key:'',
-        value:''
+        key:null,
+        value:null
       },
       rules: {
         key: [
-          { required: true, message: 'Please input key', trigger: 'blur' },
+          { required: true, message: 'Please input key', trigger: 'change' }
         ],
         value: [
           { required: true, message: 'Please input value', trigger: 'change' }
@@ -73,28 +76,42 @@ export default {
     }
   },
   methods:{
+    getItems(){
+      const keyValue = this.items ? Object.entries(this.items) : [['id', 'Not found']];
+      this.itemsKeyValue = keyValue.map(([key, value]) => {return {key: key, value: value}});
+    },
     onDelete(index, row){
-      delete this.value[row.key];
-      this.updated = true;
+      delete this.items[row.key];
+      this.getItems();
+      var details = JSON.stringify(this.items);
+      this.$emit('change', details);
     },
     onEdit(index, row){
       this.detailsFormDialog.key = row.key;
-      this.detailsFormDialog.value = this.value[row.key];
+      this.detailsFormDialog.value = this.items[row.key];
       this.dialogVisible = true;
-      this.updated = true;
     },
     onAdd(){
       this.detailsFormDialog.key='';
       this.detailsFormDialog.value ='';
       this.dialogVisible = true;
-      this.updated = true;
     },
     onDialogConfirm(){
-      var key = this.detailsFormDialog.key;
-      var value = this.detailsFormDialog.value;
-      this.value[key] = value;
-      this.dialogVisible = false;
-      this.updated = true;
+      var self = this;
+      self.$refs['detailsFormDialog'].validate((valid) => {
+        if (valid) {
+          var key = self.detailsFormDialog.key;
+          var value = self.detailsFormDialog.value;
+          self.items[key] = value;
+          self.dialogVisible = false;
+          this.getItems();
+          var details = JSON.stringify(this.items);
+          this.$emit('change', details);
+        }
+        else{
+          self.$message.error('Please fill in the required fields.');
+        }
+      });
     }
   }
 }

@@ -95,34 +95,34 @@ export default {
        this.currentRow = val;
     },
     getItems(){
-    var self = this;
-    var token = JSON.parse(localStorage.getItem("jwtoken"));
-    let config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      }
-    }
-    if(!self.page || self.page == "undefined" || self.page < 1){
-      self.page = 1;
-    }
-    var url = '/' + this.handler + '?page=' + self.page;
-    this.$axios.get(baseurl() + url, config )
-      .then(function (response) {
-        if(response.status == 200){
-          self.items = response.data.items;
-          self.offset = Number(response.data.info.offset);
-          self.page_count = Number(response.data.info.page_count);
-          self.result_count = Number(response.data.info.result_count);
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
         }
-      }.bind(this))
-      .catch(function (error) {
-        if(error.response && error.response.status == 401){
-          self.$router.push('/pages/login');
-        }else if(error.response && error.response.status == 403){
-          self.$message.warning('Forbidden request.');
-        }else{
-          self.$message.error('Unknown error.');
+      }
+      if(!self.page || self.page == "undefined" || self.page < 1){
+        self.page = 1;
+      }
+      var url = '/' + this.handler + '?page=' + self.page;
+      this.$axios.get(baseurl() + url, config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.items = response.data.items;
+            self.offset = Number(response.data.info.offset);
+            self.page_count = Number(response.data.info.page_count);
+            self.result_count = Number(response.data.info.result_count);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
         }
       });
     },
