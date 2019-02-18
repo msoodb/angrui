@@ -93,7 +93,7 @@
                   <el-row :gutter="20">
                     <el-col :span="16">
                       <el-form-item label="details">
-                        <au-keyValue title="user details" v-model="form.details"></au-keyValue>
+                        <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -198,7 +198,7 @@ export default {
         email: '',
         password:'',
         type: '2',
-        details: {},
+        details: '',
         status:'1',
         situation:'0',
         created_at: '',
@@ -279,6 +279,9 @@ export default {
     }
   },
   methods: {
+    onChangeDetails(val){
+      this.form.details = val;
+    },
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
@@ -312,9 +315,7 @@ export default {
             self.form.email = response.data.email;
             self.form.type = Number(response.data.type);
             self.type = self.types[response.data.type-1];
-            if(response.data.details){
-              self.form.details = JSON.parse(response.data.details);
-            }
+            self.form.details =response.data.details;
             self.form.status = Number(response.data.status);
             self.status = self.statuses[response.data.status];
             self.form.situation = Number(response.data.situation);
@@ -367,7 +368,6 @@ export default {
           'Authorization': token
         }
       }
-      this.form.details = JSON.stringify(this.form.details);
       var data_request = JSON.stringify(this.form);
       this.$axios.post(baseurl() + '/users', data_request, config )
         .then(function (response) {
@@ -403,7 +403,6 @@ export default {
           'Authorization': token
         }
       }
-      this.form.details = JSON.stringify(this.form.details);
       var data_request = JSON.stringify(this.form);
       this.$axios.put(baseurl() + '/users/' + id, data_request, config )
         .then(function (response) {
