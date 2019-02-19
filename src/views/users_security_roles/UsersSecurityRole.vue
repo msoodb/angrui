@@ -162,7 +162,6 @@ export default {
           self.form.created_at = response.data.created_at;
           self.form.updated_at = response.data.updated_at;
           self.form.description = response.data.description;
-          //----------------------------------------------------
           self.created_by = response.data.created_by;
           self.updated_by = response.data.updated_by;
         }

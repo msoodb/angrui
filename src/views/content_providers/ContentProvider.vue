@@ -4,11 +4,11 @@
       <b-card no-header>
       <el-tabs type="border-card">
         <el-tab-pane label="General">
-        <el-form ref="content_providerForm" :model="content_providerForm" :rules="rules" label-width="120px" inline-message>
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px" inline-message>
           <el-row>
             <el-col :span="6">
               <el-form-item label="id" prop="id">
-                <el-input v-model="content_providerForm.id" disabled></el-input>
+                <el-input v-model="form.id" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -27,43 +27,46 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="name" prop="name">
-                <el-input type="name" v-model="content_providerForm.name"></el-input>
+                <el-input type="name" v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="title" prop="title">
-                <el-input v-model="content_providerForm.title"></el-input>
+                <el-input v-model="form.title"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="code" prop="code">
-                <el-input v-model="content_providerForm.code"></el-input>
+                <el-input v-model="form.code"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="phone" prop="phone">
-                <el-input type="phone" v-model="content_providerForm.phone"></el-input>
+                <el-input type="phone" v-model="form.phone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="email" prop="email">
-                <el-input type="email" v-model.number="content_providerForm.email"></el-input>
+                <el-input type="email" v-model.number="form.email"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
+          <el-form-item label="user" prop="user_lookup">
+            <au-user-lookup handler="users" :id="form.admin" @select="userLookupSelect"></au-user-lookup>
+          </el-form-item>
           <el-form-item label="created_at">
-            <el-date-picker v-model="content_providerForm.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
           </el-form-item>
           <el-form-item label="updated_at">
-            <el-date-picker v-model="content_providerForm.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
           </el-form-item>
           <el-form-item label="description">
-            <el-input type="textarea" v-model="content_providerForm.description"></el-input>
+            <el-input type="textarea" v-model="form.description"></el-input>
           </el-form-item>
           <el-form-item label="details">
-            <keyValue title="content_provider details" v-model="content_providerForm.details"></keyValue>
+            <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
           </el-form-item>
           <hr/>
           <el-form-item>
@@ -81,6 +84,8 @@
 <script>
 import {baseurl} from '../../config'
 import AUKeyValue from '../../components/AU-KeyValue'
+import AUUserLookup from '../../components/AU-UserLookup'
+
 
 export default {
   name: 'ContentProvider',
@@ -93,8 +98,9 @@ export default {
   },
   data: () => {
     return {
-      content_providerForm: {
+      form: {
         id: '',
+        admin:'',
         name: '',
         title: '',
         code: '',
@@ -102,7 +108,7 @@ export default {
         email: '',
         created_at: '',
         updated_at: '',
-        details: {},
+        details: '',
         status: '1',
         description: ''
       },
@@ -136,7 +142,8 @@ export default {
      this.value = this.statuses[1];
   },
   components: {
-    keyValue
+    'au-keyValue':AUKeyValue,
+    'au-user-lookup' : AUUserLookup
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -144,9 +151,15 @@ export default {
     }
   },
   methods: {
+    userLookupSelect(id){
+      this.form.admin = id;
+    },
+    onChangeDetails(val){
+      this.form.details = val;
+    },
     onStatusChange(selected){
       this.value = selected;
-      this.content_providerForm.status = this.value['value'];
+      this.form.status = this.value['value'];
     },
     getContentProvider(){
     var self = this;
@@ -161,20 +174,19 @@ export default {
     this.$axios.get(baseurl() + '/content_providers/' + id, config )
       .then(function (response) {
         if(response.status == 200){
-          self.content_providerForm.id = response.data.id;
-          self.content_providerForm.name = response.data.name;
-          self.content_providerForm.title = response.data.title;
-          self.content_providerForm.code = response.data.code;
-          self.content_providerForm.phone = response.data.phone;
-          self.content_providerForm.email = response.data.email;
-          self.content_providerForm.created_at = response.data.created_at;
-          self.content_providerForm.updated_at = response.data.updated_at;
-          if(response.data.details){
-            self.content_providerForm.details = JSON.parse(response.data.details);
-          }
-          self.content_providerForm.status = Number(response.data.status);
+          self.form.id = response.data.id;
+          self.form.admin = response.data.admin;
+          self.form.name = response.data.name;
+          self.form.title = response.data.title;
+          self.form.code = response.data.code;
+          self.form.phone = response.data.phone;
+          self.form.email = response.data.email;
+          self.form.created_at = response.data.created_at;
+          self.form.updated_at = response.data.updated_at;
+          self.form.details = response.data.details;
+          self.form.status = Number(response.data.status);
           self.value = self.statuses[response.data.status];
-          self.content_providerForm.description = response.data.description;
+          self.form.description = response.data.description;
         }
       }.bind(this))
       .catch(function (error) {
@@ -196,8 +208,7 @@ export default {
           'Authorization': token
         }
       }
-      this.content_providerForm.details = JSON.stringify(this.content_providerForm.details);
-      var data_request = JSON.stringify(this.content_providerForm);
+      var data_request = JSON.stringify(this.form);
       this.$axios.post(baseurl() + '/content_providers', data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -231,8 +242,7 @@ export default {
           'Authorization': token
         }
       }
-      this.content_providerForm.details = JSON.stringify(this.content_providerForm.details);
-      var data_request = JSON.stringify(this.content_providerForm);
+      var data_request = JSON.stringify(this.form);
       this.$axios.put(baseurl() + '/content_providers/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -257,7 +267,7 @@ export default {
       });
     },
     onSaveClose() {
-      this.$refs["content_providerForm"].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
             this.addContentProvider();
@@ -274,7 +284,7 @@ export default {
       });
     },
     onSave() {
-      this.$refs["content_providerForm"].validate((valid) => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if(this.$route.params.id == -1){
             this.addContentProvider();
