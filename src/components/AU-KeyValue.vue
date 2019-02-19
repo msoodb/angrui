@@ -50,7 +50,7 @@ export default {
   },
   watch: {
       data: function(newVal, oldVal) {
-        if(this.data && this.data!="{}"){
+        if(this.data && this.data!="[]" && this.data!="{}"){
           this.items =JSON.parse(this.data);
           this.getItems();
         }

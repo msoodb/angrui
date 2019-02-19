@@ -27,7 +27,7 @@
                     </el-select>
                   </el-form-item>
                   <el-row :gutter="20">
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-form-item label="avatar">
                         <el-upload
                           class="avatar-uploader"
@@ -43,7 +43,7 @@
                         </el-upload>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="12">
                       <el-row :gutter="20">
                         <el-form-item label="first name" prop="first_name">
                           <el-input type="first_name" v-model="form.first_name"></el-input>
@@ -62,40 +62,30 @@
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
-                    <el-col :span="8">
-                      <el-row :gutter="20">
-                          <el-form-item label="username" prop="username">
-                            <el-input type="username" v-model="form.username"></el-input>
-                          </el-form-item>
-                      </el-row>
-                      <el-row :gutter="20">
-                          <el-form-item label="email" prop="email">
-                            <el-input type="email" v-model="form.email"></el-input>
-                          </el-form-item>
-                      </el-row>
-                      <el-row :gutter="20">
-                          <el-form-item label="password" prop="password" :hidden="hidePassword">
-                            <el-input type="password" v-model="form.password"></el-input>
-                          </el-form-item>
-                      </el-row>
-                      <el-row :gutter="20">
-                          <el-form-item label="confirm" prop="confirm" :hidden="hidePassword">
-                            <el-input type="password" v-model="confirm"></el-input>
-                          </el-form-item>
-                      </el-row>
-                    </el-col>
                     <el-col :span="16">
+                      <el-form-item label="username" prop="username">
+                        <el-input type="username" v-model="form.username"></el-input>
+                      </el-form-item>
+                      <el-form-item label="email" prop="email">
+                        <el-input type="email" v-model="form.email"></el-input>
+                      </el-form-item>
+                      <el-form-item label="password" prop="password" :hidden="hidePassword">
+                        <el-input type="password" v-model="form.password"></el-input>
+                      </el-form-item>
+                      <el-form-item label="confirm" prop="confirm" :hidden="hidePassword">
+                        <el-input type="password" v-model="confirm"></el-input>
+                      </el-form-item>
                       <el-form-item label="description">
                         <el-input type="textarea" v-model="form.description"></el-input>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
-                    <el-col :span="16">
-                      <el-form-item label="details">
-                        <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
-                      </el-form-item>
-                    </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                      <el-col :span="21">
+                        <el-form-item label="details">
+                          <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+                        </el-form-item>
+                      </el-col>
                   </el-row>
                 </el-col>
                 <el-col :span="8">

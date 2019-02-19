@@ -73,7 +73,7 @@
           </el-form-item>
           <el-form-item label="tags">
             <div style="border:1px solid #dcdfe6; border-radius:4px; padding:5px;">
-              <Tag title="product tags" v-model="productForm.tags"></Tag>
+              <au-tag title="product tags" :data="productForm.tags" @change="onChangeTags"></au-tag>
             </div>
           </el-form-item>
           <el-form-item label="details">
@@ -131,7 +131,7 @@ export default {
         updated_at: '',
         expirable: true,
         taxable: true,
-        tags: [],
+        tags: '',
         details: '',
         status: '1',
         description: ''
@@ -182,6 +182,9 @@ export default {
     onChangeDetails(val){
       this.productForm.details = val;
     },
+    onChangeTags(val){
+      this.productForm.tags = val;
+    },
     onStatusChange(selected){
       this.value = selected;
       this.productForm.status = this.value['value'];
@@ -222,9 +225,7 @@ export default {
           self.productForm.updated_at = response.data.updated_at;
           self.productForm.status = Number(response.data.status);
           this.value = this.statuses[response.data.status];
-          if(response.data.tags){
-            self.productForm.tags = JSON.parse(response.data.tags);
-          }
+          self.productForm.tags = response.data.tags;
         }
       }.bind(this))
       .catch(function (error) {
@@ -246,7 +247,6 @@ export default {
           'Authorization': token
         }
       }
-      this.productForm.tags = JSON.stringify(this.productForm.tags);
       var data_request = JSON.stringify(this.productForm);
       this.$axios.post(baseurl() + '/products', data_request, config )
         .then(function (response) {
@@ -281,7 +281,6 @@ export default {
           'Authorization': token
         }
       }
-      this.productForm.tags = JSON.stringify(this.productForm.tags);
       var data_request = JSON.stringify(this.productForm);
       this.$axios.put(baseurl() + '/products/' + id, data_request, config )
         .then(function (response) {

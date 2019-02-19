@@ -2,7 +2,7 @@
   <div>
     <el-tag
       :key="tag"
-      v-for="tag in value"
+      v-for="tag in items"
       closable
       :disable-transitions="false"
       @close="handleClose(tag)">
@@ -26,21 +26,34 @@
 export default {
   name: 'AU-Tag',
   props: {
-    value:{},
+    data:{
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
     }
   },
+  watch: {
+      data: function(newVal, oldVal) {
+        if(this.data && this.data!="[]" && this.data!="{}"){
+          this.items =JSON.parse(this.data);
+        }
+      }
+  },
   data: function () {
     return {
+      items: [],
       inputVisible: false,
-      inputValue: '',
+      inputValue: ''
     }
   },
   methods:{
     handleClose(tag) {
-       this.value.splice(this.value.indexOf(tag), 1);
+       this.items.splice(this.items.indexOf(tag), 1);
+       var details = JSON.stringify(this.items);
+       this.$emit('change', details);
      },
     showInput() {
       this.inputVisible = true;
@@ -50,11 +63,13 @@ export default {
      },
     handleInputConfirm() {
       let inputValue = this.inputValue;
-      if (inputValue && this.value.indexOf(inputValue) < 0) {
-        this.value.push(inputValue);
+      if (inputValue && this.items.indexOf(inputValue) < 0) {
+        this.items.push(inputValue);
       }
       this.inputVisible = false;
       this.inputValue = '';
+      var details = JSON.stringify(this.items);
+      this.$emit('change', details);
      }
   }
 }
