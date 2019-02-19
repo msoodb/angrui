@@ -62,8 +62,8 @@
              <hr/>
              <el-row :gutter="20">
                 <el-form-item>
-                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save</el-button>
-                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
+                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
                 </el-form-item>
              </el-row>
           </el-form>
@@ -179,12 +179,11 @@ export default {
             self.form.security_role = response.data.security_role;
             self.form.entity = response.data.entity;
             self.form.privilege_string = response.data.privilege_string;
-            self.form.description = response.data.description;
             self.form.created_at = response.data.created_at;
             self.form.updated_at = response.data.updated_at;
-            self.form.description = response.data.description;
             self.created_by = response.data.created_by;
             self.updated_by = response.data.updated_by;
+            self.form.description = response.data.description;
             this.parsePrivilegeString();
           }
         }.bind(this))
@@ -267,23 +266,6 @@ export default {
           }
       });
     },
-    onSaveClose() {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if(this.$route.params.id == -1){
-            this.addItem();
-            this.onCancel();
-          }
-          else{
-            this.updateItem();
-            this.onCancel();
-          }
-        }
-        else{
-          this.$message.error('Please fill in the required fields.');
-        }
-      });
-    },
     onSave() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
@@ -293,14 +275,15 @@ export default {
           else{
             this.updateItem();
           }
+          this.onClose();
         }
         else{
           this.$message.error('Please fill in the required fields.');
         }
       });
     },
-    onCancel() {
-      //this.$router.push({-1})
+    onClose() {
+      this.$router.go(-1);
     }
   }
 }

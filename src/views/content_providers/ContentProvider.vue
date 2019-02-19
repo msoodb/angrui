@@ -147,41 +147,41 @@ export default {
       this.form.status = this.status['value'];
     },
     getItem(){
-    var self = this;
-    var id = self.$route.params.id;
-    var token = JSON.parse(localStorage.getItem("jwtoken"));
-    let config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      }
-    }
-    this.$axios.get(baseurl() + '/content_providers/' + id, config )
-      .then(function (response) {
-        if(response.status == 200){
-          self.form.id = response.data.id;
-          self.form.admin = response.data.admin;
-          self.form.name = response.data.name;
-          self.form.title = response.data.title;
-          self.form.code = response.data.code;
-          self.form.phone = response.data.phone;
-          self.form.email = response.data.email;
-          self.form.created_at = response.data.created_at;
-          self.form.updated_at = response.data.updated_at;
-          self.form.details = response.data.details;
-          self.form.status = Number(response.data.status);
-          self.status = self.statuses[response.data.status];
-          self.form.situation = response.data.situation;
-          self.form.description = response.data.description;
+      var self = this;
+      var id = self.$route.params.id;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
         }
-      }.bind(this))
-      .catch(function (error) {
-        if(error.response && error.response.status == 401){
-          self.$router.push('/pages/login');
-        }else if(error.response && error.response.status == 403){
-          self.$message.warning('Forbidden request.');
-        }else{
-          self.$message.error('Unknown error.');
+      }
+      this.$axios.get(baseurl() + '/content_providers/' + id, config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.form.id = response.data.id;
+            self.form.admin = response.data.admin;
+            self.form.name = response.data.name;
+            self.form.title = response.data.title;
+            self.form.code = response.data.code;
+            self.form.phone = response.data.phone;
+            self.form.email = response.data.email;
+            self.form.created_at = response.data.created_at;
+            self.form.updated_at = response.data.updated_at;
+            self.form.details = response.data.details;
+            self.form.status = Number(response.data.status);
+            self.status = self.statuses[response.data.status];
+            self.form.situation = response.data.situation;
+            self.form.description = response.data.description;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
         }
       });
     },
@@ -269,7 +269,7 @@ export default {
       });
     },
     onClose() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     }
   }
 }

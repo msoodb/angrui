@@ -47,8 +47,8 @@
              <hr/>
              <el-row :gutter="20">
                 <el-form-item>
-                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveClose">Save</el-button>
-                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCancel">Cancel</el-button>
+                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
                 </el-form-item>
               </el-row>
            </el-form>
@@ -63,16 +63,8 @@ import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
 import AUUserLookup from '../../components/AU-UserLookup'
 
-
 export default {
   name: 'UsersSecurityRole',
-  computed:{
-    aggrigator_id: {
-      get: function () {
-        return this.$route.params.id;
-      }
-    }
-  },
   data: () => {
     return {
       from: null,
@@ -82,9 +74,7 @@ export default {
         security_role: '',
         created_at: '',
         updated_at: '',
-        details: {},
         status: '1',
-        type: '0',
         situation:'0',
         description: ''
       },
@@ -109,16 +99,6 @@ export default {
     'au-lookup' : AULookup,
     'au-user-lookup' : AUUserLookup
   },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-        vm.from = from;
-    });
-  },
-  // beforeRouteUpdate (to, from, next) {
-  //   this.from = from.fullpath;
-  //   console.log(this.from);
-  //   next()
-  // },
   created() {
      this.status = this.statuses[1];
   },
@@ -139,40 +119,38 @@ export default {
       this.form.status = this.status['value'];
     },
     getItem(){
-    var self = this;
-    var id = self.$route.params.id;
-    var token = JSON.parse(localStorage.getItem("jwtoken"));
-    let config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      }
-    }
-    this.$axios.get(baseurl() + '/users_security_roles/' + id, config )
-      .then(function (response) {
-        if(response.status == 200){
-          self.form.id = response.data.id;
-          self.form._user_ = response.data._user_;
-          self.form.security_role = response.data.security_role;
-          self.form.status = Number(response.data.status);
-          self.status = self.statuses[response.data.status];
-          self.form.type = response.data.type;
-          self.form.situation = response.data.situation;
-          self.form.description = response.data.description;
-          self.form.created_at = response.data.created_at;
-          self.form.updated_at = response.data.updated_at;
-          self.form.description = response.data.description;
-          self.created_by = response.data.created_by;
-          self.updated_by = response.data.updated_by;
+      var self = this;
+      var id = self.$route.params.id;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
         }
-      }.bind(this))
-      .catch(function (error) {
-        if(error.response && error.response.status == 401){
-          self.$router.push('/pages/login');
-        }else if(error.response && error.response.status == 403){
-          self.$message.warning('Forbidden request.');
-        }else{
-          self.$message.error('Unknown error.' + error);
+      }
+      this.$axios.get(baseurl() + '/users_security_roles/' + id, config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.form.id = response.data.id;
+            self.form._user_ = response.data._user_;
+            self.form.security_role = response.data.security_role;
+            self.form.status = Number(response.data.status);
+            self.status = self.statuses[response.data.status];
+            self.form.situation = response.data.situation;
+            self.form.created_at = response.data.created_at;
+            self.form.updated_at = response.data.updated_at;
+            self.created_by = response.data.created_by;
+            self.updated_by = response.data.updated_by;
+            self.form.description = response.data.description;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.' + error);
         }
       });
     },
@@ -185,7 +163,6 @@ export default {
           'Authorization': token
         }
       }
-      this.form.details = JSON.stringify(this.form.details);
       var data_request = JSON.stringify(this.form);
       this.$axios.post(baseurl() + '/users_security_roles', data_request, config )
         .then(function (response) {
@@ -220,7 +197,6 @@ export default {
           'Authorization': token
         }
       }
-      this.form.details = JSON.stringify(this.form.details);
       var data_request = JSON.stringify(this.form);
       this.$axios.put(baseurl() + '/users_security_roles/' + id, data_request, config )
         .then(function (response) {
@@ -245,23 +221,6 @@ export default {
           }
       });
     },
-    onSaveClose() {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if(this.$route.params.id == -1){
-            this.addItem();
-            this.onCancel();
-          }
-          else{
-            this.updateItem();
-            this.onCancel();
-          }
-        }
-        else{
-          this.$message.error('Please fill in the required fields.');
-        }
-      });
-    },
     onSave() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
@@ -271,14 +230,15 @@ export default {
           else{
             this.updateItem();
           }
+          this.onClose();
         }
         else{
           this.$message.error('Please fill in the required fields.');
         }
       });
     },
-    onCancel() {
-      this.$router.push({path: this.from.fullPath})
+    onClose() {
+      this.$router.go(-1);
     }
   }
 }
