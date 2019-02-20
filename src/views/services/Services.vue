@@ -2,26 +2,28 @@
   <b-card no-header>
     <template slot="header">
       <au-listheader
-        handler="aggrigators"
+        handler="services"
         :multipleSelection="multipleSelection"
         @change="itemsChanged">
       </au-listheader>
     </template>
     <el-table ref="table" :data="items"  stripe style="width: 100%" border
           @selection-change="handleSelectionChange">
-      <el-table-column  type="selection"  width="40" align="center">
+      <el-table-column type="selection"  width="40" align="center">
       </el-table-column>
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="name" label="name" width="150">
       </el-table-column>
-      <el-table-column prop="title" label="title" width="240">
+      <el-table-column prop="title" label="title" width="180">
       </el-table-column>
-      <el-table-column prop="code" label="code" width="180">
+      <el-table-column prop="pendar" label="pendar" width="300">
       </el-table-column>
-      <el-table-column prop="phone" label="phone" width="180">
+      <el-table-column prop="mobile_operator" label="operator" width="150">
       </el-table-column>
-      <el-table-column prop="email" label="email" width="180">
+      <el-table-column prop="aggrigator" label="aggrigator" width="150">
+      </el-table-column>
+      <el-table-column prop="content_provider" label="content provider" width="150">
       </el-table-column>
       <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
       </el-table-column>
@@ -41,7 +43,7 @@ import {baseurl} from '../../config'
 import AUListHeader from '../../components/AU-ListHeader'
 
 export default {
-  name: 'Aggrigators',
+  name: 'Services',
   data() {
      return {
        items: [],

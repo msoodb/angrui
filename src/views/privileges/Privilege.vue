@@ -206,8 +206,9 @@ export default {
           'Authorization': token
         }
       }
-      this.joinPrivilegeString();
-      var data_request = JSON.stringify(this.form);
+      self.joinPrivilegeString();
+      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
+      var data_request = JSON.stringify(self.form);
       this.$axios.post(baseurl() + '/privileges', data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -242,7 +243,7 @@ export default {
         }
       }
       this.joinPrivilegeString();
-      var data_request = JSON.stringify(this.form);
+      var data_request = JSON.stringify(self.form);
       this.$axios.put(baseurl() + '/privileges/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){

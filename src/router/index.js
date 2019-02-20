@@ -85,9 +85,13 @@ const MobileOperator = () => import('@/views/mobile_operators/MobileOperator')
 const Aggrigators = () => import('@/views/aggrigators/Aggrigators')
 const Aggrigator = () => import('@/views/aggrigators/Aggrigator')
 
-// Aggrigators
+// ContentProviders
 const ContentProviders = () => import('@/views/content_providers/ContentProviders')
 const ContentProvider = () => import('@/views/content_providers/ContentProvider')
+
+// ContentProviders
+const Services = () => import('@/views/services/Services')
+const Service = () => import('@/views/services/Service')
 
 
 //Charts
@@ -329,6 +333,25 @@ export default new Router({
               meta: { label: 'ContentProvider Details'},
               name: 'ContentProvider',
               component: ContentProvider,
+            },
+          ]
+        },
+        {
+          path: 'services',
+          meta: { label: 'Services'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Services,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Service Details'},
+              name: 'Service',
+              component: Service,
             },
           ]
         },

@@ -194,7 +194,8 @@ export default {
           'Authorization': token
         }
       }
-      var data_request = JSON.stringify(this.form);
+      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
+      var data_request = JSON.stringify(self.form);
       this.$axios.post(baseurl() + '/content_providers', data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -228,7 +229,8 @@ export default {
           'Authorization': token
         }
       }
-      var data_request = JSON.stringify(this.form);
+      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
+      var data_request = JSON.stringify(self.form);
       this.$axios.put(baseurl() + '/content_providers/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){

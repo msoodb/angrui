@@ -163,7 +163,7 @@ export default {
           'Authorization': token
         }
       }
-      var data_request = JSON.stringify(this.form);
+      var data_request = JSON.stringify(self.form);
       this.$axios.post(baseurl() + '/users_security_roles', data_request, config )
         .then(function (response) {
           if(response.status == 200){
@@ -197,7 +197,7 @@ export default {
           'Authorization': token
         }
       }
-      var data_request = JSON.stringify(this.form);
+      var data_request = JSON.stringify(self.form);
       this.$axios.put(baseurl() + '/users_security_roles/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
