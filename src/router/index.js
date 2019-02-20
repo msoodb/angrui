@@ -101,6 +101,15 @@ const Member = () => import('@/views/members/Member')
 const Subscriptions = () => import('@/views/subscriptions/Subscriptions')
 const Subscription = () => import('@/views/subscriptions/Subscription')
 
+// Channel
+const Channels = () => import('@/views/channels/Channels')
+const Channel = () => import('@/views/channels/Channel')
+
+// Playlist
+const Playlists = () => import('@/views/playlists/Playlists')
+const Playlist = () => import('@/views/playlists/Playlist')
+
+
 
 //Charts
 //const Charts = () => import('@/views/charts')
@@ -398,6 +407,44 @@ export default new Router({
               meta: { label: 'Subscription Details'},
               name: 'Subscription',
               component: Subscription,
+            },
+          ]
+        },
+        {
+          path: 'channels',
+          meta: { label: 'Channels'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Channels,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Channel Details'},
+              name: 'Channel',
+              component: Channel,
+            },
+          ]
+        },
+        {
+          path: 'playlists',
+          meta: { label: 'Playlists'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Playlists,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Playlist Details'},
+              name: 'Playlist',
+              component: Playlist,
             },
           ]
         },

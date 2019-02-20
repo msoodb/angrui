@@ -12,14 +12,8 @@
                 <el-form-item label="title" prop="title">
                   <el-input type="title" v-model="form.title"></el-input>
                 </el-form-item>
-                <el-form-item label="code" prop="code">
-                  <el-input type="code" v-model="form.code"></el-input>
-                </el-form-item>
-                <el-form-item label="phone" prop="phone">
-                  <el-input type="phone" v-model="form.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="email" prop="email">
-                  <el-input type="email" v-model="form.email"></el-input>
+                <el-form-item label="channel" prop="channel">
+                  <au-lookup handler="channels" :id="form.channel" @select="ChannelLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="description">
                   <el-input type="textarea" v-model="form.description"></el-input>
@@ -59,10 +53,10 @@
              <hr/>
              <el-row :gutter="20">
                 <el-form-item>
-                <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-                <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
+                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
                 </el-form-item>
-             </el-row>
+              </el-row>
            </el-form>
           </el-tab-pane>
         </el-tabs>
@@ -72,19 +66,19 @@
 
 <script>
 import {baseurl} from '../../config'
+import AULookup from '../../components/AU-Lookup'
 import AUKeyValue from '../../components/AU-KeyValue'
 
+
 export default {
-  name: 'Aggrigator',
+  name: 'Playlist',
   data: () => {
     return {
       form: {
         id: '',
         name: '',
         title: '',
-        code: '',
-        phone: '',
-        email: '',
+        channel:'',
         created_at: '',
         updated_at: '',
         details: '',
@@ -109,18 +103,16 @@ export default {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-        ],
-        email: [
-          { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
         ]
       }
     }
   },
+  components: {
+    'au-lookup' : AULookup,
+    'au-keyValue':AUKeyValue
+  },
   created() {
      this.status = this.statuses[1];
-  },
-  components: {
-    'au-keyValue':AUKeyValue
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -128,6 +120,9 @@ export default {
     }
   },
   methods: {
+    ChannelLookupSelect(id){
+      this.form.channel = id;
+    },
     onChangeDetails(val){
       this.form.details = val;
     },
@@ -145,23 +140,20 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/aggrigators/' + id, config )
+      this.$axios.get(baseurl() + '/playlists/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
             self.form.name = response.data.name;
             self.form.title = response.data.title;
-            self.form.code = response.data.code;
-            self.form.phone = response.data.phone;
-            self.form.email = response.data.email;
+            self.form.channel = response.data.channel;
+            self.form.status = Number(response.data.status);
+            self.status = self.statuses[response.data.status];
+            self.form.situation = response.data.situation;
             self.form.created_at = response.data.created_at;
             self.form.updated_at = response.data.updated_at;
             self.created_by = response.data.created_by;
             self.updated_by = response.data.updated_by;
-            self.form.details = response.data.details;
-            self.form.status = Number(response.data.status);
-            self.status = self.statuses[response.data.status];
-            self.form.situation = response.data.situation;
             self.form.description = response.data.description;
           }
         }.bind(this))
@@ -186,7 +178,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/aggrigators', data_request, config )
+      this.$axios.post(baseurl() + '/playlists', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -221,7 +213,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/aggrigators/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/playlists/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -275,5 +267,8 @@ export default {
 }
 .el-table td, .el-table th{
   padding: 0px;
+}
+.el-form-item__content{
+  line-height:0px;
 }
 </style>
