@@ -4,7 +4,7 @@
         <el-button class="lookup" type="default" @click="onLookup">+</el-button>
       </el-col>
       <el-col :span="21">
-        <el-input readonly v-model="this.username"></el-input>
+        <el-input readonly v-model="this.phone"></el-input>
       </el-col>
       <el-dialog :visible.sync="dialogFormVisible">
         <div class="text-center" vertical-align="middle">
@@ -36,7 +36,7 @@ import {baseurl} from '../config'
 
 
 export default {
-  name: 'AU-UserLookup',
+  name: 'AU-MemberLookup',
   props: {
     handler: {
         type: String,
@@ -56,14 +56,9 @@ export default {
     return {
        columns:[
          {
-           prop:'username',
-           label:'username',
+           prop:'phone',
+           label:'phone',
            width:230
-         },
-         {
-           prop:'email',
-           label:'email',
-           width:366
          }
        ],
        items: [],
@@ -73,17 +68,10 @@ export default {
        result_count: 0,
        currentRow: null,
        dialogFormVisible: false,
-       username:''
+       phone:''
     }
   },
   methods:{
-    getName()
-    {
-      console.log(this);
-      if(this.id){
-        this.username = 'me';
-      }
-    },
     onLookup(){
       this.dialogFormVisible = true;
       this.getItems();
@@ -91,7 +79,7 @@ export default {
     onLookupConfirm(){
       this.dialogFormVisible = false;
       var id = this.currentRow.id;
-      this.username = this.currentRow.username;
+      this.phone = this.currentRow.phone;
       this.$emit('select', id);
     },
     handleCurrentChange (val) {
@@ -102,35 +90,35 @@ export default {
        this.currentRow = val;
     },
     getItems(){
-    var self = this;
-    var token = JSON.parse(localStorage.getItem("jwtoken"));
-    let config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
       }
-    }
-    if(!self.page || self.page == "undefined" || self.page < 1){
-      self.page = 1;
-    }
-    var url = '/' + this.handler + '?page=' + self.page;
-    this.$axios.get(baseurl() + url, config )
-      .then(function (response) {
-        if(response.status == 200){
-          self.items = response.data.items;
-          self.offset = Number(response.data.info.offset);
-          self.page_count = Number(response.data.info.page_count);
-          self.result_count = Number(response.data.info.result_count);
-        }
-      }.bind(this))
-      .catch(function (error) {
-        if(error.response && error.response.status == 401){
-          self.$router.push('/pages/login');
-        }else if(error.response && error.response.status == 403){
-          self.$message.warning('Forbidden request.');
-        }else{
-          self.$message.error('Unknown error.');
-        }
+      if(!self.page || self.page == "undefined" || self.page < 1){
+        self.page = 1;
+      }
+      var url = '/' + this.handler + '?page=' + self.page;
+      this.$axios.get(baseurl() + url, config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.items = response.data.items;
+            self.offset = Number(response.data.info.offset);
+            self.page_count = Number(response.data.info.page_count);
+            self.result_count = Number(response.data.info.result_count);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
       });
     },
     getItem(){
@@ -146,7 +134,7 @@ export default {
       this.$axios.get(baseurl() + url, config )
         .then(function (response) {
           if(response.status == 200){
-            self.username = response.data.username;
+            self.phone = response.data.phone;
           }
         }.bind(this))
         .catch(function (error) {

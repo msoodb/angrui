@@ -89,9 +89,17 @@ const Aggrigator = () => import('@/views/aggrigators/Aggrigator')
 const ContentProviders = () => import('@/views/content_providers/ContentProviders')
 const ContentProvider = () => import('@/views/content_providers/ContentProvider')
 
-// ContentProviders
+// Servic
 const Services = () => import('@/views/services/Services')
 const Service = () => import('@/views/services/Service')
+
+// Member
+const Members = () => import('@/views/members/Members')
+const Member = () => import('@/views/members/Member')
+
+// Member
+const Subscriptions = () => import('@/views/subscriptions/Subscriptions')
+const Subscription = () => import('@/views/subscriptions/Subscription')
 
 
 //Charts
@@ -352,6 +360,44 @@ export default new Router({
               meta: { label: 'Service Details'},
               name: 'Service',
               component: Service,
+            },
+          ]
+        },
+        {
+          path: 'members',
+          meta: { label: 'Members'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Members,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Member Details'},
+              name: 'Member',
+              component: Member,
+            },
+          ]
+        },
+        {
+          path: 'subscriptions',
+          meta: { label: 'Subscriptions'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Subscriptions,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Subscription Details'},
+              name: 'Subscription',
+              component: Subscription,
             },
           ]
         },

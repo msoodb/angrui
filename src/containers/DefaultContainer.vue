@@ -19,7 +19,9 @@
           <el-menu-item index="3-2" route="/aggrigators?page=1">Aggrigators</el-menu-item>
           <el-menu-item index="3-3" route="/content_providers?page=1">Content Providers</el-menu-item>
           <el-menu-item index="3-4" route="/services?page=1">Services</el-menu-item>
-          <el-menu-item index="3-5" route="/products?page=1">Products</el-menu-item>
+          <el-menu-item index="3-5" route="/members?page=1">Members</el-menu-item>
+          <el-menu-item index="3-5" route="/subscriptions?page=1">Subscriptions</el-menu-item>
+          <el-menu-item index="3-6" route="/products?page=1">Products</el-menu-item>
         </el-submenu>
         </el-menu>
       <div class="line"></div>
