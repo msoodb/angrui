@@ -79,7 +79,7 @@ import AUKeyValue from '../../components/AU-KeyValue'
 import AUUserLookup from '../../components/AU-UserLookup'
 
 export default {
-  name: 'ContentProvider',
+  name: 'Publisher',
   data: () => {
     return {
       form: {
@@ -158,7 +158,7 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/content_providers/' + id, config )
+      this.$axios.get(baseurl() + '/publishers/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
@@ -200,7 +200,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/content_providers', data_request, config )
+      this.$axios.post(baseurl() + '/publishers', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -235,7 +235,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/content_providers/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/publishers/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

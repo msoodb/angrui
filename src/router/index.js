@@ -109,6 +109,10 @@ const Channel = () => import('@/views/channels/Channel')
 const Playlists = () => import('@/views/playlists/Playlists')
 const Playlist = () => import('@/views/playlists/Playlist')
 
+// Publishers
+const Publishers = () => import('@/views/publishers/Publishers')
+const Publisher = () => import('@/views/publishers/Publisher')
+
 
 
 //Charts
@@ -445,6 +449,25 @@ export default new Router({
               meta: { label: 'Playlist Details'},
               name: 'Playlist',
               component: Playlist,
+            },
+          ]
+        },
+        {
+          path: 'publishers',
+          meta: { label: 'Publishers'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Publishers,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Publisher Details'},
+              name: 'Publisher',
+              component: Publisher,
             },
           ]
         },
