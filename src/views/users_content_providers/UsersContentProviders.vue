@@ -4,7 +4,7 @@
       <b-card no-header>
         <template slot="header">
           <au-listheader
-            handler="users_security_roles"
+            handler="users_content_providers"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">
           </au-listheader>
@@ -17,7 +17,7 @@
           </el-table-column>
           <el-table-column prop="_user_" label="user" width="180">
           </el-table-column>
-          <el-table-column prop="security_role" label="security role" width="180">
+          <el-table-column prop="content_provider" label="content provider" width="180">
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
@@ -40,7 +40,7 @@ import AUListHeader from '../../components/AU-ListHeader'
 
 
 export default {
-  name: 'UsersSecurityRoles',
+  name: 'UsersContentProviders',
   data() {
      return {
        items: [],

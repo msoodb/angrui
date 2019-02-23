@@ -24,7 +24,9 @@
           <el-menu-item index="3-7" route="/channels?page=1">Channels</el-menu-item>
           <el-menu-item index="3-8" route="/playlists?page=1">Playlists</el-menu-item>
           <el-menu-item index="3-9" route="/publishers?page=1">Publishers</el-menu-item>
-          <el-menu-item index="3-10" route="/products?page=1">Products</el-menu-item>
+          <el-menu-item index="3-10" route="/users_content_providers?page=1">Users Content Providers</el-menu-item>
+          <el-menu-item index="3-11" route="/users_publishers?page=1">Users Publishers</el-menu-item>
+          <el-menu-item index="3-12" route="/products?page=1">Products</el-menu-item>
         </el-submenu>
         </el-menu>
       <div class="line"></div>

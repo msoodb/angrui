@@ -113,7 +113,13 @@ const Playlist = () => import('@/views/playlists/Playlist')
 const Publishers = () => import('@/views/publishers/Publishers')
 const Publisher = () => import('@/views/publishers/Publisher')
 
+// UsersContentProvider
+const UsersContentProviders = () => import('@/views/users_content_providers/UsersContentProviders')
+const UsersContentProvider = () => import('@/views/users_content_providers/UsersContentProvider')
 
+// UsersPublisher
+const UsersPublishers = () => import('@/views/users_publishers/UsersPublishers')
+const UsersPublisher = () => import('@/views/users_publishers/UsersPublisher')
 
 //Charts
 //const Charts = () => import('@/views/charts')
@@ -468,6 +474,44 @@ export default new Router({
               meta: { label: 'Publisher Details'},
               name: 'Publisher',
               component: Publisher,
+            },
+          ]
+        },
+        {
+          path: 'users_content_providers',
+          meta: { label: 'UsersContentProviders'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: UsersContentProviders,
+            },
+            {
+              path: ':id',
+              meta: { label: 'UsersContentProvider Details'},
+              name: 'UsersContentProvider',
+              component: UsersContentProvider,
+            },
+          ]
+        },
+        {
+          path: 'users_publishers',
+          meta: { label: 'UsersPublishers'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: UsersPublishers,
+            },
+            {
+              path: ':id',
+              meta: { label: 'UsersPublisher Details'},
+              name: 'UsersPublisher',
+              component: UsersPublisher,
             },
           ]
         },
