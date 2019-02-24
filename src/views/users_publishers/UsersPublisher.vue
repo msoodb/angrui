@@ -9,8 +9,8 @@
                 <el-form-item label="user" prop="user_lookup">
                   <au-user-lookup handler="users" :id="form._user_" @select="userLookupSelect"></au-user-lookup>
                 </el-form-item>
-                <el-form-item label="content provider" prop="publisher">
-                  <au-lookup handler="publishers" :id="form.publisher" @select="SecurityRoleLookupSelect"></au-lookup>
+                <el-form-item label="publisher" prop="publisher">
+                  <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="description">
                   <el-input type="textarea" v-model="form.description"></el-input>
@@ -111,7 +111,7 @@ export default {
     userLookupSelect(id){
       this.form._user_ = id;
     },
-    SecurityRoleLookupSelect(id){
+    PublisherLookupSelect(id){
       this.form.publisher = id;
     },
     onStatusChange(selected){
