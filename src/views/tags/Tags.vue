@@ -2,31 +2,22 @@
   <b-card no-header>
     <template slot="header">
       <au-listheader
-        handler="subscriptions"
+        handler="tags"
         :multipleSelection="multipleSelection"
         @change="itemsChanged">
       </au-listheader>
     </template>
     <el-table ref="table" :data="items"  stripe style="width: 100%" border
           @selection-change="handleSelectionChange">
-      <el-table-column  type="selection"  width="40" align="center">
+      <el-table-column type="selection"  width="40" align="center">
       </el-table-column>
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
-      <el-table-column prop="member" label="member" width="180">
-      </el-table-column>
-      <el-table-column prop="service" label="service" width="180">
-      </el-table-column>
-      <el-table-column prop="last_login" label="last login" width="180" :formatter="formatDateTime">
+      <el-table-column prop="name" label="name" width="150">
       </el-table-column>
       <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
       </el-table-column>
       <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
-      </el-table-column>
-      <el-table-column prop="status" label="status" width="120" align="center">
-        <template slot-scope="scope">
-          {{scope.row.status == 0 ? 'disable' : 'enable' }}
-        </template>
       </el-table-column>
     </el-table>
   </b-card>
@@ -37,7 +28,7 @@ import {baseurl} from '../../config'
 import AUListHeader from '../../components/AU-ListHeader'
 
 export default {
-  name: 'Subscriptions',
+  name: 'Tags',
   data() {
      return {
        items: [],
@@ -57,10 +48,6 @@ export default {
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
-    },
-    formatDateTime(row, column, cellValue){
-      var dateTime = cellValue.split('+');
-      return dateTime[0];
     }
   }
 }

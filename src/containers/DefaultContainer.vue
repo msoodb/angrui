@@ -6,27 +6,38 @@
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router>
         <el-menu-item index="1" route="/dashboard">Dashboard</el-menu-item>
         <el-submenu index="2">
-          <template slot="title">Security</template>
-          <el-menu-item index="2-1" route="/users?page=1">Users</el-menu-item>
-          <el-menu-item index="2-2" route="/security_roles?page=1">Security Roles</el-menu-item>
-          <el-menu-item index="2-3" route="/users_security_roles?page=1">Users Security Roles</el-menu-item>
-          <el-menu-item index="2-4" route="/privileges?page=1">Privileges</el-menu-item>
-          <el-menu-item index="2-5" route="/entities?page=1">Entities</el-menu-item>
+          <template slot="title">Zeus</template>
+          <el-menu-item index="2-1" route="/users_security_roles?page=1">Users Security Roles</el-menu-item>
+          <el-menu-item index="2-2" route="/privileges?page=1">Privileges</el-menu-item>
+          <el-menu-item index="2-3" route="/entities?page=1">Entities</el-menu-item>
+          <el-menu-item index="2-4" route="/users_content_providers?page=1">Users Content Providers</el-menu-item>
+          <el-menu-item index="2-5" route="/users_publishers?page=1">Users Publishers</el-menu-item>
+          <el-menu-item index="2-5" route="/tags?page=1">Tags</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
+          <template slot="title">User</template>
+          <el-menu-item index="3-1" route="/users?page=1">Users</el-menu-item>
+          <el-menu-item index="3-2" route="/security_roles?page=1">Security Roles</el-menu-item>
+          <el-menu-item index="3-3" route="/members?page=1">Members</el-menu-item>
+          <el-menu-item index="4-2" route="/subscriptions?page=1">Subscriptions</el-menu-item>
+        </el-submenu>
+        <el-submenu index="4">
           <template slot="title">Data</template>
-          <el-menu-item index="3-1" route="/mobile_operators?page=1">Mobile Operators</el-menu-item>
-          <el-menu-item index="3-2" route="/aggrigators?page=1">Aggrigators</el-menu-item>
-          <el-menu-item index="3-3" route="/content_providers?page=1">Content Providers</el-menu-item>
-          <el-menu-item index="3-4" route="/services?page=1">Services</el-menu-item>
-          <el-menu-item index="3-5" route="/members?page=1">Members</el-menu-item>
-          <el-menu-item index="3-6" route="/subscriptions?page=1">Subscriptions</el-menu-item>
-          <el-menu-item index="3-7" route="/channels?page=1">Channels</el-menu-item>
-          <el-menu-item index="3-8" route="/playlists?page=1">Playlists</el-menu-item>
-          <el-menu-item index="3-9" route="/publishers?page=1">Publishers</el-menu-item>
-          <el-menu-item index="3-10" route="/users_content_providers?page=1">Users Content Providers</el-menu-item>
-          <el-menu-item index="3-11" route="/users_publishers?page=1">Users Publishers</el-menu-item>
-          <el-menu-item index="3-12" route="/products?page=1">Products</el-menu-item>
+          <el-menu-item index="4-1" route="/mobile_operators?page=1">Mobile Operators</el-menu-item>
+          <el-menu-item index="4-2" route="/aggrigators?page=1">Aggrigators</el-menu-item>
+          <el-menu-item index="4-3" route="/content_providers?page=1">Content Providers</el-menu-item>
+          <el-menu-item index="4-5" route="/publishers?page=1">Publishers</el-menu-item>
+        </el-submenu>
+        <el-submenu index="5">
+          <template slot="title">Operation</template>
+          <el-menu-item index="5-1" route="/services?page=1">Services</el-menu-item>
+          <el-menu-item index="5-2" route="/channels?page=1">Channels</el-menu-item>
+          <el-menu-item index="5-3" route="/playlists?page=1">Playlists</el-menu-item>
+          <el-menu-item index="5-4" route="/contents?page=1">Contents</el-menu-item>
+        </el-submenu>
+        <el-submenu index="6">
+          <template slot="title">Products</template>
+          <el-menu-item index="6-1" route="/products?page=1">Products</el-menu-item>
         </el-submenu>
         </el-menu>
       <div class="line"></div>

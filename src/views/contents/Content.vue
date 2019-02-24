@@ -6,32 +6,21 @@
           <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
             <el-row :gutter="20">
               <el-col :span="16">
-                <el-form-item label="name" prop="name">
-                  <el-input type="name" v-model="form.name"></el-input>
+                <el-form-item label="service" prop="service">
+                  <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
                 </el-form-item>
-                <el-form-item label="title" prop="title">
-                  <el-input v-model="form.title"></el-input>
+                <el-form-item label="publisher" prop="publisher">
+                  <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
                 </el-form-item>
-                <el-form-item label="code" prop="code">
-                  <el-input v-model="form.code"></el-input>
-                </el-form-item>
-                <el-form-item label="pendar" prop="pendar">
-                  <el-input v-model="form.pendar"></el-input>
-                </el-form-item>
-                <el-form-item label="mobile operator" prop="mobile_operator">
-                  <au-lookup handler="mobile_operators" :id="form.mobile_operator" @select="MobileOperatorLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="aggrigator" prop="aggrigator">
-                  <au-lookup handler="aggrigators" :id="form.aggrigator" @select="AggrigatorLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="content provider" prop="content_provider">
-                  <au-lookup handler="content_providers" :id="form.content_provider" @select="ContentProviderLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="description">
-                  <el-input type="textarea" v-model="form.description"></el-input>
-                </el-form-item>
-                <el-form-item label="details">
-                  <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+                <el-form-item label="type" prop="type">
+                  <el-select v-model="type" value-key="value" placeholder="Select" @change="onTypeChange">
+                    <el-option
+                      v-for="item in types"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -79,21 +68,16 @@
 <script>
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
-import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
-  name: 'Service',
+  name: 'Content',
   data: () => {
     return {
       form: {
         id: '',
-        pendar:'',
-        mobile_operator:'',
-        aggrigator:'',
-        content_provider:'',
-        name: '',
-        title: '',
-        code: '',
+        service:'',
+        publisher:'',
+        type: '0',
         created_at: '',
         updated_at: '',
         details: '',
@@ -112,27 +96,23 @@ export default {
         }
       ],
       status : null,
+      types: [
+        {
+          value: '0',
+          label: 'video'
+        }
+      ],
+      type : null,
       rules: {
-        name: [
-          { required: true, message: 'Please input name', trigger: 'change' },
-          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-        ],
-        phone: [
-          { required: true, message: 'Please input code', trigger: 'change' }
-        ],
-        email: [
-          { required: true, message: 'Please input email', trigger: 'change' },
-          { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
-        ]
       }
     }
   },
   created() {
      this.status = this.statuses[1];
+     this.type = this.types[0];
   },
   components: {
-    'au-lookup' : AULookup,
-    'au-keyValue': AUKeyValue
+    'au-lookup' : AULookup
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -140,21 +120,19 @@ export default {
     }
   },
   methods: {
-    MobileOperatorLookupSelect(id){
-      this.form.mobile_operator = id;
+    ServiceLookupSelect(id){
+      this.form.service = id;
     },
-    AggrigatorLookupSelect(id){
-      this.form.aggrigator = id;
-    },
-    ContentProviderLookupSelect(id){
-      this.form.content_provider = id;
-    },
-    onChangeDetails(val){
-      this.form.details = val;
+    PublisherLookupSelect(id){
+      this.form.publisher = id;
     },
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
+    },
+    onTypeChange(selected){
+      this.type = selected;
+      this.form.type = this.type['value'];
     },
     getItem(){
       var self = this;
@@ -166,17 +144,14 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/services/' + id, config )
+      this.$axios.get(baseurl() + '/contents/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
-            self.form.pendar = response.data.pendar;
-            self.form.mobile_operator = response.data.mobile_operator;
-            self.form.aggrigator = response.data.aggrigator;
-            self.form.content_provider = response.data.content_provider;
-            self.form.name = response.data.name;
-            self.form.title = response.data.title;
-            self.form.code = response.data.code;
+            self.form.service = response.data.service;
+            self.form.publisher = response.data.publisher;
+            self.form.type = Number(response.data.type);
+            self.type = self.types[response.data.type];
             self.form.created_at = response.data.created_at;
             self.form.updated_at = response.data.updated_at;
             self.form.details = response.data.details;
@@ -207,7 +182,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/services', data_request, config )
+      this.$axios.post(baseurl() + '/contents', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -242,7 +217,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/services/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/contents/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

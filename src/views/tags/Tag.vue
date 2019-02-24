@@ -9,42 +9,8 @@
                 <el-form-item label="name" prop="name">
                   <el-input type="name" v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="title" prop="title">
-                  <el-input v-model="form.title"></el-input>
-                </el-form-item>
-                <el-form-item label="code" prop="code">
-                  <el-input v-model="form.code"></el-input>
-                </el-form-item>
-                <el-form-item label="pendar" prop="pendar">
-                  <el-input v-model="form.pendar"></el-input>
-                </el-form-item>
-                <el-form-item label="mobile operator" prop="mobile_operator">
-                  <au-lookup handler="mobile_operators" :id="form.mobile_operator" @select="MobileOperatorLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="aggrigator" prop="aggrigator">
-                  <au-lookup handler="aggrigators" :id="form.aggrigator" @select="AggrigatorLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="content provider" prop="content_provider">
-                  <au-lookup handler="content_providers" :id="form.content_provider" @select="ContentProviderLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="description">
-                  <el-input type="textarea" v-model="form.description"></el-input>
-                </el-form-item>
-                <el-form-item label="details">
-                  <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
-                </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="status" prop="status">
-                  <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
-                    <el-option
-                      v-for="item in statuses"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
                 <el-form-item label="id" prop="id">
                   <el-input v-model="form.id" disabled></el-input>
                 </el-form-item>
@@ -61,78 +27,49 @@
                   <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
                 </el-form-item>
               </el-col>
-            </el-row>
-            <hr/>
-            <el-row :gutter="20">
+             </el-row>
+             <hr/>
+             <el-row :gutter="20">
                 <el-form-item>
                 <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
                 <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
                 </el-form-item>
-            </el-row>
-          </el-form>
-        </el-tab-pane>
-      </el-tabs>
+             </el-row>
+           </el-form>
+          </el-tab-pane>
+        </el-tabs>
     </el-main>
   </el-container>
 </template>
 
 <script>
 import {baseurl} from '../../config'
-import AULookup from '../../components/AU-Lookup'
-import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
-  name: 'Service',
+  name: 'Tag',
   data: () => {
     return {
       form: {
         id: '',
-        pendar:'',
-        mobile_operator:'',
-        aggrigator:'',
-        content_provider:'',
         name: '',
         title: '',
-        code: '',
         created_at: '',
         updated_at: '',
         details: '',
+        type: '0',
         status: '1',
         situation:'0',
         description: ''
       },
-      statuses: [
-        {
-          value: '0',
-          label: 'disable'
-        },
-        {
-          value: '1',
-          label: 'enable'
-        }
-      ],
-      status : null,
+      created_by:'',
+      updated_by:'',
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-        ],
-        phone: [
-          { required: true, message: 'Please input code', trigger: 'change' }
-        ],
-        email: [
-          { required: true, message: 'Please input email', trigger: 'change' },
-          { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
         ]
       }
     }
-  },
-  created() {
-     this.status = this.statuses[1];
-  },
-  components: {
-    'au-lookup' : AULookup,
-    'au-keyValue': AUKeyValue
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -140,22 +77,6 @@ export default {
     }
   },
   methods: {
-    MobileOperatorLookupSelect(id){
-      this.form.mobile_operator = id;
-    },
-    AggrigatorLookupSelect(id){
-      this.form.aggrigator = id;
-    },
-    ContentProviderLookupSelect(id){
-      this.form.content_provider = id;
-    },
-    onChangeDetails(val){
-      this.form.details = val;
-    },
-    onStatusChange(selected){
-      this.status = selected;
-      this.form.status = this.status['value'];
-    },
     getItem(){
       var self = this;
       var id = self.$route.params.id;
@@ -166,22 +87,20 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/services/' + id, config )
+      this.$axios.get(baseurl() + '/tags/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
-            self.form.pendar = response.data.pendar;
-            self.form.mobile_operator = response.data.mobile_operator;
-            self.form.aggrigator = response.data.aggrigator;
-            self.form.content_provider = response.data.content_provider;
             self.form.name = response.data.name;
             self.form.title = response.data.title;
-            self.form.code = response.data.code;
             self.form.created_at = response.data.created_at;
             self.form.updated_at = response.data.updated_at;
+            self.created_by = response.data.created_by;
+            self.updated_by = response.data.updated_by;
             self.form.details = response.data.details;
             self.form.status = Number(response.data.status);
             self.status = self.statuses[response.data.status];
+            self.form.type = Number(response.data.type);
             self.form.situation = response.data.situation;
             self.form.description = response.data.description;
           }
@@ -207,7 +126,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/services', data_request, config )
+      this.$axios.post(baseurl() + '/tags', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -242,7 +161,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/services/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/tags/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

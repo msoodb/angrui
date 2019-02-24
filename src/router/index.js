@@ -121,6 +121,14 @@ const UsersContentProvider = () => import('@/views/users_content_providers/Users
 const UsersPublishers = () => import('@/views/users_publishers/UsersPublishers')
 const UsersPublisher = () => import('@/views/users_publishers/UsersPublisher')
 
+// UsersPublisher
+const Tags = () => import('@/views/tags/Tags')
+const Tag = () => import('@/views/tags/Tag')
+
+// UsersPublisher
+const Contents = () => import('@/views/contents/Contents')
+const Content = () => import('@/views/contents/Content')
+
 //Charts
 //const Charts = () => import('@/views/charts')
 const ProductChart = () => import('@/views/charts/ProductChart')
@@ -191,6 +199,44 @@ export default new Router({
           path: 'widgets',
           name: 'Widgets',
           component: Widgets
+        },
+        {
+          path: 'tags',
+          meta: { label: 'Tags'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Tags,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Tag Details'},
+              name: 'Tag',
+              component: Tag,
+            },
+          ]
+        },
+        {
+          path: 'contents',
+          meta: { label: 'Contents'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Contents,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Content Details'},
+              name: 'Content',
+              component: Content,
+            },
+          ]
         },
         {
           path: 'users',
