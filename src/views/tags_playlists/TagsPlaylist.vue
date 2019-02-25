@@ -1,4 +1,4 @@
-Service<template>
+<template>
   <el-container>
     <el-main>
       <el-tabs type="border-card">
@@ -6,20 +6,14 @@ Service<template>
           <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
             <el-row :gutter="20">
               <el-col :span="16">
-                <el-form-item label="name" prop="name">
-                  <el-input type="name" v-model="form.name"></el-input>
+                <el-form-item label="tag" prop="tag">
+                  <au-lookup handler="tags" :id="form.tag" @select="TagLookupSelect"></au-lookup>
                 </el-form-item>
-                <el-form-item label="title" prop="title">
-                  <el-input type="title" v-model="form.title"></el-input>
-                </el-form-item>
-                <el-form-item label="service" prop="service">
-                  <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
+                <el-form-item label="playlist" prop="playlist">
+                  <au-lookup handler="playlists" :id="form.playlist" @select="PlaylistLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="description">
                   <el-input type="textarea" v-model="form.description"></el-input>
-                </el-form-item>
-                <el-form-item label="details">
-                  <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -67,21 +61,17 @@ Service<template>
 <script>
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
-import AUKeyValue from '../../components/AU-KeyValue'
-
 
 export default {
-  name: 'Playlist',
+  name: 'TagsPlaylist',
   data: () => {
     return {
       form: {
         id: '',
-        name: '',
-        title: '',
-        service:'',
+        tag:'',
+        playlist: '',
         created_at: '',
         updated_at: '',
-        details: '',
         status: '1',
         situation:'0',
         description: ''
@@ -100,16 +90,11 @@ export default {
       ],
       status : null,
       rules: {
-        name: [
-          { required: true, message: 'Please input name', trigger: 'change' },
-          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-        ]
       }
     }
   },
   components: {
-    'au-lookup' : AULookup,
-    'au-keyValue':AUKeyValue
+    'au-lookup' : AULookup
   },
   created() {
      this.status = this.statuses[1];
@@ -120,11 +105,11 @@ export default {
     }
   },
   methods: {
-    ServiceLookupSelect(id){
-      this.form.service = id;
+    TagLookupSelect(id){
+      this.form.tag = id;
     },
-    onChangeDetails(val){
-      this.form.details = val;
+    PlaylistLookupSelect(id){
+      this.form.playlist = id;
     },
     onStatusChange(selected){
       this.status = selected;
@@ -140,13 +125,12 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/playlists/' + id, config )
+      this.$axios.get(baseurl() + '/tags_playlists/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
-            self.form.name = response.data.name;
-            self.form.title = response.data.title;
-            self.form.service = response.data.service;
+            self.form.tag = response.data.tag;
+            self.form.playlist = response.data.playlist;
             self.form.status = Number(response.data.status);
             self.status = self.statuses[response.data.status];
             self.form.situation = response.data.situation;
@@ -176,9 +160,8 @@ export default {
           'Authorization': token
         }
       }
-      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/playlists', data_request, config )
+      this.$axios.post(baseurl() + '/tags_playlists', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -211,9 +194,8 @@ export default {
           'Authorization': token
         }
       }
-      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/playlists/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/tags_playlists/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

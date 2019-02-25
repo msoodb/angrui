@@ -4,7 +4,7 @@
       <b-card no-header>
         <template slot="header">
           <au-listheader
-            handler="playlists"
+            handler="tags_channels"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">
           </au-listheader>
@@ -15,11 +15,9 @@
           </el-table-column>
           <el-table-column  type="index"  width="40" align="center">
           </el-table-column>
-          <el-table-column prop="name" label="name" width="150">
+          <el-table-column prop="tag" label="tag" width="180">
           </el-table-column>
-          <el-table-column prop="title" label="title" width="240">
-          </el-table-column>
-          <el-table-column prop="service" label="service" width="150">
+          <el-table-column prop="channel" label="channel" width="180">
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
@@ -42,7 +40,7 @@ import AUListHeader from '../../components/AU-ListHeader'
 
 
 export default {
-  name: 'Playlists',
+  name: 'TagsChannels',
   data() {
      return {
        items: [],

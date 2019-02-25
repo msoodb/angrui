@@ -121,13 +121,29 @@ const UsersContentProvider = () => import('@/views/users_content_providers/Users
 const UsersPublishers = () => import('@/views/users_publishers/UsersPublishers')
 const UsersPublisher = () => import('@/views/users_publishers/UsersPublisher')
 
-// UsersPublisher
+// Tag
 const Tags = () => import('@/views/tags/Tags')
 const Tag = () => import('@/views/tags/Tag')
 
-// UsersPublisher
+// Content
 const Contents = () => import('@/views/contents/Contents')
 const Content = () => import('@/views/contents/Content')
+
+// TagsChannel
+const TagsChannels = () => import('@/views/tags_channels/TagsChannels')
+const TagsChannel = () => import('@/views/tags_channels/TagsChannel')
+
+// TagsPlaylist
+const TagsPlaylists = () => import('@/views/tags_playlists/TagsPlaylists')
+const TagsPlaylist = () => import('@/views/tags_playlists/TagsPlaylist')
+
+// TagsContent
+const TagsContents = () => import('@/views/tags_contents/TagsContents')
+const TagsContent = () => import('@/views/tags_contents/TagsContent')
+
+// Video
+const Videos = () => import('@/views/videos/Videos')
+const Video = () => import('@/views/videos/Video')
 
 //Charts
 //const Charts = () => import('@/views/charts')
@@ -220,6 +236,63 @@ export default new Router({
           ]
         },
         {
+          path: 'tags_channels',
+          meta: { label: 'TagsChannels'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: TagsChannels,
+            },
+            {
+              path: ':id',
+              meta: { label: 'TagsChannel Details'},
+              name: 'TagsChannel',
+              component: TagsChannel,
+            },
+          ]
+        },
+        {
+          path: 'tags_playlists',
+          meta: { label: 'TagsPlaylists'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: TagsPlaylists,
+            },
+            {
+              path: ':id',
+              meta: { label: 'TagsPlaylist Details'},
+              name: 'TagsPlaylist',
+              component: TagsPlaylist,
+            },
+          ]
+        },
+        {
+          path: 'tags_contents',
+          meta: { label: 'TagsContents'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: TagsContents,
+            },
+            {
+              path: ':id',
+              meta: { label: 'TagsContent Details'},
+              name: 'TagsContent',
+              component: TagsContent,
+            },
+          ]
+        },
+        {
           path: 'contents',
           meta: { label: 'Contents'},
           component: {
@@ -235,6 +308,25 @@ export default new Router({
               meta: { label: 'Content Details'},
               name: 'Content',
               component: Content,
+            },
+          ]
+        },
+        {
+          path: 'videos',
+          meta: { label: 'Videos'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Videos,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Video Details'},
+              name: 'Video',
+              component: Video,
             },
           ]
         },
