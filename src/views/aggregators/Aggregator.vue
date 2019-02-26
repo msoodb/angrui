@@ -75,7 +75,7 @@ import {baseurl} from '../../config'
 import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
-  name: 'Aggrigator',
+  name: 'Aggregator',
   data: () => {
     return {
       form: {
@@ -145,7 +145,7 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/aggrigators/' + id, config )
+      this.$axios.get(baseurl() + '/aggregators/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
@@ -186,7 +186,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/aggrigators', data_request, config )
+      this.$axios.post(baseurl() + '/aggregators', data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -221,7 +221,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/aggrigators/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/aggregators/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

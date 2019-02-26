@@ -28,7 +28,7 @@
         <el-submenu index="4">
           <template slot="title">Data</template>
           <el-menu-item index="4-1" route="/mobile_operators?page=1">Mobile Operators</el-menu-item>
-          <el-menu-item index="4-2" route="/aggrigators?page=1">Aggrigators</el-menu-item>
+          <el-menu-item index="4-2" route="/aggregators?page=1">Aggregators</el-menu-item>
           <el-menu-item index="4-3" route="/content_providers?page=1">Content Providers</el-menu-item>
           <el-menu-item index="4-4" route="/publishers?page=1">Publishers</el-menu-item>
         </el-submenu>

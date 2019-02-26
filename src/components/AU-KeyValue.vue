@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mbuttom">
     <el-table :data=itemsKeyValue border>
       <el-table-column type="index"  width="40" align="center">
       </el-table-column>
@@ -17,7 +17,7 @@
         </template>
       </el-table-column>
       </el-table>
-      <el-button icon="el-icon-circle-plus" type="default" size="mini" @click="onAdd()">Add</el-button>
+      <el-button icon="el-icon-circle-plus" type="primary" size="mini" @click="onAdd()">Add</el-button>
       <el-dialog ref="detailsDialog" :title=title :visible.sync="dialogVisible">
         <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="70px" inline-message>
           <el-form-item label="key" prop="key">
@@ -120,5 +120,8 @@ export default {
 <style scoped>
 .el-table td, .el-table th{
   padding: 0px;
+}
+.mbuttom{
+  margin-bottom: 10px;
 }
 </style>

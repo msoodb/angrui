@@ -21,8 +21,8 @@
                 <el-form-item label="mobile operator" prop="mobile_operator">
                   <au-lookup handler="mobile_operators" :id="form.mobile_operator" @select="MobileOperatorLookupSelect"></au-lookup>
                 </el-form-item>
-                <el-form-item label="aggrigator" prop="aggrigator">
-                  <au-lookup handler="aggrigators" :id="form.aggrigator" @select="AggrigatorLookupSelect"></au-lookup>
+                <el-form-item label="aggregator" prop="aggregator">
+                  <au-lookup handler="aggregators" :id="form.aggregator" @select="AggregatorLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="content provider" prop="content_provider">
                   <au-lookup handler="content_providers" :id="form.content_provider" @select="ContentProviderLookupSelect"></au-lookup>
@@ -89,7 +89,7 @@ export default {
         id: '',
         pendar:'',
         mobile_operator:'',
-        aggrigator:'',
+        aggregator:'',
         content_provider:'',
         name: '',
         title: '',
@@ -143,8 +143,8 @@ export default {
     MobileOperatorLookupSelect(id){
       this.form.mobile_operator = id;
     },
-    AggrigatorLookupSelect(id){
-      this.form.aggrigator = id;
+    AggregatorLookupSelect(id){
+      this.form.aggregator = id;
     },
     ContentProviderLookupSelect(id){
       this.form.content_provider = id;
@@ -172,7 +172,7 @@ export default {
             self.form.id = response.data.id;
             self.form.pendar = response.data.pendar;
             self.form.mobile_operator = response.data.mobile_operator;
-            self.form.aggrigator = response.data.aggrigator;
+            self.form.aggregator = response.data.aggregator;
             self.form.content_provider = response.data.content_provider;
             self.form.name = response.data.name;
             self.form.title = response.data.title;

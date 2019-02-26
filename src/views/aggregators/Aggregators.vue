@@ -2,7 +2,7 @@
   <b-card no-header>
     <template slot="header">
       <au-listheader
-        handler="aggrigators"
+        handler="aggregators"
         :multipleSelection="multipleSelection"
         @change="itemsChanged">
       </au-listheader>
@@ -41,7 +41,7 @@ import {baseurl} from '../../config'
 import AUListHeader from '../../components/AU-ListHeader'
 
 export default {
-  name: 'Aggrigators',
+  name: 'Aggregators',
   data() {
      return {
        items: [],

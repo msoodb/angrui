@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column prop="mobile_operator" label="operator" width="150">
       </el-table-column>
-      <el-table-column prop="aggrigator" label="aggrigator" width="150">
+      <el-table-column prop="aggregator" label="aggregator" width="150">
       </el-table-column>
       <el-table-column prop="content_provider" label="content provider" width="150">
       </el-table-column>

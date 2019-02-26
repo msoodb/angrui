@@ -67,6 +67,9 @@
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                 </el-form-item>
+                <el-form-item label="security roles">
+                  <au-relation entity="users" :id="user_id" handler="users_security_roles" column="security_role" title="security role"></au-relation>
+                </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="status" prop="status">
@@ -105,30 +108,6 @@
              </el-row>
            </el-form>
           </el-tab-pane>
-          <el-tab-pane label="Security Roles">
-            <el-table ref="table" :data="security_roles"  stripe style="width: 100%" border>
-              <el-table-column  type="index"  width="40">
-              </el-table-column>
-              <el-table-column prop="security_role" label="security role" width="180">
-              </el-table-column>
-              <el-table-column prop="status" label="status" width="120" align="center">
-                <template slot-scope="scope">
-                  {{scope.row.status == 0 ? 'disable' : 'enable' }}
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="Privileges">
-            <el-table ref="table" :data="privileges"  stripe style="width: 100%" border>
-              <el-table-column prop="security_role" label="security role" width="180">
-              </el-table-column>
-              <el-table-column prop="status" label="status" width="120" align="center">
-                <template slot-scope="scope">
-                  {{scope.row.status == 0 ? 'disable' : 'enable' }}
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
         </el-tabs>
     </el-main>
   </el-container>
@@ -137,6 +116,8 @@
 <script>
 import {baseurl} from '../../config'
 import AUKeyValue from '../../components/AU-KeyValue'
+import AURelation from '../../components/AU-Relation'
+
 
 export default {
   name: 'User',
@@ -181,7 +162,6 @@ export default {
       avatarUrl: '',
       avatar_action:'',
       avatar_headers:{},
-      security_roles: [],
       statuses: [
         {
           value: '0',
@@ -235,7 +215,8 @@ export default {
     }
   },
   components: {
-    'au-keyValue':AUKeyValue
+    'au-keyValue':AUKeyValue,
+    'au-relation':AURelation
   },
   created() {
      this.status = this.statuses[1];
@@ -295,7 +276,6 @@ export default {
             self.created_by = response.data.created_by;
             self.updated_by = response.data.updated_by;
             self.form.description = response.data.description;
-            this.getSecurityRoles()
           }
         }.bind(this))
         .catch(function (error) {
@@ -306,26 +286,6 @@ export default {
           }else{
             self.$message.error('Unknown error.');
           }
-      });
-    },
-    getSecurityRoles(){
-    var self = this;
-    var token = JSON.parse(localStorage.getItem("jwtoken"));
-    let config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      }
-    }
-    //var user_id = JSON.parse(localStorage.getItem("user_id"));
-    var user_id = self.form.id;
-    var filter = btoa('_user_=\'' + user_id + '\'');
-    var url = '/users_security_roles?page=1' + '&filter=' + filter;
-    this.$axios.get(baseurl() + url, config )
-      .then(function (response) {
-        if(response.status == 200){
-          self.security_roles = response.data.items;
-        }
       });
     },
     addItem(){
@@ -502,5 +462,9 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.el-textarea__inner{
+  margin-bottom: 10px;
+  height: 150px;
 }
 </style>
