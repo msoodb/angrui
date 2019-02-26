@@ -15,6 +15,37 @@
                 <el-form-item label="description">
                   <el-input type="textarea" v-model="form.description"></el-input>
                 </el-form-item>
+                <el-table ref="table" :data="items" stripe height="350" style="width: 100%;" border >
+                  <el-table-column  type="index"  width="40" align="center">
+                  </el-table-column>
+                  <el-table-column prop="name" label="name" width="180">
+                  </el-table-column>
+                  <el-table-column  label="get items" width="90" align="center">
+                    <template slot-scope="scope">
+                      <el-checkbox :checked="scope.row.isKey== 1"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column  label="get item" width="90" align="center">
+                    <template slot-scope="scope">
+                      <el-checkbox :checked="scope.row.isKey== 1"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column  label="add item" width="90" align="center">
+                    <template slot-scope="scope">
+                      <el-checkbox :checked="scope.row.isKey== 1"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column  label="update item" width="110" align="center">
+                    <template slot-scope="scope">
+                      <el-checkbox :checked="scope.row.isKey== 1"/>
+                    </template>
+                  </el-table-column>
+                  <el-table-column  label="delete item" width="100" align="center">
+                    <template slot-scope="scope">
+                      <el-checkbox :checked="scope.row.isKey== 1"/>
+                    </template>
+                  </el-table-column>
+                </el-table>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="status" prop="status">
@@ -65,7 +96,6 @@ export default {
   name: 'SecurityRole',
   data: () => {
     return {
-      from: null,
       form: {
         id: '',
         name: '',
@@ -94,7 +124,9 @@ export default {
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
         ]
-      }
+      },
+      items: [],
+      multipleSelection: []
     }
   },
   created() {
@@ -103,6 +135,7 @@ export default {
   mounted(){
     if(this.$route.params.id != -1){
       this.getItem();
+      this.getItems();
     }
   },
   methods: {
@@ -232,18 +265,53 @@ export default {
     },
     onClose() {
       this.$router.go(-1);
-    }
+    },
+    getItems(){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var url = '/' + 'entities';
+      this.$axios.get(baseurl() + url , config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.items = response.data.items;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }
+          else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }
+          else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
   }
 }
 </script>
-<style Scope>
+<style scoped>
 .el-form-item{
   margin-bottom:0px;
 }
 .card-body{
   padding: 0rem;
 }
-.el-table td, .el-table th{
+.el-textarea{
+  margin-bottom: 10px;
+}
+.el-table > tbody > tr > td {
+  cursor: pointer;
+  padding: 0px;
+}
+.el-table > tbody > tr > th {
   padding: 0px;
 }
 </style>

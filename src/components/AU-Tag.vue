@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style Scope>
+<style scoped>
 .el-tag{
   margin-right: 10px;
 }

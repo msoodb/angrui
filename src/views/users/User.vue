@@ -438,7 +438,7 @@ export default {
 }
 </script>
 
-<style Scope>
+<style scoped>
 .el-form-item{
   margin-bottom:0px;
 }
@@ -471,8 +471,7 @@ export default {
   height: 178px;
   display: block;
 }
-.el-textarea__inner{
+.el-textarea{
   margin-bottom: 10px;
-  height: 150px;
 }
 </style>

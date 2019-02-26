@@ -86,8 +86,8 @@ export default {
   },
   data: function () {
     return {
-      details:{},
-      relations:{},
+      details:[],
+      relations:[],
       columns:[
         {
           prop:'name',
@@ -121,6 +121,9 @@ export default {
     },
     getRelations(){
       var self = this;
+      if(self.id == -1){
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -248,10 +251,9 @@ export default {
           'Authorization': token
         }
       }
-      console.log(this.masterId);
       var relationsData = {
-        _user_ : this.id,
-        security_role : detail,
+        [this.masterId] : this.id,
+        [this.detailId] : detail,
         'status' : 1,
         'situation' : 0,
         'description': ''

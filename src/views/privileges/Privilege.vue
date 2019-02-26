@@ -289,7 +289,7 @@ export default {
   }
 }
 </script>
-<style Scope>
+<style scoped>
 .el-form-item{
   margin-bottom:0px;
 }
