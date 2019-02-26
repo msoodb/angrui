@@ -1,6 +1,6 @@
 <template>
   <div class="mbuttom">
-    <el-table :data=itemsKeyValue border>
+    <el-table :data=itemsKeyValue  :show-header=false fit size="medium">
       <el-table-column type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="key" label="key"  width="180">
@@ -12,12 +12,12 @@
           <el-button icon="el-icon-edit" size="mini"
             @click="onEdit(scope.$index, scope.row)">
           </el-button>
-          <el-button icon="el-icon-delete" size="mini" type="danger"
+          <el-button icon="el-icon-delete" size="mini"
             @click="onDelete(scope.$index, scope.row)"></el-button>
         </template>
       </el-table-column>
       </el-table>
-      <el-button icon="el-icon-circle-plus" type="primary" size="mini" @click="onAdd()">Add</el-button>
+      <el-button icon="el-icon-circle-plus" size="mini" @click="onAdd()">Add</el-button>
       <el-dialog ref="detailsDialog" :title=title :visible.sync="dialogVisible">
         <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="70px" inline-message>
           <el-form-item label="key" prop="key">
@@ -29,7 +29,7 @@
         </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="onDialogConfirm">Confirm</el-button>
+        <el-button @click="onDialogConfirm">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -123,5 +123,16 @@ export default {
 }
 .mbuttom{
   margin-bottom: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+}
+.el-button{
+  background-color: transparent;
+  border: none;
+}
+.el-button:hover{
+  color: black;
+  background-color: #efefef;
+  border: none;
 }
 </style>

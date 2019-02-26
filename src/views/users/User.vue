@@ -68,7 +68,15 @@
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                 </el-form-item>
                 <el-form-item label="security roles">
-                  <au-relation entity="users" :id="user_id" handler="users_security_roles" column="security_role" title="security role"></au-relation>
+                  <au-relation
+                        :id="user_id"
+                        master="users"
+                        masterId="_user_"
+                        relation="users_security_roles"
+                        detail="security_roles"
+                        detailId="security_role"
+                        column="security_role"
+                        title="security role"></au-relation>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
