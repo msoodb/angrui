@@ -91,7 +91,7 @@ export default {
      return {
        items: [],
        page: 1,
-       offset: 20,
+       limit: 20,
        page_count: 10000,
        result_count: 0,
        multipleSelection: [],
@@ -129,7 +129,7 @@ export default {
         if(response.status == 200){
           self.$router.push({path: 'users?page=' + self.page});
           self.items = response.data.items;
-          self.offset = Number(response.data.info.offset);
+          self.limit = Number(response.data.info.limit);
           self.page_count = Number(response.data.info.page_count);
           self.result_count = Number(response.data.info.result_count);
           if(self.page > self.page_count){

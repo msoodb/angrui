@@ -68,7 +68,7 @@ export default {
        ],
        items: [],
        page: 1,
-       offset: 20,
+       limit: 20,
        page_count: 10000,
        result_count: 0,
        currentRow: null,
@@ -118,7 +118,7 @@ export default {
       .then(function (response) {
         if(response.status == 200){
           self.items = response.data.items;
-          self.offset = Number(response.data.info.offset);
+          self.limit = Number(response.data.info.limit);
           self.page_count = Number(response.data.info.page_count);
           self.result_count = Number(response.data.info.result_count);
         }

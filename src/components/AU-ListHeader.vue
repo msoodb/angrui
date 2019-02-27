@@ -11,7 +11,10 @@
       </el-col>
       <el-col :span="12">
         <div class="text-center" vertical-align="middle">
-          <el-pagination id="paginator" class="text-center" layout="prev, pager, next"
+          <el-pagination id="paginator" class="text-center" layout="prev, pager, next, sizes"
+                :page-sizes="[10, 25, 50, 100]"
+                :page-size="25"
+                @size-change="handleSizeChange"
                 :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
           </el-pagination>
         </div>
@@ -41,7 +44,7 @@ export default {
     return {
       items: [],
       page: 1,
-      offset: 20,
+      limit: 25,
       page_count: 10000,
       result_count: 0,
       filter_string_64:''
@@ -52,12 +55,14 @@ export default {
   },
   mounted(){
     this.page = Number(this.$route.query.page);
+    this.limit = Number(this.$route.query.limit);
     this.filter_string_64 = this.$route.query.filter;
     this.getItems();
   },
   watch:{
     $route (to, from){
       this.page = Number(this.$route.query.page);
+      this.limit = Number(this.$route.query.limit);
       this.filter_string_64 = this.$route.query.filter;
       this.getItems();
     }
@@ -75,6 +80,11 @@ export default {
       var url = this.createUrl();
       this.$router.push({path: url});
     },
+    handleSizeChange(val){
+      this.limit = val;
+      var url = this.createUrl();
+      this.$router.push({path: url});
+    },
     createUrl(){
       var self = this;
       if(!self.page || self.page == "undefined" || self.page < 1){
@@ -84,6 +94,10 @@ export default {
         self.page = self.page_count;
       }
       var url = '/' + this.handler + '?page=' + self.page;
+      if(!self.limit || self.limit == "undefined" || self.limit < 1){
+        self.limit = 25;
+      }
+      url = url + '&limit=' + self.limit;
       if(self.filter_string_64 && self.filter_string_64 != "undefined" && self.filter_string_64 != ""){
         url = url + '&filter=' + self.filter_string_64;
       }
@@ -106,7 +120,7 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             self.items = response.data.items;
-            self.offset = Number(response.data.info.offset);
+            self.limit = Number(response.data.info.limit);
             self.page_count = Number(response.data.info.page_count);
             self.result_count = Number(response.data.info.result_count);
             self.$emit('change', this.items);
