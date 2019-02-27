@@ -13,7 +13,7 @@
                   <au-lookup handler="channels" :id="form.channel" @select="ChannelLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="description">
-                  <el-input type="textarea" v-model="form.description"></el-input>
+                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">

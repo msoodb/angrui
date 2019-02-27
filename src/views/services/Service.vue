@@ -28,10 +28,26 @@
                   <au-lookup handler="content_providers" :id="form.content_provider" @select="ContentProviderLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="description">
-                  <el-input type="textarea" v-model="form.description"></el-input>
+                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
                 </el-form-item>
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+                </el-form-item>
+                <el-form-item label="channels">
+                  <div class="custom-tree-node">
+                    <div class="block">
+                      <el-tree
+                        :data="channels"
+                        default-expand-all
+                        node-key="id"
+                        ref="tree"
+                        highlight-current
+                        :props="defaultProps"
+                        :expand-on-click-node="false"
+                        :render-content="renderContent">
+                      </el-tree>
+                    </div>
+                  </div>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -80,11 +96,16 @@
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
 import AUKeyValue from '../../components/AU-KeyValue'
-
+let id = 1000;
 export default {
   name: 'Service',
   data: () => {
     return {
+      channels: [],
+      defaultProps: {
+        children: 'parent',
+        label: 'name'
+      },
       form: {
         id: '',
         pendar:'',
@@ -184,6 +205,7 @@ export default {
             self.status = self.statuses[response.data.status];
             self.form.situation = response.data.situation;
             self.form.description = response.data.description;
+            self.getChannels();
           }
         }.bind(this))
         .catch(function (error) {
@@ -283,9 +305,59 @@ export default {
     },
     onClose() {
       this.$router.go(-1);
+    },
+    getChannels(){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      this.$axios.get(baseurl() + '/channels/' , config )
+        .then(function (response) {
+          if(response.status == 200){
+            self.channels = response.data.items;
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }
+          else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }
+          else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
+    append(data) {
+      const newChild = { id: id++, label: 'testtest', children: [] };
+      if (!data.children) {
+        this.$set(data, 'children', []);
+      }
+      data.children.push(newChild);
+    },
+    remove(node, data) {
+      const parent = node.parent;
+      const children = parent.data.children || parent.data;
+      const index = children.findIndex(d => d.id === data.id);
+      children.splice(index, 1);
+    },
+    renderContent(h, { node, data, store }) {
+      return (
+        <span class="custom-tree-node">
+          <span>{node.label}</span>
+          <span>
+            <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
+            <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
+          </span>
+        </span>);
     }
   }
-}
+};
 </script>
 <style scoped>
 .el-form-item{
@@ -296,5 +368,19 @@ export default {
 }
 .el-table td, .el-table th{
   padding: 0px;
+}
+.el-textarea{
+  margin-bottom: 10px;
+}
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
 }
 </style>

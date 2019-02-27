@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border">
     <el-tag
       :key="tag"
       v-for="tag in items"
@@ -26,22 +26,18 @@
 export default {
   name: 'AU-Tag',
   props: {
-    data:{
-      type: String,
-      required: true
-    },
-    title: {
+    handler:{
       type: String,
       required: true
     }
   },
-  watch: {
-      data: function(newVal, oldVal) {
-        if(this.data && this.data!="[]" && this.data!="{}"){
-          this.items =JSON.parse(this.data);
-        }
-      }
-  },
+  // watch: {
+  //     data: function(newVal, oldVal) {
+  //       if(this.data && this.data!="[]" && this.data!="{}"){
+  //         this.items =JSON.parse(this.data);
+  //       }
+  //     }
+  // },
   data: function () {
     return {
       items: [],
@@ -93,5 +89,12 @@ export default {
   width: 90px;
   margin-right: 10px;
   vertical-align: bottom;
+}
+.border{
+  margin-bottom: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  min-height: 120px;
+  padding-left: 5px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mbuttom">
+  <div class="border">
     <el-table :data=itemsKeyValue  :show-header=false fit size="medium">
       <el-table-column type="index"  width="40" align="center">
       </el-table-column>
@@ -121,7 +121,7 @@ export default {
 .el-table td, .el-table th{
   padding: 0px;
 }
-.mbuttom{
+.border{
   margin-bottom: 10px;
   border: 1px solid #dcdfe6;
   border-radius: 4px;

@@ -18,11 +18,14 @@
                 <el-form-item label="parent" prop="parent">
                   <au-lookup handler="channels" :id="form.parent" @select="ParentLookupSelect"></au-lookup>
                 </el-form-item>
-                <el-form-item label="description">
-                  <el-input type="textarea" v-model="form.description"></el-input>
+                <el-form-item label="tags">
+                  <au-tag handler="channels"></au-tag>
                 </el-form-item>
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+                </el-form-item>
+                <el-form-item label="description">
+                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -70,8 +73,8 @@
 <script>
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
+import AUTag from '../../components/AU-Tag'
 import AUKeyValue from '../../components/AU-KeyValue'
-
 
 export default {
   name: 'Channel',
@@ -113,6 +116,7 @@ export default {
   },
   components: {
     'au-lookup' : AULookup,
+    'au-tag' : AUTag,
     'au-keyValue':AUKeyValue
   },
   created() {
@@ -278,5 +282,8 @@ export default {
 }
 .el-form-item__content{
   line-height:0px;
+}
+.el-textarea{
+  margin-bottom: 10px;
 }
 </style>

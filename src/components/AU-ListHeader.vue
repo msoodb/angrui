@@ -94,6 +94,8 @@ export default {
       this.$router.push({path: url});
     },
     handleSizeChange(val){
+      console.log(val);
+      console.log(this.page);
       this.limit = val;
       var url = this.createUrl();
       this.$router.push({path: url});

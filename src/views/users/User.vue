@@ -62,7 +62,7 @@
                   <el-input type="password" v-model="confirm"></el-input>
                 </el-form-item>
                 <el-form-item label="description">
-                  <el-input type="textarea" v-model="form.description"></el-input>
+                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
                 </el-form-item>
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
@@ -473,5 +473,10 @@ export default {
 }
 .el-textarea{
   margin-bottom: 10px;
+}
+.border{
+  margin-bottom: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
 }
 </style>
