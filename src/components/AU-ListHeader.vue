@@ -6,7 +6,17 @@
           <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
           <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>
           <el-button icon="el-icon-delete" circle @click="onDelete"></el-button>
-          <el-button icon="el-icon-more" circle></el-button>
+          <el-dropdown @command="handleMoreCommand" trigger="click">
+            <el-button icon="el-icon-more" circle>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="{ command, label } in moreCommands"
+                :command="command">
+                {{label}}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-col>
       <el-col :span="12">
@@ -36,7 +46,10 @@ export default {
   name: 'AU-ListHeader',
   props: {
     handler:String,
-    multipleSelection:Array
+    multipleSelection:Array,
+    moreCommands: {
+      type: Array
+    },
   },
   computed:{
   },
@@ -207,7 +220,10 @@ export default {
             self.$message.error('Unknown error.');
           }
       });
-    }
+    },
+    handleMoreCommand(command) {
+      this.$emit('moreCommandClick', command);
+    },
   }
 }
 </script>

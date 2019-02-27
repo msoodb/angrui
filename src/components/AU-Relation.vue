@@ -21,8 +21,8 @@
           </el-pagination>
         </div>
         <el-table ref="table" :data="details" style="width:100%" height="300" border
-            @current-change="handleCurrentRowChange" highlight-current-row>
-          <el-table-column  type="index" width="40">
+            highlight-current-row @selection-change="handleSelectionChange">
+          <el-table-column type="selection"  width="40" align="center">
           </el-table-column>
           <el-table-column
             v-for="{ prop, label } in columns"
@@ -104,7 +104,7 @@ export default {
       limit: 20,
       page_count: 10000,
       result_count: 0,
-      currentRow: null,
+      multipleSelection:[],
       dialogFormVisible: false
     }
   },
@@ -112,8 +112,8 @@ export default {
     this.getRelations();
   },
   methods:{
-    handleCurrentRowChange(val) {
-       this.currentRow = val;
+    handleSelectionChange(val) {
+       this.multipleSelection = val;
     },
     handleCurrentChange (val) {
       this.page = val;
@@ -156,7 +156,6 @@ export default {
           center: true
       }).then(() => {
         this.deleteRecord(row.id);
-        this.getRelations();
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -182,6 +181,7 @@ export default {
               duration:0,
               type:'success'
             })
+            this.getRelations();
             setTimeout(function () {
               currentMsg.close();
             }, 1000);
@@ -234,13 +234,17 @@ export default {
       });
     },
     onDialogConfirm(){
+      console.log("onDialogConfirm");
       var self = this;
-      if(self.currentRow){
-        var detail = self.currentRow.id;
-        this.addRelation(detail);
-        self.dialogFormVisible = false;
-        this.getRelations();
+      console.log(this.multipleSelection);
+      for(var i=0; i<self.multipleSelection.length; i++){
+        var id = this.multipleSelection[i].id;
+        self.addRelation(id);
       }
+      setTimeout(function () {
+        self.getRelations();
+        self.dialogFormVisible = false;
+      }, 1000);
     },
     addRelation(detail){
       var self = this;
