@@ -23,12 +23,26 @@
 </template>
 
 <script>
+import {baseurl} from '../config'
+
 export default {
   name: 'AU-Tag',
   props: {
-    handler:{
+    master: {
       type: String,
       required: true
+    },
+    masterField: {
+      type: String,
+      required: true
+    },
+    masterId: {
+      type: String,
+      required: true
+    },
+    relation: {
+        type: String,
+        required: true
     }
   },
   // watch: {
@@ -45,7 +59,41 @@ export default {
       inputValue: ''
     }
   },
+  created() {
+    this.getItems();
+  },
   methods:{
+    getItems(){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var url = '/' + this.master + '/' + this.masterId + '/' + this.relation;
+      this.$axios.get(baseurl() + url , config )
+        .then(function (response) {
+          if(response.status == 200){
+            for (var i = 0; i < response.data.items.length; i++) {
+              var item = response.data.items[i].tag;
+              self.items.push(item);
+            }
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }
+          else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }
+          else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
     handleClose(tag) {
        this.items.splice(this.items.indexOf(tag), 1);
        var details = JSON.stringify(this.items);
@@ -60,13 +108,48 @@ export default {
     handleInputConfirm() {
       let inputValue = this.inputValue;
       if (inputValue && this.items.indexOf(inputValue) < 0) {
-        this.items.push(inputValue);
+        this.addItem(inputValue);
       }
       this.inputVisible = false;
       this.inputValue = '';
-      var details = JSON.stringify(this.items);
-      this.$emit('change', details);
-     }
+    },
+    addItem(tag){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var relationsData = {
+        [this.masterField] : this.masterId,
+        'tag' : tag,
+        'status' : 1,
+        'situation' : 0,
+        'description': ''
+      }
+      var data_request = JSON.stringify(relationsData);
+      var url = '/' + this.master + '/' + this.masterId + '/' + this.relation;
+      console.log(url);
+      this.$axios.post(baseurl() + url, data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            setTimeout(function () {
+              self.items.push(tag);
+            }, 1);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
   }
 }
 </script>

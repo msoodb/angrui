@@ -19,7 +19,7 @@
                   <au-lookup handler="channels" :id="form.parent" @select="ParentLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="tags">
-                  <au-tag handler="channels"></au-tag>
+                  <au-tag master="channels" masterField="channel" :masterId="channel_id" relation="tags_channels"></au-tag>
                 </el-form-item>
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
@@ -78,6 +78,13 @@ import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
   name: 'Channel',
+  computed:{
+    channel_id: {
+      get: function () {
+        return this.$route.params.id;
+      }
+    }
+  },
   data: () => {
     return {
       form: {
