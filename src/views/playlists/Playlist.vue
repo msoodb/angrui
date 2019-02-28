@@ -15,6 +15,9 @@ Service<template>
                 <el-form-item label="service" prop="service">
                   <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
                 </el-form-item>
+                <el-form-item label="tags">
+                  <au-tag master="playlists" masterField="playlist" :masterId="playlist_id" relation="tags_playlists"></au-tag>
+                </el-form-item>
                 <el-form-item label="description">
                   <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
                 </el-form-item>
@@ -67,11 +70,19 @@ Service<template>
 <script>
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
+import AUTag from '../../components/AU-Tag'
 import AUKeyValue from '../../components/AU-KeyValue'
 
 
 export default {
   name: 'Playlist',
+  computed:{
+    playlist_id: {
+      get: function () {
+        return this.$route.params.id;
+      }
+    }
+  },
   data: () => {
     return {
       form: {
@@ -109,6 +120,7 @@ export default {
   },
   components: {
     'au-lookup' : AULookup,
+    'au-tag' : AUTag,
     'au-keyValue':AUKeyValue
   },
   created() {

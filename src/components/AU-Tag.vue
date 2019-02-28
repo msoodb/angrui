@@ -141,7 +141,8 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             setTimeout(function () {
-              // to do refresh tags list
+              self.items.length = 0;
+              self.getItems();
             }, 1);
           }
         }.bind(this))
@@ -169,7 +170,8 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             setTimeout(function () {
-              // to do refresh tags list
+              self.items.length = 0;
+              self.getItems();
             }, 1);
           }
         }.bind(this))
