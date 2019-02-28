@@ -1,12 +1,12 @@
 <template>
   <div class="border">
     <el-tag
-      :key="tag"
+      :key="tag.id"
       v-for="tag in items"
       closable
       :disable-transitions="false"
       @close="handleClose(tag)">
-      {{tag}}
+      {{tag.name}}
     </el-tag>
     <el-input
       class="input-new-tag"
@@ -55,6 +55,10 @@ export default {
   data: function () {
     return {
       items: [],
+      tag:{
+        id:'',
+        tag:''
+      },
       inputVisible: false,
       inputValue: ''
     }
@@ -77,8 +81,11 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             for (var i = 0; i < response.data.items.length; i++) {
-              var item = response.data.items[i].tag;
-              self.items.push(item);
+              var tag = {
+                'id': response.data.items[i].id,
+                'name': response.data.items[i].tag
+              }
+              self.items.push(tag);
             }
           }
         }.bind(this))
@@ -95,9 +102,7 @@ export default {
       });
     },
     handleClose(tag) {
-       this.items.splice(this.items.indexOf(tag), 1);
-       var details = JSON.stringify(this.items);
-       this.$emit('change', details);
+       this.deleteItem(tag.id);
      },
     showInput() {
       this.inputVisible = true;
@@ -136,7 +141,7 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             setTimeout(function () {
-              self.items.push(tag);
+              // to do refresh tags list
             }, 1);
           }
         }.bind(this))
@@ -150,6 +155,34 @@ export default {
           }
       });
     },
+    deleteItem(id){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var url = '/' + this.master + '/' + this.masterId + '/' + this.relation + '/' + id;
+      this.$axios.delete(baseurl() + url, config )
+        .then(function (response) {
+          if(response.status == 200){
+            setTimeout(function () {
+              // to do refresh tags list
+            }, 1);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    }
   }
 }
 </script>
