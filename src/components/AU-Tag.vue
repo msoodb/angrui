@@ -136,7 +136,6 @@ export default {
       }
       var data_request = JSON.stringify(relationsData);
       var url = '/' + this.master + '/' + this.masterId + '/' + this.relation;
-      console.log(url);
       this.$axios.post(baseurl() + url, data_request, config )
         .then(function (response) {
           if(response.status == 200){

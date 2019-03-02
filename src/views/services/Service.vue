@@ -34,17 +34,32 @@
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                 </el-form-item>
                 <el-form-item label="channels">
-                  <div class="custom-tree-node">
-                    <div class="block">
+                  <div class="border">
+                    <div class="custom-tree-container">
                       <el-tree
                         :data="channels"
-                        default-expand-all
                         node-key="id"
-                        ref="tree"
-                        highlight-current
                         :props="defaultProps"
-                        :expand-on-click-node="false"
-                        :render-content="renderContent">
+                        default-expand-all
+                        @node-click="handleChannelClick"
+                        :expand-on-click-node="true">
+                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                          <span>{{ node.label }}</span>
+                          <span>
+                            <el-button
+                              type="text"
+                              size="mini"
+                              @click="() => addChannel(data)">
+                              Append
+                            </el-button>
+                            <el-button
+                              type="text"
+                              size="mini"
+                              @click="() => onDeleteChannel(node, data)">
+                              Delete
+                            </el-button>
+                          </span>
+                        </span>
                       </el-tree>
                     </div>
                   </div>
@@ -96,14 +111,24 @@
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
 import AUKeyValue from '../../components/AU-KeyValue'
+import AUChannels from '../channels/Channels'
+
+
 let id = 1000;
 export default {
   name: 'Service',
+  computed:{
+    service_id: {
+      get: function () {
+        return this.$route.params.id;
+      }
+    }
+  },
   data: () => {
     return {
       channels: [],
       defaultProps: {
-        children: 'parent',
+        children: 'children',
         label: 'name'
       },
       form: {
@@ -122,6 +147,8 @@ export default {
         situation:'0',
         description: ''
       },
+      created_by:'',
+      updated_by:'',
       statuses: [
         {
           value: '0',
@@ -153,6 +180,7 @@ export default {
   },
   components: {
     'au-lookup' : AULookup,
+    'au-channels' : AUChannels,
     'au-keyValue': AUKeyValue
   },
   mounted(){
@@ -204,8 +232,10 @@ export default {
             self.form.status = Number(response.data.status);
             self.status = self.statuses[response.data.status];
             self.form.situation = response.data.situation;
+            self.created_by = response.data.created_by;
+            self.updated_by = response.data.updated_by;
             self.form.description = response.data.description;
-            self.getChannels();
+            self.getChannels('');
           }
         }.bind(this))
         .catch(function (error) {
@@ -306,7 +336,7 @@ export default {
     onClose() {
       this.$router.go(-1);
     },
-    getChannels(){
+    getChannels(data){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -314,11 +344,38 @@ export default {
           'Content-Type': 'application/json',
           'Authorization': token
         }
+      };
+      var parent='';
+      if(data != '')
+      {
+        parent = data.id;
       }
-      this.$axios.get(baseurl() + '/channels/' , config )
+      this.$axios.get(baseurl() + '/services/' + this.service_id + '/channels' + '?parent=' + parent, config )
         .then(function (response) {
           if(response.status == 200){
-            self.channels = response.data.items;
+            if(parent == ''){
+              self.channels = [];
+              for (var i = 0; i < response.data.items.length; i++) {
+                var channel = {
+                  'id': response.data.items[i].id,
+                  'name': response.data.items[i].name,
+                  'children': []
+                }
+                self.channels.push(channel);
+              }
+            } else{
+              //self.channels.find(x => x.id === parent).children = [];
+              this.$set(data, 'children', []);
+              for (var i = 0; i < response.data.items.length; i++) {
+                var channel = {
+                  'id': response.data.items[i].id,
+                  'name': response.data.items[i].name,
+                  'children': []
+                }
+                data.children.push(channel);
+                //self.channels.find(x => x.id === parent).children.push(channel);
+              }
+            }
           }
         }.bind(this))
         .catch(function (error) {
@@ -333,28 +390,111 @@ export default {
           }
       });
     },
-    append(data) {
-      const newChild = { id: id++, label: 'testtest', children: [] };
+    handleChannelClick(data) {
+      this.getChannels(data);
+    },
+    addChannel(data) {
+      const newChild = {
+        id: id++,
+        label: 'testtest',
+        children: []
+      };
       if (!data.children) {
         this.$set(data, 'children', []);
       }
       data.children.push(newChild);
     },
-    remove(node, data) {
-      const parent = node.parent;
-      const children = parent.data.children || parent.data;
-      const index = children.findIndex(d => d.id === data.id);
-      children.splice(index, 1);
+    addChannel(data){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var channel = {
+        'service': this.service_id,
+        'parent': data.id,
+        'name' : 'testtest',
+        'title' : 'testtest',
+        'details' : '{}',
+        'status' : 1,
+        'situation' : 0,
+        'description': ''
+      }
+      var data_request = JSON.stringify(channel);
+      this.$axios.post(baseurl() + '/services/' + this.service_id + '/channels', data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Record added successfully',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              currentMsg.close();
+            }, 1000);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
     },
-    renderContent(h, { node, data, store }) {
-      return (
-        <span class="custom-tree-node">
-          <span>{node.label}</span>
-          <span>
-            <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
-            <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
-          </span>
-        </span>);
+    onDeleteChannel(node, data){
+      this.$confirm('Selected record(s) will be permanently deleted. Continue?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+          center: true
+      }).then(() => {
+        this.deleteChannel(node, data);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        });
+      });
+    },
+    deleteChannel(node, data){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var url = '/services/' + this.service_id + '/channels/' + data.id;
+      this.$axios.delete(baseurl() + url, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Record successfully deleted',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              self.getChannels('');
+              currentMsg.close();
+            }, 100);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
     }
   }
 };
@@ -372,6 +512,12 @@ export default {
 .el-textarea{
   margin-bottom: 10px;
 }
+.border{
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+}
 .custom-tree-node {
   flex: 1;
   display: flex;
@@ -379,8 +525,5 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
 }
 </style>

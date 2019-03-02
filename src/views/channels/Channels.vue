@@ -4,7 +4,7 @@
       <b-card no-header>
         <template slot="header">
           <au-listheader
-            handler="channels"
+            :handler="url"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">
           </au-listheader>
@@ -22,7 +22,7 @@
           <el-table-column prop="service" label="service" width="150">
           </el-table-column>
           <el-table-column prop="parent" label="parent" width="150">
-          </el-table-column>          
+          </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
           <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
@@ -45,6 +45,19 @@ import AUListHeader from '../../components/AU-ListHeader'
 
 export default {
   name: 'Channels',
+  computed:{
+    url: {
+      get: function () {
+        return 'services/' + this.service + '/channels';
+      }
+    }
+  },
+  props: {
+    service: {
+      type: String,
+      required: true
+    }
+  },
   data() {
      return {
        items: [],
