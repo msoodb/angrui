@@ -55,6 +55,12 @@
                             <el-button
                               type="text"
                               size="mini"
+                              @click="() => editChannel(data)">
+                              Edit
+                            </el-button>
+                            <el-button
+                              type="text"
+                              size="mini"
                               @click="() => onDeleteChannel(node, data)">
                               Delete
                             </el-button>
@@ -103,6 +109,30 @@
           </el-form>
         </el-tab-pane>
       </el-tabs>
+      <el-dialog :visible.sync="dialogChannelVisible">
+        <el-form ref="form" :model="form" :rules="rules" label-width="100px" inline-message>
+          <el-row :gutter="20">
+            <el-col :span="21">
+              <el-form-item label="name" prop="name">
+                <el-input type="name" v-model="channelDialog.name"></el-input>
+              </el-form-item>
+              <el-form-item label="title" prop="title">
+                <el-input type="title" v-model="channelDialog.title"></el-input>
+              </el-form-item>
+              <el-form-item label="description">
+                <el-input type="textarea" :rows=3 v-model="channelDialog.description"></el-input>
+              </el-form-item>
+            </el-col>
+           </el-row>
+           <hr/>
+           <el-row :gutter="20">
+              <el-form-item>
+                <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveChannelDialog">Save</el-button>
+                <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCloseChannelDialog">Close</el-button>
+              </el-form-item>
+            </el-row>
+         </el-form>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -111,6 +141,7 @@
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
 import AUKeyValue from '../../components/AU-KeyValue'
+import AUTag from '../../components/AU-Tag'
 import AUChannels from '../channels/Channels'
 
 
@@ -130,6 +161,12 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'name'
+      },
+      channel:'',
+      channelDialog:{
+        name: '',
+        title: '',
+        description: ''
       },
       form: {
         id: '',
@@ -172,7 +209,8 @@ export default {
           { required: true, message: 'Please input email', trigger: 'change' },
           { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
         ]
-      }
+      },
+      dialogChannelVisible: false
     }
   },
   created() {
@@ -181,6 +219,7 @@ export default {
   components: {
     'au-lookup' : AULookup,
     'au-channels' : AUChannels,
+    'au-tag' : AUTag,
     'au-keyValue': AUKeyValue
   },
   mounted(){
@@ -393,18 +432,18 @@ export default {
     handleChannelClick(data) {
       this.getChannels(data);
     },
-    addChannel(data) {
-      const newChild = {
-        id: id++,
-        label: 'testtest',
-        children: []
-      };
-      if (!data.children) {
-        this.$set(data, 'children', []);
-      }
-      data.children.push(newChild);
-    },
     addChannel(data){
+      this.channelDialog.name = '';
+      this.channelDialog.title = '';
+      this.channelDialog.description = '';
+      this.dialogChannelVisible = true;
+      this.channel = data;
+    },
+    onCloseChannelDialog(){
+      this.dialogChannelVisible = false;
+    },
+    onSaveChannelDialog(){
+      this.dialogChannelVisible = false;
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -415,13 +454,13 @@ export default {
       }
       var channel = {
         'service': this.service_id,
-        'parent': data.id,
-        'name' : 'testtest',
-        'title' : 'testtest',
+        'parent': this.channel.id,
+        'name' : this.channelDialog.name,
+        'title' : this.channelDialog.title,
         'details' : '{}',
         'status' : 1,
         'situation' : 0,
-        'description': ''
+        'description': this.channelDialog.description
       }
       var data_request = JSON.stringify(channel);
       this.$axios.post(baseurl() + '/services/' + this.service_id + '/channels', data_request, config )
