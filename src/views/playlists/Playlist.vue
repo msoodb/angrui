@@ -1,4 +1,4 @@
-Service<template>
+<template>
   <el-container>
     <el-main>
       <el-tabs type="border-card">
@@ -16,7 +16,7 @@ Service<template>
                   <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="tags">
-                  <au-tag master="playlists" masterField="playlist" :masterId="playlist_id" relation="tags_playlists"></au-tag>
+                  <au-tag ref="tags" master="playlists" masterField="playlist" :masterId="playlist_id" relation="tags_playlists"></au-tag>
                 </el-form-item>
                 <el-form-item label="description">
                   <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
@@ -193,12 +193,16 @@ export default {
       this.$axios.post(baseurl() + '/playlists', data_request, config )
         .then(function (response) {
           if(response.status == 200){
+            var id = response.data.id;
+            const form_link = '/playlists' + `/${id.toString()}`;
+            self.$router.push({path: form_link});
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -234,6 +238,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -257,7 +262,7 @@ export default {
           else{
             this.updateItem();
           }
-          this.onClose();
+          //this.onClose();
         }
         else{
           this.$message.error('Please fill in the required fields.');
@@ -282,5 +287,8 @@ export default {
 }
 .el-form-item__content{
   line-height:0px;
+}
+.el-textarea{
+  margin-bottom: 10px;
 }
 </style>

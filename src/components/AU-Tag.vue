@@ -4,7 +4,7 @@
       :key="tag.id"
       v-for="tag in dynamicTags"
       closable
-      :disable-transitions="false"
+      :disable-transitions="true"
       @close="handleClose(tag)">
       {{tag.name}}
     </el-tag>
@@ -52,13 +52,8 @@ export default {
   },
   data: function () {
     return {
-      items: [],
       dynamicTags: [],
       deletedTags: [],
-      tag:{
-        id:'',
-        tag:''
-      },
       inputVisible: false,
       inputValue: ''
     }
@@ -121,7 +116,7 @@ export default {
          this.$refs.saveTagInput.$refs.input.focus();
        });
      },
-    handleInputConfirm() {    
+    handleInputConfirm() {
       let inputValue = this.inputValue;
       if (inputValue && this.dynamicTags.indexOf(inputValue) < 0) {
         var tag = {
@@ -139,11 +134,15 @@ export default {
       for (var i = 0; i < this.dynamicTags.length; i++) {
         if(this.dynamicTags[i].status == 'new'){
           this.addItem(this.dynamicTags[i].name);
+          this.dynamicTags[i].status = 'exist';
         }
       }
       for (var i = 0; i < this.deletedTags.length; i++) {
+        if(this.deletedTags[i].id){
           this.deleteItem(this.deletedTags[i].id);
+        }
       }
+      this.deletedTags = [];
     },
     addItem(tag){
       var self = this;
@@ -167,8 +166,6 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             setTimeout(function () {
-              // self.items.length = 0;
-              // self.getItems();
             }, 1);
           }
         }.bind(this))
@@ -196,8 +193,6 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             setTimeout(function () {
-              self.items.length = 0;
-              self.getItems();
             }, 1);
           }
         }.bind(this))
