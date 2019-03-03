@@ -1,0 +1,303 @@
+<template>
+  <div class="border" :disabled="disabled">
+    <el-button icon="el-icon-circle-plus" size="mini" @click="onAddRootchannel()">Add</el-button>
+    <div class="custom-tree-container">
+      <el-tree
+        :data="channels"
+        node-key="id"
+        :props="defaultProps"
+        default-expand-all
+        @node-click="handleChannelClick"
+        :expand-on-click-node="true">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span>{{ node.label }}</span>
+          <span>
+            <el-button
+              type="text"
+              size="mini"
+              @click="() => addChannel(data)">
+              Append
+            </el-button>
+            <el-button
+              type="text"
+              size="mini"
+              @click="() => editChannel(data)">
+              Edit
+            </el-button>
+            <el-button
+              type="text"
+              size="mini"
+              @click="() => onDeleteChannel(node, data)">
+              Delete
+            </el-button>
+          </span>
+        </span>
+      </el-tree>
+    </div>
+    <el-dialog :visible.sync="dialogChannelVisible">
+      <el-form ref="form" :model="channels" :rules="rules" label-width="100px" inline-message>
+        <el-row :gutter="20">
+          <el-col :span="21">
+            <el-form-item label="name" prop="name">
+              <el-input type="name" v-model="channelDialog.name"></el-input>
+            </el-form-item>
+            <el-form-item label="title" prop="title">
+              <el-input type="title" v-model="channelDialog.title"></el-input>
+            </el-form-item>
+            <el-form-item label="description">
+              <el-input type="textarea" :rows=3 v-model="channelDialog.description"></el-input>
+            </el-form-item>
+          </el-col>
+         </el-row>
+         <hr/>
+         <el-row :gutter="20">
+            <el-form-item>
+              <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveChannelDialog">Save</el-button>
+              <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCloseChannelDialog">Close</el-button>
+            </el-form-item>
+          </el-row>
+       </el-form>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import {baseurl} from '../../config'
+
+export default {
+  name: 'ChannelsTree',
+  props: {
+    service_id: {
+        type: String,
+        required: true
+    },
+    disabled: {
+        type: Boolean
+    }
+  },
+  watch: {
+      service_id: function(newVal, oldVal) {
+        this.getChannels('');
+      }
+  },
+  data: function () {
+    return {
+      channels: [],
+      defaultProps: {
+        children: 'children',
+        label: 'name'
+      },
+      channel:'',
+      channelDialog:{
+        name: '',
+        title: '',
+        description: ''
+      },
+      dialogChannelVisible: false,
+      rules: {
+        name: [
+          { required: true, message: 'Please input name', trigger: 'change' },
+          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  methods:{
+    getChannels(data){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      };
+      var parent='';
+      if(data != '')
+      {
+        parent = data.id;
+      }
+      this.$axios.get(baseurl() + '/services/' + this.service_id + '/channels' + '?parent=' + parent, config )
+        .then(function (response) {
+          if(response.status == 200){
+            if(parent == ''){
+              self.channels = [];
+              for (var i = 0; i < response.data.items.length; i++) {
+                var channel = {
+                  'id': response.data.items[i].id,
+                  'name': response.data.items[i].name,
+                  'children': []
+                }
+                self.channels.push(channel);
+              }
+            } else{
+              //self.channels.find(x => x.id === parent).children = [];
+              this.$set(data, 'children', []);
+              for (var i = 0; i < response.data.items.length; i++) {
+                var channel = {
+                  'id': response.data.items[i].id,
+                  'name': response.data.items[i].name,
+                  'children': []
+                }
+                data.children.push(channel);
+                //self.channels.find(x => x.id === parent).children.push(channel);
+              }
+            }
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }
+          else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }
+          else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
+    onAddRootchannel(){
+      this.channelDialog.name = '';
+      this.channelDialog.title = '';
+      this.channelDialog.description = '';
+      this.dialogChannelVisible = true;
+      this.channel = null;
+    },
+    handleChannelClick(data) {
+      this.getChannels(data);
+    },
+    addChannel(data){
+      this.channelDialog.name = '';
+      this.channelDialog.title = '';
+      this.channelDialog.description = '';
+      this.dialogChannelVisible = true;
+      this.channel = data;
+    },
+    editChannel(data){
+      this.channelDialog.name = data.name;
+      this.channelDialog.title = '';
+      this.channelDialog.description = '';
+      this.dialogChannelVisible = true;
+      this.channel = data;
+    },
+    onCloseChannelDialog(){
+      this.dialogChannelVisible = false;
+    },
+    onSaveChannelDialog(){
+      this.dialogChannelVisible = false;
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var parent='';
+      if(this.channel){
+        parent = this.channel.id;
+      }
+      var channel = {
+        'service': this.service_id,
+        'parent': parent,
+        'name' : this.channelDialog.name,
+        'title' : this.channelDialog.title,
+        'details' : '{}',
+        'status' : 1,
+        'situation' : 0,
+        'description': this.channelDialog.description
+      }
+      var data_request = JSON.stringify(channel);
+      this.$axios.post(baseurl() + '/services/' + this.service_id + '/channels', data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Record added successfully',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              currentMsg.close();
+            }, 1000);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
+    onDeleteChannel(node, data){
+      this.$confirm('Selected record(s) will be permanently deleted. Continue?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+          center: true
+      }).then(() => {
+        this.deleteChannel(node, data);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        });
+      });
+    },
+    deleteChannel(node, data){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var url = '/services/' + this.service_id + '/channels/' + data.id;
+      this.$axios.delete(baseurl() + url, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Record successfully deleted',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              self.getChannels('');
+              currentMsg.close();
+            }, 100);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    }
+  }
+}
+</script>
+
+<style scoped>
+.border{
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+}
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+</style>
