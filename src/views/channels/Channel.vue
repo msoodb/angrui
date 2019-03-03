@@ -19,7 +19,7 @@
                   <au-lookup handler="channels" :id="form.parent" @select="ParentLookupSelect"></au-lookup>
                 </el-form-item>
                 <el-form-item label="tags">
-                  <au-tag master="channels" masterField="channel" :masterId="channel_id" relation="tags_channels"></au-tag>
+                  <au-tag ref="tags" master="channels" masterField="channel" :masterId="channel_id" relation="tags_channels"></au-tag>
                 </el-form-item>
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
@@ -200,12 +200,16 @@ export default {
       this.$axios.post(baseurl() + '/channels', data_request, config )
         .then(function (response) {
           if(response.status == 200){
+            var id = response.data.id;
+            const form_link = '/channels' + `/${id.toString()}`;
+            self.$router.push({path: form_link});
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -241,6 +245,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -264,7 +269,7 @@ export default {
           else{
             this.updateItem();
           }
-          this.onClose();
+          //this.onClose();
         }
         else{
           this.$message.error('Please fill in the required fields.');

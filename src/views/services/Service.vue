@@ -35,6 +35,7 @@
                 </el-form-item>
                 <el-form-item label="channels">
                   <div class="border">
+                    <el-button icon="el-icon-circle-plus" size="mini" @click="onAddRootchannel()">Add</el-button>
                     <div class="custom-tree-container">
                       <el-tree
                         :data="channels"
@@ -118,7 +119,7 @@
               </el-form-item>
               <el-form-item label="title" prop="title">
                 <el-input type="title" v-model="channelDialog.title"></el-input>
-              </el-form-item>
+              </el-form-item>            
               <el-form-item label="description">
                 <el-input type="textarea" :rows=3 v-model="channelDialog.description"></el-input>
               </el-form-item>
@@ -429,11 +430,25 @@ export default {
           }
       });
     },
+    onAddRootchannel(){
+      this.channelDialog.name = '';
+      this.channelDialog.title = '';
+      this.channelDialog.description = '';
+      this.dialogChannelVisible = true;
+      this.channel = null;
+    },
     handleChannelClick(data) {
       this.getChannels(data);
     },
     addChannel(data){
       this.channelDialog.name = '';
+      this.channelDialog.title = '';
+      this.channelDialog.description = '';
+      this.dialogChannelVisible = true;
+      this.channel = data;
+    },
+    editChannel(data){
+      this.channelDialog.name = data.name;
       this.channelDialog.title = '';
       this.channelDialog.description = '';
       this.dialogChannelVisible = true;
@@ -452,9 +467,13 @@ export default {
           'Authorization': token
         }
       }
+      var parent='';
+      if(this.channel){
+        parent = this.channel.id;
+      }
       var channel = {
         'service': this.service_id,
-        'parent': this.channel.id,
+        'parent': parent,
         'name' : this.channelDialog.name,
         'title' : this.channelDialog.title,
         'details' : '{}',

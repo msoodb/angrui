@@ -2,7 +2,7 @@
   <div class="border">
     <el-tag
       :key="tag.id"
-      v-for="tag in items"
+      v-for="tag in dynamicTags"
       closable
       :disable-transitions="false"
       @close="handleClose(tag)">
@@ -45,16 +45,16 @@ export default {
         required: true
     }
   },
-  // watch: {
-  //     data: function(newVal, oldVal) {
-  //       if(this.data && this.data!="[]" && this.data!="{}"){
-  //         this.items =JSON.parse(this.data);
-  //       }
-  //     }
-  // },
+  watch: {
+    masterId: function(newVal, oldVal) {
+      this.masterId = newVal;
+    }
+  },
   data: function () {
     return {
       items: [],
+      dynamicTags: [],
+      deletedTags: [],
       tag:{
         id:'',
         tag:''
@@ -69,6 +69,9 @@ export default {
   methods:{
     getItems(){
       var self = this;
+      if(!self.masterId || self.masterId=='' || self.masterId=='-1'){
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -76,16 +79,18 @@ export default {
           'Authorization': token
         }
       }
-      var url = '/' + this.master + '/' + this.masterId + '/' + this.relation;
+      var url = '/' + self.master + '/' + self.masterId + '/' + self.relation;
       this.$axios.get(baseurl() + url , config )
         .then(function (response) {
           if(response.status == 200){
+            self.dynamicTags = [];
             for (var i = 0; i < response.data.items.length; i++) {
               var tag = {
                 'id': response.data.items[i].id,
-                'name': response.data.items[i].tag
+                'name': response.data.items[i].tag,
+                'status': 'exist'
               }
-              self.items.push(tag);
+              self.dynamicTags.push(tag);
             }
           }
         }.bind(this))
@@ -102,7 +107,13 @@ export default {
       });
     },
     handleClose(tag) {
-       this.deleteItem(tag.id);
+       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+       var deletedTag = {
+         'id': tag.id,
+         'name': tag.tag,
+         'status': 'deleted'
+       }
+       this.deletedTags.push(deletedTag);
      },
     showInput() {
       this.inputVisible = true;
@@ -110,13 +121,29 @@ export default {
          this.$refs.saveTagInput.$refs.input.focus();
        });
      },
-    handleInputConfirm() {
+    handleInputConfirm() {    
       let inputValue = this.inputValue;
-      if (inputValue && this.items.indexOf(inputValue) < 0) {
-        this.addItem(inputValue);
+      if (inputValue && this.dynamicTags.indexOf(inputValue) < 0) {
+        var tag = {
+          'id': null,
+          'name': inputValue,
+          'status': 'new'
+        }
+        this.dynamicTags.push(tag);
       }
       this.inputVisible = false;
       this.inputValue = '';
+    },
+    saveItem()
+    {
+      for (var i = 0; i < this.dynamicTags.length; i++) {
+        if(this.dynamicTags[i].status == 'new'){
+          this.addItem(this.dynamicTags[i].name);
+        }
+      }
+      for (var i = 0; i < this.deletedTags.length; i++) {
+          this.deleteItem(this.deletedTags[i].id);
+      }
     },
     addItem(tag){
       var self = this;
@@ -140,8 +167,8 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             setTimeout(function () {
-              self.items.length = 0;
-              self.getItems();
+              // self.items.length = 0;
+              // self.getItems();
             }, 1);
           }
         }.bind(this))

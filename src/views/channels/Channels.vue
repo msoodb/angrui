@@ -4,7 +4,7 @@
       <b-card no-header>
         <template slot="header">
           <au-listheader
-            :handler="url"
+            handler="channels"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">
           </au-listheader>
@@ -45,19 +45,6 @@ import AUListHeader from '../../components/AU-ListHeader'
 
 export default {
   name: 'Channels',
-  computed:{
-    url: {
-      get: function () {
-        return 'services/' + this.service + '/channels';
-      }
-    }
-  },
-  props: {
-    service: {
-      type: String,
-      required: true
-    }
-  },
   data() {
      return {
        items: [],
