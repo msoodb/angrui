@@ -34,7 +34,7 @@
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                 </el-form-item>
                 <el-form-item label="channels">
-                  <au-channels-tree :service_id="service_id" :disabled="true"></au-channels-tree>
+                  <au-channels-tree :service_id="service_id" :disabled="is_new"></au-channels-tree>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
@@ -95,6 +95,16 @@ export default {
     service_id: {
       get: function () {
         return this.$route.params.id;
+      }
+    },
+    is_new: {
+      get: function () {
+        if(this.$route.params.id == -1){
+          return true;
+        }else{
+          return false;
+        }
+
       }
     }
   },

@@ -1,9 +1,10 @@
 <template>
   <div class="border" :disabled="disabled">
-    <el-button icon="el-icon-circle-plus" size="mini" @click="onAddRootchannel()">Add</el-button>
+    <el-button icon="el-icon-circle-plus" size="mini" @click="onAddRootchannel()" :disabled="disabled">Add</el-button>
     <div class="custom-tree-container">
       <el-tree
         :data="channels"
+        :disabled="disabled"
         node-key="id"
         :props="defaultProps"
         default-expand-all
@@ -35,7 +36,7 @@
       </el-tree>
     </div>
     <el-dialog :visible.sync="dialogChannelVisible">
-      <el-form ref="form" :model="channels" :rules="rules" label-width="100px" inline-message>
+      <el-form ref="channelDialog" :model="channelDialog" :rules="rules" label-width="100px" inline-message>
         <el-row :gutter="20">
           <el-col :span="21">
             <el-form-item label="name" prop="name">
@@ -72,7 +73,8 @@ export default {
         required: true
     },
     disabled: {
-        type: Boolean
+        type: Boolean,
+        required: true
     }
   },
   watch: {
@@ -101,6 +103,9 @@ export default {
         ]
       }
     }
+  },
+  created() {
+     this.getChannels('');
   },
   methods:{
     getChannels(data){
