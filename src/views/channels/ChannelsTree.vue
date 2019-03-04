@@ -45,6 +45,12 @@
             <el-form-item label="title" prop="title">
               <el-input type="title" v-model="channelDialog.title"></el-input>
             </el-form-item>
+            <el-form-item label="tags">
+              <au-tag ref="tags" master="channels" masterField="channel" :masterId="channel_id" relation="tags_channels"></au-tag>
+            </el-form-item>
+            <el-form-item label="details">
+              <au-keyValue title="details" :data="channelDialog.details" @change="onChangeDetails"></au-keyValue>
+            </el-form-item>
             <el-form-item label="description">
               <el-input type="textarea" :rows=3 v-model="channelDialog.description"></el-input>
             </el-form-item>
@@ -64,6 +70,8 @@
 
 <script>
 import {baseurl} from '../../config'
+import AUTag from '../../components/AU-Tag'
+import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
   name: 'ChannelsTree',
@@ -90,9 +98,18 @@ export default {
         label: 'name'
       },
       channel:'',
+      channel_id:'',
       channelDialog:{
+        id: '',
         name: '',
         title: '',
+        service: '',
+        parent: '',
+        created_at: '',
+        updated_at: '',
+        details: '',
+        status: '1',
+        situation:'0',
         description: ''
       },
       dialogChannelVisible: false,
@@ -104,10 +121,17 @@ export default {
       }
     }
   },
+  components: {
+    'au-tag' : AUTag,
+    'au-keyValue':AUKeyValue
+  },
   created() {
      this.getChannels('');
   },
   methods:{
+    onChangeDetails(val){
+      this.channelDialog.details = val;
+    },
     getChannels(data){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -131,6 +155,9 @@ export default {
                 var channel = {
                   'id': response.data.items[i].id,
                   'name': response.data.items[i].name,
+                  'title': response.data.items[i].title,
+                  'details': response.data.items[i].details,
+                  'description': response.data.items[i].description,
                   'children': []
                 }
                 self.channels.push(channel);
@@ -142,6 +169,9 @@ export default {
                 var channel = {
                   'id': response.data.items[i].id,
                   'name': response.data.items[i].name,
+                  'title': response.data.items[i].title,
+                  'details': response.data.items[i].details,
+                  'description': response.data.items[i].description,
                   'children': []
                 }
                 data.children.push(channel);
@@ -165,26 +195,33 @@ export default {
     onAddRootchannel(){
       this.channelDialog.name = '';
       this.channelDialog.title = '';
+      this.channelDialog.details = '';
       this.channelDialog.description = '';
-      this.dialogChannelVisible = true;
+      this.channel_id = "-1";
       this.channel = null;
+      this.dialogChannelVisible = true;
     },
     handleChannelClick(data) {
       this.getChannels(data);
     },
     addChannel(data){
+      this.channel = data;
+      this.channel_id = "-1";
       this.channelDialog.name = '';
       this.channelDialog.title = '';
+      this.channelDialog.details = '';
       this.channelDialog.description = '';
       this.dialogChannelVisible = true;
-      this.channel = data;
     },
     editChannel(data){
-      this.channelDialog.name = data.name;
-      this.channelDialog.title = '';
-      this.channelDialog.description = '';
-      this.dialogChannelVisible = true;
+      // console.log(JSON.stringify(data));
       this.channel = data;
+      this.channel_id = data.id;
+      this.channelDialog.name = data.name;
+      this.channelDialog.title = data.title;
+      this.channelDialog.details = data.details;
+      this.channelDialog.description = data.description;
+      this.dialogChannelVisible = true;
     },
     onCloseChannelDialog(){
       this.dialogChannelVisible = false;
@@ -208,7 +245,7 @@ export default {
         'parent': parent,
         'name' : this.channelDialog.name,
         'title' : this.channelDialog.title,
-        'details' : '{}',
+        'details' : this.channelDialog.details,
         'status' : 1,
         'situation' : 0,
         'description': this.channelDialog.description

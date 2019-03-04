@@ -50,10 +50,12 @@ export default {
   },
   watch: {
       data: function(newVal, oldVal) {
-        if(this.data && this.data!="[]" && this.data!="{}"){
-          this.items =JSON.parse(this.data);
-          this.getItems();
-        }
+        // if(this.data && this.data!="[]" && this.data!="{}"){
+        //   this.items = JSON.parse(this.data);
+        // }
+        this.data = newVal;
+        this.items = JSON.parse(this.data);
+        this.getItems();
       }
   },
   data: function () {
@@ -77,7 +79,9 @@ export default {
   },
   methods:{
     getItems(){
-      const keyValue = this.items ? Object.entries(this.items) : [['id', 'Not found']];
+      // const keyValue = this.items ? Object.entries(this.items) : [['id', 'Not found']];
+      // this.itemsKeyValue = keyValue.map(([key, value]) => {return {key: key, value: value}});
+      const keyValue = Object.entries(this.items);
       this.itemsKeyValue = keyValue.map(([key, value]) => {return {key: key, value: value}});
     },
     onDelete(index, row){
