@@ -7,7 +7,7 @@
         :disabled="disabled"
         node-key="id"
         :props="defaultProps"
-        default-expand-all
+        :accordion="true"
         @node-click="handleChannelClick"
         :expand-on-click-node="true">
         <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -16,13 +16,13 @@
             <el-button
               type="text"
               size="mini"
-              @click="() => addChannel(data)">
+              @click="() => onAddChannel(data)">
               Append
             </el-button>
             <el-button
               type="text"
               size="mini"
-              @click="() => editChannel(data)">
+              @click="() => onEditChannel(data)">
               Edit
             </el-button>
             <el-button
@@ -156,6 +156,7 @@ export default {
                   'id': response.data.items[i].id,
                   'name': response.data.items[i].name,
                   'title': response.data.items[i].title,
+                  'parent': response.data.items[i].parent,
                   'details': response.data.items[i].details,
                   'description': response.data.items[i].description,
                   'children': []
@@ -170,6 +171,7 @@ export default {
                   'id': response.data.items[i].id,
                   'name': response.data.items[i].name,
                   'title': response.data.items[i].title,
+                  'parent': response.data.items[i].parent,
                   'details': response.data.items[i].details,
                   'description': response.data.items[i].description,
                   'children': []
@@ -204,7 +206,7 @@ export default {
     handleChannelClick(data) {
       this.getChannels(data);
     },
-    addChannel(data){
+    onAddChannel(data){
       this.channel = data;
       this.channel_id = "-1";
       this.channelDialog.name = '';
@@ -213,12 +215,12 @@ export default {
       this.channelDialog.description = '';
       this.dialogChannelVisible = true;
     },
-    editChannel(data){
-      // console.log(JSON.stringify(data));
+    onEditChannel(data){
       this.channel = data;
       this.channel_id = data.id;
       this.channelDialog.name = data.name;
       this.channelDialog.title = data.title;
+      this.channelDialog.parent = data.parent;
       this.channelDialog.details = data.details;
       this.channelDialog.description = data.description;
       this.dialogChannelVisible = true;
@@ -226,7 +228,24 @@ export default {
     onCloseChannelDialog(){
       this.dialogChannelVisible = false;
     },
-    onSaveChannelDialog(){
+    onSaveChannelDialog() {
+      this.$refs["channelDialog"].validate((valid) => {
+        if (valid) {
+          console.log(this.channel_id);
+          if(this.channel_id == -1){
+            this.AddChannel();
+          }
+          else{
+            this.UpdateChannel();
+          }
+          //this.onClose();
+        }
+        else{
+          this.$message.error('Please fill in the required fields.');
+        }
+      });
+    },
+    AddChannel(){
       this.dialogChannelVisible = false;
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -240,6 +259,7 @@ export default {
       if(this.channel){
         parent = this.channel.id;
       }
+      if(!self.channelDialog.details || self.channelDialog.details==''){self.channelDialog.details = "{}"}
       var channel = {
         'service': this.service_id,
         'parent': parent,
@@ -252,6 +272,56 @@ export default {
       }
       var data_request = JSON.stringify(channel);
       this.$axios.post(baseurl() + '/services/' + this.service_id + '/channels', data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            let currentMsg =  self.$message  ({
+              message : 'Record added successfully',
+              duration:0,
+              type:'success'
+            })
+            setTimeout(function () {
+              currentMsg.close();
+            }, 1000);
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
+    UpdateChannel(){
+      console.log("UpdateChannel");
+      this.dialogChannelVisible = false;
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      // var parent='';
+      // if(this.channel){
+      //   parent = this.channel.id;
+      // }
+      if(!self.channelDialog.details || self.channelDialog.details==''){self.channelDialog.details = "{}"}
+      var channel = {
+        'service': this.service_id,
+        'parent': this.channelDialog.parent,
+        'name' : this.channelDialog.name,
+        'title' : this.channelDialog.title,
+        'details' : this.channelDialog.details,
+        'status' : 1,
+        'situation' : 0,
+        'description': this.channelDialog.description
+      }
+      var data_request = JSON.stringify(channel);
+      this.$axios.put(baseurl() + '/services/' + this.service_id + '/channels/' + this.channel_id , data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

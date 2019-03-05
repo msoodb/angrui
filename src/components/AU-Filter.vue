@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button :type="filterButtonPrimary ? 'primary' : 'default'" icon="el-icon-search" size="medium" @click="onFilter"></el-button>
-    <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible">
+    <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible" :modalAppendToBody="false">
       <el-form :model="form">
         <el-form-item label="Raw query" :label-width="formLabelWidth">
           <el-input v-model="form.filter_string" autocomplete="off"></el-input>

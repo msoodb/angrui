@@ -18,7 +18,7 @@
       </el-table-column>
       </el-table>
       <el-button icon="el-icon-circle-plus" size="mini" @click="onAdd()">Add</el-button>
-      <el-dialog ref="detailsDialog" :title=title :visible.sync="dialogVisible">
+      <el-dialog ref="detailsDialog" :title=title :visible.sync="dialogVisible" :modalAppendToBody="false">
         <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="70px" inline-message>
           <el-form-item label="key" prop="key">
             <el-input type="key" v-model="detailsFormDialog.key"></el-input>
@@ -50,13 +50,20 @@ export default {
   },
   watch: {
       data: function(newVal, oldVal) {
-        // if(this.data && this.data!="[]" && this.data!="{}"){
-        //   this.items = JSON.parse(this.data);
-        // }
         this.data = newVal;
-        this.items = JSON.parse(this.data);
+        if(this.data && this.data!="[]" && this.data!="{}"){
+          this.items = JSON.parse(this.data);
+        }else{
+          this.items = {};
+        }
         this.getItems();
       }
+  },
+  created() {
+    this.getItems();
+  },
+  mounted(){
+    this.getItems();
   },
   data: function () {
     return {

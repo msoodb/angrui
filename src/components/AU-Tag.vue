@@ -47,7 +47,9 @@ export default {
   },
   watch: {
     masterId: function(newVal, oldVal) {
+      console.log(newVal);
       this.masterId = newVal;
+      this.getItems();
     }
   },
   data: function () {
@@ -64,6 +66,7 @@ export default {
   methods:{
     getItems(){
       var self = this;
+      self.dynamicTags = [];
       if(!self.masterId || self.masterId=='' || self.masterId=='-1'){
         return;
       }
@@ -78,7 +81,6 @@ export default {
       this.$axios.get(baseurl() + url , config )
         .then(function (response) {
           if(response.status == 200){
-            self.dynamicTags = [];
             for (var i = 0; i < response.data.items.length; i++) {
               var tag = {
                 'id': response.data.items[i].id,
