@@ -43,12 +43,17 @@ export default {
     relation: {
         type: String,
         required: true
+    },
+    refresh: {
+        type: Boolean
     }
   },
   watch: {
     masterId: function(newVal, oldVal) {
       this.masterId = newVal;
-      //this.getItems();
+    },
+    refresh: function(newVal, oldVal) {
+      this.getItems();
     }
   },
   data: function () {

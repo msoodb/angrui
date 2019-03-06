@@ -92,10 +92,22 @@ export default {
       this.itemsKeyValue = keyValue.map(([key, value]) => {return {key: key, value: value}});
     },
     onDelete(index, row){
-      delete this.items[row.key];
-      this.getItems();
-      var details = JSON.stringify(this.items);
-      this.$emit('change', details);
+      this.$confirm('Selected record will be permanently deleted. Continue?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+          center: true
+      }).then(() => {
+        delete this.items[row.key];
+        this.getItems();
+        var details = JSON.stringify(this.items);
+        this.$emit('change', details);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        });
+      });
     },
     onEdit(index, row){
       this.detailsFormDialog.key = row.key;

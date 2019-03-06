@@ -46,7 +46,7 @@
               <el-input type="title" v-model="form.title"></el-input>
             </el-form-item>
             <el-form-item label="tags">
-              <au-tag ref="tags" master="channels" masterField="channel" :masterId="form.id" relation="tags_channels"></au-tag>
+              <au-tag ref="tags" master="channels" masterField="channel" :masterId="form.id" relation="tags_channels" :refresh="tags_refresh"></au-tag>
             </el-form-item>
             <el-form-item label="details">
               <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
@@ -108,6 +108,7 @@ export default {
         situation:'0',
         description: ''
       },
+      tags_refresh: true,
       dialogChannelVisible: false,
       rules: {
         name: [
@@ -192,6 +193,7 @@ export default {
       this.form.status = 1;
       this.form.situation = 0;
       this.form.description = '';
+      this.tags_refresh = !this.tags_refresh;
       this.dialogChannelVisible = true;
     },
     handleChannelClick(data) {
@@ -207,6 +209,7 @@ export default {
       this.form.status = 1;
       this.form.situation = 0;
       this.form.description = '';
+      this.tags_refresh = !this.tags_refresh;
       this.dialogChannelVisible = true;
     },
     onEditChannel(data){
@@ -219,6 +222,7 @@ export default {
       this.form.status = 1;
       this.form.situation = 0;
       this.form.description = data.description;
+      this.tags_refresh = !this.tags_refresh;
       this.dialogChannelVisible = true;
     },
     onCloseform(){
