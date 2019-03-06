@@ -36,31 +36,31 @@
       </el-tree>
     </div>
     <el-dialog :visible.sync="dialogChannelVisible">
-      <el-form ref="channelDialog" :model="channelDialog" :rules="rules" label-width="100px" inline-message>
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px" inline-message>
         <el-row :gutter="20">
           <el-col :span="21">
             <el-form-item label="name" prop="name">
-              <el-input type="name" v-model="channelDialog.name"></el-input>
+              <el-input type="name" v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="title" prop="title">
-              <el-input type="title" v-model="channelDialog.title"></el-input>
+              <el-input type="title" v-model="form.title"></el-input>
             </el-form-item>
             <el-form-item label="tags">
-              <au-tag ref="tags" master="channels" masterField="channel" :masterId="channel_id" relation="tags_channels"></au-tag>
+              <au-tag ref="tags" master="channels" masterField="channel" :masterId="form.id" relation="tags_channels"></au-tag>
             </el-form-item>
             <el-form-item label="details">
-              <au-keyValue title="details" :data="channelDialog.details" @change="onChangeDetails"></au-keyValue>
+              <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
             </el-form-item>
             <el-form-item label="description">
-              <el-input type="textarea" :rows=3 v-model="channelDialog.description"></el-input>
+              <el-input type="textarea" :rows=3 v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
          </el-row>
          <hr/>
          <el-row :gutter="20">
             <el-form-item>
-              <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveChannelDialog">Save</el-button>
-              <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCloseChannelDialog">Close</el-button>
+              <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveform">Save</el-button>
+              <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCloseform">Close</el-button>
             </el-form-item>
           </el-row>
        </el-form>
@@ -97,16 +97,12 @@ export default {
         children: 'children',
         label: 'name'
       },
-      channel:'',
-      channel_id:'',
-      channelDialog:{
+      form:{
         id: '',
         name: '',
         title: '',
         service: '',
         parent: '',
-        created_at: '',
-        updated_at: '',
         details: '',
         status: '1',
         situation:'0',
@@ -130,7 +126,7 @@ export default {
   },
   methods:{
     onChangeDetails(val){
-      this.channelDialog.details = val;
+      this.form.details = val;
     },
     getChannels(data){
       var self = this;
@@ -141,43 +137,35 @@ export default {
           'Authorization': token
         }
       };
-      var parent='';
-      if(data != '')
-      {
+      var parent;
+      if(data == ''){
+        parent = '';
+        self.channels = [];
+      }else{
         parent = data.id;
+        this.$set(data, 'children', []);
       }
-      this.$axios.get(baseurl() + '/services/' + this.service_id + '/channels' + '?parent=' + parent, config )
+      this.$axios.get(baseurl() + '/services/' + this.service_id + '/channels' +
+       '?parent=' + parent, config )
         .then(function (response) {
           if(response.status == 200){
-            if(parent == ''){
-              self.channels = [];
-              for (var i = 0; i < response.data.items.length; i++) {
-                var channel = {
-                  'id': response.data.items[i].id,
-                  'name': response.data.items[i].name,
-                  'title': response.data.items[i].title,
-                  'parent': response.data.items[i].parent,
-                  'details': response.data.items[i].details,
-                  'description': response.data.items[i].description,
-                  'children': []
-                }
-                self.channels.push(channel);
+            for (var i = 0; i < response.data.items.length; i++) {
+              var channel = {
+                'id': response.data.items[i].id,
+                'name': response.data.items[i].name,
+                'title': response.data.items[i].title,
+                'service': response.data.items[i].service,
+                'parent': response.data.items[i].parent,
+                'details': response.data.items[i].details,
+                'status': response.data.items[i].status,
+                'situation': response.data.items[i].situation,
+                'description': response.data.items[i].description,
+                'children': []
               }
-            } else{
-              //self.channels.find(x => x.id === parent).children = [];
-              this.$set(data, 'children', []);
-              for (var i = 0; i < response.data.items.length; i++) {
-                var channel = {
-                  'id': response.data.items[i].id,
-                  'name': response.data.items[i].name,
-                  'title': response.data.items[i].title,
-                  'parent': response.data.items[i].parent,
-                  'details': response.data.items[i].details,
-                  'description': response.data.items[i].description,
-                  'children': []
-                }
+              if(parent == ''){
+                self.channels.push(channel);
+              }else{
                 data.children.push(channel);
-                //self.channels.find(x => x.id === parent).children.push(channel);
               }
             }
           }
@@ -195,44 +183,51 @@ export default {
       });
     },
     onAddRootchannel(){
-      this.channelDialog.name = '';
-      this.channelDialog.title = '';
-      this.channelDialog.details = '';
-      this.channelDialog.description = '';
-      this.channel_id = "-1";
-      this.channel = null;
+      this.form.id = "-1";
+      this.form.name = '';
+      this.form.title = '';
+      this.form.service = this.service_id;
+      this.form.parent = '';
+      this.form.details = '';
+      this.form.status = 1;
+      this.form.situation = 0;
+      this.form.description = '';
       this.dialogChannelVisible = true;
     },
     handleChannelClick(data) {
       this.getChannels(data);
     },
     onAddChannel(data){
-      this.channel = data;
-      this.channel_id = "-1";
-      this.channelDialog.name = '';
-      this.channelDialog.title = '';
-      this.channelDialog.details = '';
-      this.channelDialog.description = '';
+      this.form.id = "-1";
+      this.form.name = '';
+      this.form.title = '';
+      this.form.service = this.service_id;
+      this.form.parent = data.id;
+      this.form.details = '';
+      this.form.status = 1;
+      this.form.situation = 0;
+      this.form.description = '';
       this.dialogChannelVisible = true;
     },
     onEditChannel(data){
-      this.channel = data;
-      this.channel_id = data.id;
-      this.channelDialog.name = data.name;
-      this.channelDialog.title = data.title;
-      this.channelDialog.parent = data.parent;
-      this.channelDialog.details = data.details;
-      this.channelDialog.description = data.description;
+      this.form.id = data.id;
+      this.form.name = data.name;
+      this.form.title = data.title;
+      this.form.service = this.service_id;
+      this.form.parent = data.parent;
+      this.form.details = data.details;
+      this.form.status = 1;
+      this.form.situation = 0;
+      this.form.description = data.description;
       this.dialogChannelVisible = true;
     },
-    onCloseChannelDialog(){
+    onCloseform(){
       this.dialogChannelVisible = false;
     },
-    onSaveChannelDialog() {
-      this.$refs["channelDialog"].validate((valid) => {
+    onSaveform() {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
-          console.log(this.channel_id);
-          if(this.channel_id == -1){
+          if(this.form.id == "-1"){
             this.AddChannel();
           }
           else{
@@ -255,31 +250,20 @@ export default {
           'Authorization': token
         }
       }
-      var parent='';
-      if(this.channel){
-        parent = this.channel.id;
-      }
-      if(!self.channelDialog.details || self.channelDialog.details==''){self.channelDialog.details = "{}"}
-      var channel = {
-        'service': this.service_id,
-        'parent': parent,
-        'name' : this.channelDialog.name,
-        'title' : this.channelDialog.title,
-        'details' : this.channelDialog.details,
-        'status' : 1,
-        'situation' : 0,
-        'description': this.channelDialog.description
-      }
-      var data_request = JSON.stringify(channel);
-      this.$axios.post(baseurl() + '/services/' + this.service_id + '/channels', data_request, config )
+      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
+      var data_request = JSON.stringify(this.form);
+      this.$axios.post(baseurl() + '/services/' + this.service_id + '/channels',
+       data_request, config )
         .then(function (response) {
           if(response.status == 200){
+            self.form.id = response.data.id;
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -295,7 +279,6 @@ export default {
       });
     },
     UpdateChannel(){
-      console.log("UpdateChannel");
       this.dialogChannelVisible = false;
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -305,23 +288,10 @@ export default {
           'Authorization': token
         }
       }
-      // var parent='';
-      // if(this.channel){
-      //   parent = this.channel.id;
-      // }
-      if(!self.channelDialog.details || self.channelDialog.details==''){self.channelDialog.details = "{}"}
-      var channel = {
-        'service': this.service_id,
-        'parent': this.channelDialog.parent,
-        'name' : this.channelDialog.name,
-        'title' : this.channelDialog.title,
-        'details' : this.channelDialog.details,
-        'status' : 1,
-        'situation' : 0,
-        'description': this.channelDialog.description
-      }
-      var data_request = JSON.stringify(channel);
-      this.$axios.put(baseurl() + '/services/' + this.service_id + '/channels/' + this.channel_id , data_request, config )
+      if(!self.form.details || self.form.details==''){self.form.details = "{}"}
+      var data_request = JSON.stringify(this.form);
+      this.$axios.put(baseurl() + '/services/' + this.service_id + '/channels/'
+      + this.form.id , data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({
@@ -330,6 +300,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }

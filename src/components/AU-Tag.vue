@@ -47,9 +47,8 @@ export default {
   },
   watch: {
     masterId: function(newVal, oldVal) {
-      console.log(newVal);
       this.masterId = newVal;
-      this.getItems();
+      //this.getItems();
     }
   },
   data: function () {
