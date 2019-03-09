@@ -49,21 +49,18 @@ export default {
     }
   },
   watch: {
-      data: function(newVal, oldVal) {
-        this.data = newVal;
-        if(this.data && this.data!="[]" && this.data!="{}"){
-          this.items = JSON.parse(this.data);
-        }else{
-          this.items = {};
+      data: {
+        immediate: true,
+        handler(newVal, oldVal) {
+          this.data = newVal;
+          if(this.data && this.data!="[]" && this.data!="{}"){
+            this.items = JSON.parse(this.data);
+          }else{
+            this.items = {};
+          }
+          this.getItems();
         }
-        this.getItems();
       }
-  },
-  created() {
-    this.getItems();
-  },
-  mounted(){
-    this.getItems();
   },
   data: function () {
     return {

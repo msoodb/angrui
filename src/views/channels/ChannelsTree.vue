@@ -7,7 +7,6 @@
         :disabled="disabled"
         node-key="id"
         :props="defaultProps"
-        :accordion="true"
         @node-click="handleChannelClick"
         :expand-on-click-node="true">
         <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -168,6 +167,7 @@ export default {
               }else{
                 data.children.push(channel);
               }
+              self.getChannels(channel);
             }
           }
         }.bind(this))
