@@ -33,9 +33,6 @@
                 <el-form-item label="details">
                   <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
                 </el-form-item>
-                <el-form-item label="channels">
-                  <au-channels-tree :service_id="service_id" :disabled="is_new"></au-channels-tree>
-                </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="status" prop="status">
@@ -74,6 +71,16 @@
             </el-row>
           </el-form>
         </el-tab-pane>
+        <el-tab-pane label="Channels">
+          <el-form ref="form" :model="form" :rules="rules" label-width="0px" inline-message>
+            <el-form-item>
+              <au-channels-tree :service_id="service_id" :disabled="is_new"></au-channels-tree>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="Playlists">
+          <au-playlists></au-playlists>
+        </el-tab-pane>
       </el-tabs>
     </el-main>
   </el-container>
@@ -85,7 +92,7 @@ import AULookup from '../../components/AU-Lookup'
 import AUKeyValue from '../../components/AU-KeyValue'
 import AUTag from '../../components/AU-Tag'
 import AUChannelsTree from '../channels/ChannelsTree'
-
+import AUPlaylists from '../playlists/Playlists'
 
 
 let id = 1000;
@@ -161,7 +168,8 @@ export default {
     'au-lookup' : AULookup,
     'au-tag' : AUTag,
     'au-keyValue': AUKeyValue,
-    'au-channels-tree': AUChannelsTree
+    'au-channels-tree': AUChannelsTree,
+    'au-playlists': AUPlaylists
   },
   mounted(){
     if(this.$route.params.id != -1){
@@ -215,7 +223,6 @@ export default {
             self.created_by = response.data.created_by;
             self.updated_by = response.data.updated_by;
             self.form.description = response.data.description;
-            //self.getChannels('');
           }
         }.bind(this))
         .catch(function (error) {

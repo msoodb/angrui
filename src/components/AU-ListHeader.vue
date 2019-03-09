@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row >
-      <el-col :span="6">
+    <el-row>
+      <el-col :span="4">
         <div class="text-left">
           <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
           <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>

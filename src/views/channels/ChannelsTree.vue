@@ -1,7 +1,11 @@
 <template>
-  <div class="border" :disabled="disabled">
-    <el-button icon="el-icon-circle-plus" size="mini" @click="onAddRootchannel()" :disabled="disabled">Add</el-button>
+  <div class="channel-tree" :disabled="disabled">
     <div class="custom-tree-container">
+      <div style="text-align:right; padding-right:8px; height: 36px;">
+        <el-button type="text" size="mini" @click="onAddRootchannel()" :disabled="disabled">Append</el-button>
+        <el-button type="text" size="mini" :disabled="true">Edit</el-button>
+        <el-button type="text" size="mini" :disabled="true">Delete</el-button>
+      </div>
       <el-tree
         :data="channels"
         :disabled="disabled"
@@ -51,7 +55,7 @@
               <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
             </el-form-item>
             <el-form-item label="description">
-              <el-input type="textarea" :rows=3 v-model="form.description"></el-input>
+              <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
          </el-row>
@@ -86,7 +90,9 @@ export default {
   },
   watch: {
       service_id: function(newVal, oldVal) {
-        this.getChannels('');
+        if(!this.disabled && this.service_id!="-1"){
+          this.getChannels('');
+        }
       }
   },
   data: function () {
@@ -108,6 +114,7 @@ export default {
         description: ''
       },
       tags_refresh: true,
+      details_refresh: true,
       dialogChannelVisible: false,
       rules: {
         name: [
@@ -122,7 +129,10 @@ export default {
     'au-keyValue':AUKeyValue
   },
   created() {
-     this.getChannels('');
+    if(!this.disabled && this.service_id!="-1"){
+      this.getChannels('');
+    }
+    //this.getChannels('');
   },
   methods:{
     onChangeDetails(val){
@@ -194,6 +204,7 @@ export default {
       this.form.situation = 0;
       this.form.description = '';
       this.tags_refresh = !this.tags_refresh;
+      this.details_refresh = !this.details_refresh;
       this.dialogChannelVisible = true;
     },
     handleChannelClick(data) {
@@ -210,6 +221,7 @@ export default {
       this.form.situation = 0;
       this.form.description = '';
       this.tags_refresh = !this.tags_refresh;
+      this.details_refresh = !this.details_refresh;
       this.dialogChannelVisible = true;
     },
     onEditChannel(data){
@@ -223,6 +235,7 @@ export default {
       this.form.situation = 0;
       this.form.description = data.description;
       this.tags_refresh = !this.tags_refresh;
+      this.details_refresh = !this.details_refresh;
       this.dialogChannelVisible = true;
     },
     onCloseform(){
@@ -237,6 +250,7 @@ export default {
           else{
             this.UpdateChannel();
           }
+          this.getChannels('');
           //this.onClose();
         }
         else{
@@ -373,11 +387,12 @@ export default {
 </script>
 
 <style scoped>
-.border{
+.channel-tree{
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #dcdfe6;
   border-radius: 4px;
+  min-height:400px;
 }
 .custom-tree-node {
   flex: 1;
@@ -386,5 +401,8 @@ export default {
   justify-content: space-between;
   font-size: 14px;
   padding-right: 8px;
+}
+.root-append {
+  align: center;
 }
 </style>
