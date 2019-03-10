@@ -77,6 +77,11 @@ import AUKeyValue from '../../components/AU-KeyValue'
 export default {
   name: 'Playlist',
   computed:{
+    service_id: {
+      get: function () {
+        return this.$route.params.service_id;
+      }
+    },
     playlist_id: {
       get: function () {
         return this.$route.params.id;

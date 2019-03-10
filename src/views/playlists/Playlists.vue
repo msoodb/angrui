@@ -3,11 +3,11 @@
     <b-col cols="12" lg="12">
       <b-card no-header>
         <template slot="header">
-          <au-listinformheader
+          <au-list
             :handler="handler"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">
-          </au-listinformheader>
+          </au-list>
         </template>
         <el-table ref="table" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange">
@@ -36,7 +36,7 @@
 
 <script>
 import {baseurl} from '../../config'
-import AUListInFormHeader from '../../components/AU-ListInFormHeader'
+import AUList from '../../components/AU-List'
 
 
 export default {
@@ -51,11 +51,6 @@ export default {
         required: true
     }
   },
-  // watch: {
-  //   id: function(newVal, oldVal) {
-  //     this.getRelations();
-  //   }
-  // },
   computed:{
     handler: {
       get: function () {
@@ -70,7 +65,7 @@ export default {
      }
   },
   components: {
-    'au-listinformheader': AUListInFormHeader
+    'au-list': AUList
   },
   methods: {
     itemsChanged(items){

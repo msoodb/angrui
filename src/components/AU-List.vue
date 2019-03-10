@@ -149,8 +149,6 @@ export default {
     onAdd(){
       var id = -1;
       const form_link = this.formLink(id);
-      console.log(form_link);
-      console.log(this.$router);
       this.$router.push({path: form_link})
     },
     onEdit(){

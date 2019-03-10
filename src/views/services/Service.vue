@@ -101,17 +101,16 @@ export default {
   computed:{
     service_id: {
       get: function () {
-        return this.$route.params.id;
+        return this.$route.params.service_id;
       }
     },
     is_new: {
       get: function () {
-        if(this.$route.params.id == -1){
+        if(this.$route.params.service_id == -1){
           return true;
         }else{
           return false;
         }
-
       }
     }
   },
@@ -172,7 +171,7 @@ export default {
     'au-playlists': AUPlaylists
   },
   mounted(){
-    if(this.$route.params.id != -1){
+    if(this.service_id != -1){
       this.getItem();
     }
   },
@@ -195,7 +194,7 @@ export default {
     },
     getItem(){
       var self = this;
-      var id = self.$route.params.id;
+      var id = self.service_id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -271,7 +270,7 @@ export default {
     },
     updateItem(){
       var self = this;
-      var id = self.$route.params.id;
+      var id = self.service_id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -307,7 +306,7 @@ export default {
     onSave() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          if(this.$route.params.id == -1){
+          if(this.service_id == -1){
             this.addItem();
           }
           else{

@@ -513,10 +513,31 @@ export default new Router({
               component: Services,
             },
             {
-              path: ':id',
+              path: ':service_id',
               meta: { label: 'Service Details'},
               name: 'Service',
               component: Service,
+              children:[
+                {
+                  path: 'playlists',
+                  meta: { label: 'Playlists'},
+                  component: {
+                    render (c) { return c('router-view') }
+                  },
+                  children: [
+                    {
+                      path: '',
+                      component: Playlists,
+                    },
+                    {
+                      path: ':id',
+                      meta: { label: 'Playlist Details'},
+                      name: 'Playlist',
+                      component: Playlist,
+                    },
+                  ]
+                },
+              ],
             },
           ]
         },
@@ -577,25 +598,25 @@ export default new Router({
             },
           ]
         },
-        {
-          path: 'playlists',
-          meta: { label: 'Playlists'},
-          component: {
-            render (c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: '',
-              component: Playlists,
-            },
-            {
-              path: ':id',
-              meta: { label: 'Playlist Details'},
-              name: 'Playlist',
-              component: Playlist,
-            },
-          ]
-        },
+        // {
+        //   path: 'playlists',
+        //   meta: { label: 'Playlists'},
+        //   component: {
+        //     render (c) { return c('router-view') }
+        //   },
+        //   children: [
+        //     {
+        //       path: '',
+        //       component: Playlists,
+        //     },
+        //     {
+        //       path: ':id',
+        //       meta: { label: 'Playlist Details'},
+        //       name: 'Playlist',
+        //       component: Playlist,
+        //     },
+        //   ]
+        // },
         {
           path: 'publishers',
           meta: { label: 'Publishers'},
