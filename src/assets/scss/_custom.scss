@@ -1,1 +1,42 @@
 // Here you can add other styles
+.el-textarea{
+  margin-bottom: 10px;
+}
+.card{
+  margin-bottom: 0rem;
+}
+.card-body{
+  padding: 0rem;
+  padding-top: 40px;
+}
+.card-header{
+  padding: 0rem;
+  border: 0rem;
+  background-color: white;
+  position: fixed;
+  z-index: 20;
+  width: -moz-available;
+  border-bottom: 1px solid #c8ced3;
+}
+.card-body >>> table > tbody > tr > td {
+  cursor: pointer;
+  padding: 0px;
+}
+.card-body >>> table > tbody > tr > th {
+  padding: 0px;
+}
+.el-form-item{
+  margin-bottom:0px;
+}
+.card-body{
+  padding: 0rem;
+}
+.el-table td, .el-table th{
+  padding: 0px;
+}
+.el-dialog__header{
+  padding: 0px;
+}
+.el-dialog__body{
+  padding: 0px;
+}

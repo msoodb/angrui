@@ -45,11 +45,17 @@ import AUFilter from '../components/AU-Filter'
 export default {
   name: 'AU-List',
   props: {
-    handler:String,
-    multipleSelection:Array,
+    handler: {
+      type: String,
+      required: true
+    },
+    multipleSelection: {
+      type: Array,
+      required: true
+    },
     moreCommands: {
       type: Array
-    },
+    }
   },
   computed:{
   },
@@ -147,9 +153,10 @@ export default {
       });
     },
     onAdd(){
-      var id = -1;
-      const form_link = this.formLink(id);
-      this.$router.push({path: form_link})
+      // var id = -1;
+      // const form_link = this.formLink(id);
+      // this.$router.push(form_link);
+      this.$emit('add');
     },
     onEdit(){
       if(this.multipleSelection.length != 1){
@@ -157,8 +164,9 @@ export default {
         return;
       }
       var id = this.multipleSelection[0].id;
-      const form_link = this.formLink(id);
-      this.$router.push({path: form_link})
+      // const form_link = this.formLink(id);
+      // this.$router.push({path: form_link})
+      this.$emit('edit', id);
     },
     formLink (id) {
       return this.handler + `/${id.toString()}`

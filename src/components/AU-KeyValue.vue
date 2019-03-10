@@ -18,19 +18,23 @@
       </el-table-column>
       </el-table>
       <el-button icon="el-icon-circle-plus" size="mini" @click="onAdd()">Add</el-button>
-      <el-dialog ref="detailsDialog" :title=title :visible.sync="dialogVisible" :modalAppendToBody="false">
-        <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="70px" inline-message>
-          <el-form-item label="key" prop="key">
-            <el-input type="key" v-model="detailsFormDialog.key"></el-input>
-          </el-form-item>
-          <el-form-item label="value" prop="value">
-            <el-input type="value" v-model="detailsFormDialog.value"></el-input>
-          </el-form-item>
-        </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button @click="onDialogConfirm">Confirm</el-button>
-      </span>
+      <el-dialog ref="detailsDialog" :visible.sync="dialogVisible"
+          :show-close="false" :append-to-body="true">
+        <div class="padding">
+          <el-form ref="detailsFormDialog" :model="detailsFormDialog" :rules="rules" label-width="70px" inline-message>
+            <el-form-item label="key" prop="key">
+              <el-input type="key" v-model="detailsFormDialog.key"></el-input>
+            </el-form-item>
+            <el-form-item label="value" prop="value">
+              <el-input type="value" v-model="detailsFormDialog.value"></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <hr/>
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button @click="onDialogConfirm">Confirm</el-button>
+        </span>
     </el-dialog>
   </div>
 </template>
@@ -166,5 +170,11 @@ export default {
   color: black;
   background-color: #efefef;
   border: none;
+}
+.padding{
+  padding-top:50px;
+  padding-right:50px;
+  padding-left:50px;
+  padding-buttom:30px;
 }
 </style>
