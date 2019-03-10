@@ -3,11 +3,11 @@
     <b-col cols="12" lg="12">
       <b-card no-header>
         <template slot="header">
-          <au-listheader
-            handler="playlists"
+          <au-listinformheader
+            :handler="handler"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">
-          </au-listheader>
+          </au-listinformheader>
         </template>
         <el-table ref="table" :data="items"  stripe style="width: 100%" border
               @selection-change="handleSelectionChange">
@@ -18,8 +18,6 @@
           <el-table-column prop="name" label="name" width="150">
           </el-table-column>
           <el-table-column prop="title" label="title" width="240">
-          </el-table-column>
-          <el-table-column prop="service" label="service" width="150">
           </el-table-column>
           <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
           </el-table-column>
@@ -38,11 +36,33 @@
 
 <script>
 import {baseurl} from '../../config'
-import AUListHeader from '../../components/AU-ListHeader'
+import AUListInFormHeader from '../../components/AU-ListInFormHeader'
 
 
 export default {
   name: 'Playlists',
+  props: {
+    service_id: {
+        type: String,
+        required: true
+    },
+    disabled: {
+        type: Boolean,
+        required: true
+    }
+  },
+  // watch: {
+  //   id: function(newVal, oldVal) {
+  //     this.getRelations();
+  //   }
+  // },
+  computed:{
+    handler: {
+      get: function () {
+        return 'services/' + this.service_id + '/playlists';
+      }
+    }
+  },
   data() {
      return {
        items: [],
@@ -50,7 +70,7 @@ export default {
      }
   },
   components: {
-    'au-listheader': AUListHeader
+    'au-listinformheader': AUListInFormHeader
   },
   methods: {
     itemsChanged(items){

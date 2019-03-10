@@ -1,11 +1,11 @@
 <template>
   <b-card no-header>
     <template slot="header">
-      <au-listheader
+      <au-list
         handler="content_providers"
         :multipleSelection="multipleSelection"
         @change="itemsChanged">
-      </au-listheader>
+      </au-list>
     </template>
     <el-table ref="table" :data="items"  stripe style="width: 100%" border
           @selection-change="handleSelectionChange">
@@ -40,7 +40,7 @@
 
 <script>
 import {baseurl} from '../../config'
-import AUListHeader from '../../components/AU-ListHeader'
+import AUList from '../../components/AU-List'
 
 export default {
   name: 'ContentProviders',
@@ -51,7 +51,7 @@ export default {
      }
   },
   components: {
-    'au-listheader': AUListHeader
+    'au-list': AUList
   },
   methods: {
     itemsChanged(items){

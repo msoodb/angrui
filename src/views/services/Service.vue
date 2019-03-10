@@ -79,7 +79,7 @@
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="Playlists">
-          <au-playlists></au-playlists>
+          <au-playlists :service_id="service_id" :disabled="is_new"></au-playlists>
         </el-tab-pane>
       </el-tabs>
     </el-main>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">
+      <el-col :span="6">
         <div class="text-left">
           <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
           <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>
@@ -43,7 +43,7 @@ import {baseurl} from '../config'
 import AUFilter from '../components/AU-Filter'
 
 export default {
-  name: 'AU-ListHeader',
+  name: 'AU-List',
   props: {
     handler:String,
     multipleSelection:Array,
@@ -86,16 +86,12 @@ export default {
       this.page = 1;
       var url = this.createUrl();
       this.$router.push({path: url});
-      // this.page = 1;
-      // this.getItems();
     },
     handleCurrentChange (val) {
       var url = this.createUrl();
       this.$router.push({path: url});
     },
     handleSizeChange(val){
-      console.log(val);
-      console.log(this.page);
       this.limit = val;
       var url = this.createUrl();
       this.$router.push({path: url});
@@ -117,9 +113,6 @@ export default {
         url = url + '&filter=' + self.filter_string_64;
       }
       return url;
-    },
-    formLink (id) {
-      return this.handler + `/${id.toString()}`
     },
     getItems(){
       var self = this;
@@ -156,6 +149,8 @@ export default {
     onAdd(){
       var id = -1;
       const form_link = this.formLink(id);
+      console.log(form_link);
+      console.log(this.$router);
       this.$router.push({path: form_link})
     },
     onEdit(){
@@ -166,6 +161,9 @@ export default {
       var id = this.multipleSelection[0].id;
       const form_link = this.formLink(id);
       this.$router.push({path: form_link})
+    },
+    formLink (id) {
+      return this.handler + `/${id.toString()}`
     },
     onDelete(){
       if(this.multipleSelection.length == 0){

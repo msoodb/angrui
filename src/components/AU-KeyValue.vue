@@ -3,7 +3,7 @@
     <el-table :data=itemsKeyValue  :show-header=false fit size="medium">
       <el-table-column type="index"  width="40" align="center">
       </el-table-column>
-      <el-table-column prop="key" label="key"  width="180">
+      <el-table-column prop="key" label="key"  width="120">
       </el-table-column>
       <el-table-column prop="value" label="value" width="100">
       </el-table-column>
