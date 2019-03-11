@@ -1,76 +1,72 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-tabs type="border-card">
-        <el-tab-pane label="General">
-          <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
-            <el-row :gutter="20">
-              <el-col :span="16">
-                <el-form-item label="name" prop="name">
-                  <el-input type="name" v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="title" prop="title">
-                  <el-input v-model="form.title"></el-input>
-                </el-form-item>
-                <el-form-item label="code" prop="code">
-                  <el-input v-model="form.code"></el-input>
-                </el-form-item>
-                <el-form-item label="phone" prop="phone">
-                  <el-input type="phone" v-model="form.phone"></el-input>
-                </el-form-item>
-                <el-form-item label="email" prop="email">
-                  <el-input type="email" v-model.number="form.email"></el-input>
-                </el-form-item>
-                <el-form-item label="admin" prop="user_lookup">
-                  <au-user-lookup handler="users" :id="form.admin" @select="userLookupSelect"></au-user-lookup>
-                </el-form-item>
-                <el-form-item label="description">
-                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
-                </el-form-item>
-                <el-form-item label="details">
-                  <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="status" prop="status">
-                  <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
-                    <el-option
-                      v-for="item in statuses"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="id" prop="id">
-                  <el-input v-model="form.id" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="created by" prop="created_by">
-                  <el-input v-model="created_by" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="updated by" prop="updated_by">
-                  <el-input v-model="updated_by" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="created_at">
-                  <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                </el-form-item>
-                <el-form-item label="updated_at">
-                  <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                </el-form-item>
-              </el-col>
-             </el-row>
-             <hr/>
-             <el-row :gutter="20">
-                <el-form-item>
-                <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-                <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
-                </el-form-item>
-             </el-row>
-           </el-form>
-          </el-tab-pane>
-        </el-tabs>
-    </el-main>
-  </el-container>
+  <el-tabs type="border-card">
+    <el-tab-pane label="General">
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
+        <el-row :gutter="20">
+          <el-col :span="16">
+            <el-form-item label="name" prop="name">
+              <el-input type="name" v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="title" prop="title">
+              <el-input v-model="form.title"></el-input>
+            </el-form-item>
+            <el-form-item label="code" prop="code">
+              <el-input v-model="form.code"></el-input>
+            </el-form-item>
+            <el-form-item label="phone" prop="phone">
+              <el-input type="phone" v-model="form.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="email" prop="email">
+              <el-input type="email" v-model.number="form.email"></el-input>
+            </el-form-item>
+            <el-form-item label="admin" prop="user_lookup">
+              <au-user-lookup handler="users" :id="form.admin" @select="userLookupSelect"></au-user-lookup>
+            </el-form-item>
+            <el-form-item label="description">
+              <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
+            </el-form-item>
+            <el-form-item label="details">
+              <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="status" prop="status">
+              <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
+                <el-option
+                  v-for="item in statuses"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="id" prop="id">
+              <el-input v-model="form.id" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="created by" prop="created_by">
+              <el-input v-model="created_by" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="updated by" prop="updated_by">
+              <el-input v-model="updated_by" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="created_at">
+              <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            </el-form-item>
+            <el-form-item label="updated_at">
+              <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            </el-form-item>
+          </el-col>
+         </el-row>
+         <hr/>
+         <el-row :gutter="20">
+            <el-form-item>
+            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
+            </el-form-item>
+         </el-row>
+       </el-form>
+      </el-tab-pane>
+    </el-tabs>
 </template>
 
 <script>
@@ -80,6 +76,25 @@ import AUUserLookup from '../../components/AU-UserLookup'
 
 export default {
   name: 'ContentProvider',
+  props: {
+    record_id: {
+      type: String,
+      required: true
+    }
+  },
+  watch: {
+    record_id: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.record_id = newVal;
+        if(this.record_id == '-1'){
+          this.resetForm();
+        } else{
+          this.getItem();
+        }
+      }
+    }
+  },
   data: () => {
     return {
       form: {
@@ -133,7 +148,7 @@ export default {
     'au-user-lookup' : AUUserLookup
   },
   mounted(){
-    if(this.$route.params.id != -1){
+    if(this.record_id != "-1"){
       this.getItem();
     }
   },
@@ -148,9 +163,27 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
+    resetForm(){
+      var self = this;
+      self.form.id = self.record_id;
+      self.form.admin = '';
+      self.form.name = '';
+      self.form.title = '';
+      self.form.code = '';
+      self.form.phone = '';
+      self.form.email = '';
+      self.form.details = '';
+      self.form.status = '1',
+      self.status = null;
+      self.form.type = '0';
+      self.form.situation = '0';
+      self.form.created_at = '';
+      self.form.updated_at = '';
+      self.form.description = '';
+    },
     getItem(){
       var self = this;
-      var id = self.$route.params.id;
+      var id = self.record_id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -225,7 +258,7 @@ export default {
     },
     updateItem(){
       var self = this;
-      var id = self.$route.params.id;
+      var id = self.record_id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -261,7 +294,7 @@ export default {
     onSave() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          if(this.$route.params.id == -1){
+          if(this.record_id == -1){
             this.addItem();
           }
           else{
@@ -275,19 +308,8 @@ export default {
       });
     },
     onClose() {
-      this.$router.go(-1);
+      this.$emit('close');
     }
   }
 }
 </script>
-<style scoped>
-.el-form-item{
-  margin-bottom:0px;
-}
-.card-body{
-  padding: 0rem;
-}
-.el-table td, .el-table th{
-  padding: 0px;
-}
-</style>

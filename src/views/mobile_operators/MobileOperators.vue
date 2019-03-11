@@ -42,7 +42,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-mobile-operator :record_id="record_id"></au-mobile-operator>
+      <au-mobile-operator :record_id="record_id" @close="onClose"></au-mobile-operator>
     </el-dialog>
   </b-card>
 </template>
@@ -84,6 +84,9 @@ export default {
     onEdit(id){
       this.record_id = id;
       this.dialogVisible = true;
+    },
+    onClose(){
+      this.dialogVisible = false;
     }
   }
 }

@@ -36,7 +36,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-playlist :record_id="record_id" :service_id="service_id" @close="onClose"></au-playlist>
+      <au-service-playlist :record_id="record_id" :service_id="service_id" @close="onClose"></au-service-playlist>
     </el-dialog>
   </b-card>
 </template>
@@ -44,10 +44,10 @@
 <script>
 import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
-import AUPlaylist from '../playlists/Playlist'
+import AUServicePlaylist from '../playlists/ServicePlaylist'
 
 export default {
-  name: 'Playlists',
+  name: 'ServicePlaylists',
   props: {
     service_id: {
         type: String,
@@ -77,7 +77,7 @@ export default {
   },
   components: {
     'au-list': AUList,
-    'au-playlist': AUPlaylist
+    'au-service-playlist': AUServicePlaylist
   },
   methods: {
     itemsChanged(items){

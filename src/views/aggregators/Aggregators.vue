@@ -4,7 +4,9 @@
       <au-list
         handler="aggregators"
         :multipleSelection="multipleSelection"
-        @change="itemsChanged">
+        @change="itemsChanged"
+        @add="onAdd"
+        @edit="onEdit">
       </au-list>
     </template>
     <el-table ref="table" :data="items"  stripe style="width: 100%" border
@@ -33,23 +35,37 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog ref="dialog" id="dialog"
+      :visible.sync="dialogVisible"
+      :modalAppendToBody="false"
+      :close-on-click-modal="false"
+      width="80%"
+      :show-close="false"
+      top="1vh">
+      <au-aggregator :record_id="record_id" @close="onClose"></au-aggregator>
+    </el-dialog>
   </b-card>
 </template>
 
 <script>
 import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
+import AUAggregator from '../aggregators/Aggregator'
+
 
 export default {
   name: 'Aggregators',
   data() {
      return {
        items: [],
-       multipleSelection: []
+       multipleSelection: [],
+       record_id:'-1',
+       dialogVisible: false
      }
   },
   components: {
-    'au-list': AUList
+    'au-list': AUList,
+    'au-aggregator': AUAggregator
   },
   methods: {
     itemsChanged(items){
@@ -61,6 +77,17 @@ export default {
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
+    },
+    onAdd(){
+      this.record_id = "-1";
+      this.dialogVisible = true;
+    },
+    onEdit(id){
+      this.record_id = id;
+      this.dialogVisible = true;
+    },
+    onClose(){
+      this.dialogVisible = false;
     }
   }
 }

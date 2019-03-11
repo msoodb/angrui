@@ -37,7 +37,10 @@
         </span>
       </el-tree>
     </div>
-    <el-dialog :visible.sync="dialogChannelVisible" :append-to-body="true">
+    <el-dialog :visible.sync="dialogChannelVisible" :append-to-body="true" top="1vh"
+          :close-on-click-modal="false"
+          width="80%"
+          :show-close="false">
       <el-tabs type="border-card">
         <el-tab-pane label="General">
           <el-form ref="form" :model="form" :rules="rules"

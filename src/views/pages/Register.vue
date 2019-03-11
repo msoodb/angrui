@@ -83,7 +83,6 @@ export default {
   mounted(){
   },
   beforeRouteUpdate (to, from, next) {
-    console.log(to, from);
   },
   methods:{
     register(){

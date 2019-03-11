@@ -293,7 +293,7 @@ export default {
       });
     },
     onClose() {
-      //this.$router.go(-1);
+      this.$emit('close');
     }
   }
 }

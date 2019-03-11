@@ -77,7 +77,7 @@
       </el-form>
     </el-tab-pane>
     <el-tab-pane label="Playlists" class="el-tabs-no-padding">
-      <au-playlists :service_id="record_id"></au-playlists>
+      <au-service-playlists :service_id="record_id"></au-service-playlists>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -88,7 +88,7 @@ import AULookup from '../../components/AU-Lookup'
 import AUKeyValue from '../../components/AU-KeyValue'
 import AUTag from '../../components/AU-Tag'
 import AUChannelsTree from '../channels/ChannelsTree'
-import AUPlaylists from '../playlists/Playlists'
+import AUServicePlaylists from '../playlists/ServicePlaylists'
 
 
 let id = 1000;
@@ -167,7 +167,7 @@ export default {
     'au-tag' : AUTag,
     'au-keyValue': AUKeyValue,
     'au-channels-tree': AUChannelsTree,
-    'au-playlists': AUPlaylists
+    'au-service-playlists': AUServicePlaylists
   },
   mounted(){
     if(this.record_id != "-1"){

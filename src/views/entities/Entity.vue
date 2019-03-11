@@ -117,7 +117,7 @@ export default {
      this.status = this.statuses[1];
   },
   mounted(){
-    if(this.record_id != -1){
+    if(this.record_id != "-1"){
       this.getItem();
     }
   },

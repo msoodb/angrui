@@ -105,9 +105,9 @@ const Subscription = () => import('@/views/subscriptions/Subscription')
 const Channels = () => import('@/views/channels/Channels')
 const Channel = () => import('@/views/channels/Channel')
 
-// Playlist
-const Playlists = () => import('@/views/playlists/Playlists')
-const Playlist = () => import('@/views/playlists/Playlist')
+// ServicePlaylist
+const ServicePlaylists = () => import('@/views/playlists/ServicePlaylists')
+const ServicePlaylist = () => import('@/views/playlists/ServicePlaylist')
 
 // Publishers
 const Publishers = () => import('@/views/publishers/Publishers')
@@ -520,20 +520,20 @@ export default new Router({
               children:[
                 {
                   path: 'playlists',
-                  meta: { label: 'Playlists'},
+                  meta: { label: 'ServicePlaylists'},
                   component: {
                     render (c) { return c('router-view') }
                   },
                   children: [
                     {
                       path: '',
-                      component: Playlists,
+                      component: ServicePlaylists,
                     },
                     {
                       path: ':id',
-                      meta: { label: 'Playlist Details'},
-                      name: 'Playlist',
-                      component: Playlist,
+                      meta: { label: 'ServicePlaylist Details'},
+                      name: 'ServicePlaylist',
+                      component: ServicePlaylist,
                     },
                   ]
                 },

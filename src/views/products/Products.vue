@@ -87,7 +87,6 @@ export default {
     },
     handleExpirableCheckbox(scope){
       var value = scope.row.expirable == 't' ? true : false;
-      console.log(scope.row.id + " " + scope.row.expirable);
       return value;
     }
   }

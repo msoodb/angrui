@@ -6,7 +6,7 @@
       <el-col :span="21">
         <el-input readonly v-model="this.phone"></el-input>
       </el-col>
-      <el-dialog :visible.sync="dialogFormVisible">
+      <el-dialog :visible.sync="dialogFormVisible" :append-to-body="true">
         <div class="text-center" vertical-align="middle">
           <el-pagination id="paginator" class="text-center" layout="prev, pager, next"
                 :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">

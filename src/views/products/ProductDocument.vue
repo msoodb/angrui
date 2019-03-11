@@ -168,7 +168,6 @@ export default {
       this.deleteProductDocument(file);
     },
     handlePreview(file) {
-      //console.log(JSON.stringify(file));
     },
     handleExceed(files, fileList) {
       //this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);

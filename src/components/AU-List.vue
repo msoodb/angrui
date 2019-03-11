@@ -31,7 +31,7 @@
       </el-col>
       <el-col :span="8">
         <div class="text-left">
-          <au-filter v-model="filter_string_64" @change="handleFilterChange"></au-filter>
+          <au-filter class="filter" v-model="filter_string_64" @change="handleFilterChange"></au-filter>
         </div>
       </el-col>
     </el-row>
@@ -279,5 +279,8 @@ export default {
     padding: 5px 5px;
     font-weight: 600;
     color: #88898c;
+}
+.filter{
+  padding-top: 5px;
 }
 </style>

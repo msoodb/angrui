@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-button :type="filterButtonPrimary ? 'primary' : 'default'" icon="el-icon-search" size="medium" @click="onFilter"></el-button>
-    <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible" :modalAppendToBody="false">
+    <el-button class="filter-button" :type="filterButtonPrimary ? 'primary' : 'default'" icon="el-icon-search" size="mini" @click="onFilter"></el-button>
+    <el-dialog title="Quick Filter" :visible.sync="dialogFormVisible" :append-to-body="true">
       <el-form :model="form">
         <el-form-item label="Raw query" :label-width="formLabelWidth">
           <el-input v-model="form.filter_string" autocomplete="off"></el-input>
@@ -12,7 +12,7 @@
         <el-button type="primary" @click="onFilterConfirm">Confirm</el-button>
       </span>
     </el-dialog>
-    <el-select v-model="filter" value-key="key" placeholder="Select" @change="onStatusChange">
+    <el-select v-model="filter" value-key="key" placeholder="Select" size="mini" @change="onStatusChange">
       <el-option-group
         v-for="group in filters"
         :key="group.label"
@@ -92,14 +92,7 @@ export default {
     if(this.vale){
       var simple_filter = atob(this.value);
       this.filters[1].options[0]['value'] = simple_filter;
-    }
-    //this.filter = this.filters[0].options['0'];
-    // console.log(this.value);
-    //var simple_filter = atob(this.value);
-    //console.log(simple_filter);
-    //this.filters[1].options[0]['value'] = simple_filter;
-    // this.value = this.filters[1].options[0];
-    // this.mutedvalue = this.value;
+    }  
   },
   methods:{
     onStatusChange(selected){
@@ -129,5 +122,8 @@ export default {
 <style scoped>
 .el-table td, .el-table th{
   padding: 0px;
+}
+.filter-button{
+  margin-right: 5px;
 }
 </style>

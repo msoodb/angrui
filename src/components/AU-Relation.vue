@@ -14,7 +14,7 @@
     </el-row>
     <el-row :gutter="0">
       <el-button icon="el-icon-circle-plus" size="mini" @click="onAdd()">Add</el-button>
-      <el-dialog :visible.sync="dialogFormVisible">
+      <el-dialog :visible.sync="dialogFormVisible" :append-to-body="true">
         <div class="text-center" vertical-align="middle">
           <el-pagination id="paginator" class="text-center" layout="prev, pager, next"
                 :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
@@ -234,9 +234,7 @@ export default {
       });
     },
     onDialogConfirm(){
-      console.log("onDialogConfirm");
       var self = this;
-      console.log(this.multipleSelection);
       for(var i=0; i<self.multipleSelection.length; i++){
         var id = this.multipleSelection[i].id;
         self.addRelation(id);

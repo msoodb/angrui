@@ -10,11 +10,8 @@
             <el-form-item label="title" prop="title">
               <el-input type="title" v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="service" prop="service">
-              <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
-            </el-form-item>
             <el-form-item label="tags">
-              <au-tag ref="tags" master="playlists" masterField="playlist" :masterId="playlist_id" relation="tags_playlists"></au-tag>
+              <au-tag ref="tags" master="playlists" masterField="playlist" :masterId="record_id" relation="tags_playlists"></au-tag>
             </el-form-item>
             <el-form-item label="description">
               <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
@@ -71,7 +68,7 @@ import AUKeyValue from '../../components/AU-KeyValue'
 
 
 export default {
-  name: 'Playlist',
+  name: 'ServicePlaylist',
   props: {
     service_id: {
       type: String,
@@ -87,10 +84,10 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         this.service_id = newVal;
-        if(this.service_id == '-1'){
+        if(this.service_id == '-1' || this.record_id == '-1'){
           this.resetForm();
         } else{
-          this.getItem();
+            this.getItem();
         }
       }
     },
@@ -98,7 +95,7 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         this.record_id = newVal;
-        if(this.record_id == '-1'){
+        if(this.record_id == "-1"){
           this.resetForm();
         } else{
           this.getItem();
@@ -112,7 +109,7 @@ export default {
         id: '',
         name: '',
         title: '',
-        service:'',
+        service: '',
         created_at: '',
         updated_at: '',
         details: '',
@@ -170,10 +167,9 @@ export default {
       self.form.id = self.record_id;
       self.form.name = '';
       self.form.title = '';
-      self.form.service = '';
+      self.form.service = self.service_id;
       self.form.status = '1',
       self.status = null;
-      self.form.type = '0';
       self.form.situation = '0';
       self.form.created_at = '';
       self.form.updated_at = '';
@@ -189,7 +185,7 @@ export default {
           'Authorization': token
         }
       }
-      this.$axios.get(baseurl() + '/playlists/' + id, config )
+      this.$axios.get(baseurl() + '/services/' + self.service_id + '/playlists/' + id, config )
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
@@ -227,12 +223,10 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.post(baseurl() + '/playlists', data_request, config )
+      this.$axios.post(baseurl() + '/services/' + self.service_id + '/playlists', data_request, config )
         .then(function (response) {
           if(response.status == 200){
-            var id = response.data.id;
-            const form_link = '/playlists' + `/${id.toString()}`;
-            self.$router.push({path: form_link});
+            self.record_id = response.data.id;
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
@@ -266,7 +260,7 @@ export default {
       }
       if(!self.form.details || self.form.details==''){self.form.details = "{}"}
       var data_request = JSON.stringify(self.form);
-      this.$axios.put(baseurl() + '/playlists/' + id, data_request, config )
+      this.$axios.put(baseurl() + '/services/' + self.service_id + '/playlists/' + id, data_request, config )
         .then(function (response) {
           if(response.status == 200){
             let currentMsg =  self.$message  ({

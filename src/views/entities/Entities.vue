@@ -1,50 +1,47 @@
 <template>
-  <b-row>
-    <b-col cols="12" lg="12">
-      <b-card no-header>
-        <template slot="header">
-          <au-list
-            handler="entities"
-            :multipleSelection="multipleSelection"
-            @change="itemsChanged"
-            @add="onAdd"
-            @edit="onEdit">
-          </au-list>
+  <b-card no-header>
+    <template slot="header">
+      <au-list
+        handler="entities"
+        :multipleSelection="multipleSelection"
+        @change="itemsChanged"
+        @add="onAdd"
+        @edit="onEdit">
+      </au-list>
+    </template>
+    <el-table ref="table" :data="items"  stripe style="width: 100%" border
+          @selection-change="handleSelectionChange">
+      <el-table-column  type="selection"  width="40" align="center">
+      </el-table-column>
+      <el-table-column  type="index"  width="40" align="center">
+      </el-table-column>
+      <el-table-column prop="name" label="name" width="180">
+      </el-table-column>
+      <el-table-column prop="type" label="type" width="120" align="center">
+        <template slot-scope="scope">
+          {{scope.row.type == 0 ? 'table' : 'table' }}
         </template>
-        <el-table ref="table" :data="items"  stripe style="width: 100%" border
-              @selection-change="handleSelectionChange">
-          <el-table-column  type="selection"  width="40" align="center">
-          </el-table-column>
-          <el-table-column  type="index"  width="40" align="center">
-          </el-table-column>
-          <el-table-column prop="name" label="name" width="180">
-          </el-table-column>
-          <el-table-column prop="type" label="type" width="120" align="center">
-            <template slot-scope="scope">
-              {{scope.row.type == 0 ? 'table' : 'table' }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
-          </el-table-column>
-          <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
-          </el-table-column>
-          <el-table-column prop="status" label="status" width="120" align="center">
-            <template slot-scope="scope">
-              {{scope.row.status == 0 ? 'disable' : 'enable' }}
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-dialog ref="dialog" id="dialog"
-          :visible.sync="dialogVisible"
-          :modalAppendToBody="false"
-          :close-on-click-modal="false"
-          width="80%"
-          :show-close="false">
-          <au-entity :record_id="record_id" @close="onClose"></au-entity>
-        </el-dialog>
-      </b-card>
-    </b-col>
-  </b-row>
+      </el-table-column>
+      <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
+      </el-table-column>
+      <el-table-column prop="updated_at" label="updated_at" width="120" :formatter="formatDateOnly">
+      </el-table-column>
+      <el-table-column prop="status" label="status" width="120" align="center">
+        <template slot-scope="scope">
+          {{scope.row.status == 0 ? 'disable' : 'enable' }}
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-dialog ref="dialog" id="dialog"
+      :visible.sync="dialogVisible"
+      :modalAppendToBody="false"
+      :close-on-click-modal="false"
+      width="80%"
+      :show-close="false"
+      top="1vh">
+      <au-entity :record_id="record_id" @close="onClose"></au-entity>
+    </el-dialog>
+  </b-card>
 </template>
 
 <script>
