@@ -62,18 +62,10 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         this.service_id = newVal;
-        console.log(this.service_id);
         this.handler = 'services/' + this.service_id + '/playlists';
       }
     }
-  },
-  // computed:{
-  //   handler: {
-  //     get: function () {
-  //       return 'services/' + this.service_id + '/playlists';
-  //     }
-  //   }
-  // },
+  },  
   data() {
      return {
        items: [],

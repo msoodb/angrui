@@ -94,22 +94,6 @@ import AUPlaylists from '../playlists/Playlists'
 let id = 1000;
 export default {
   name: 'Service',
-  // computed:{
-  //   service_id: {
-  //     get: function () {
-  //       return this.$route.params.service_id;
-  //     }
-  //   },
-  //   is_new: {
-  //     get: function () {
-  //       if(this.$route.params.service_id == -1){
-  //         return true;
-  //       }else{
-  //         return false;
-  //       }
-  //     }
-  //   }
-  // },
   props: {
     record_id: {
       type: String,

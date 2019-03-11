@@ -38,35 +38,39 @@
       </el-tree>
     </div>
     <el-dialog :visible.sync="dialogChannelVisible" :append-to-body="true">
-        <el-form ref="form" :model="form" :rules="rules"
-           label-width="100px" inline-message>
-          <el-row :gutter="20">
-            <el-col :span="21">
-              <el-form-item label="name" prop="name">
-                <el-input type="name" v-model="form.name"></el-input>
-              </el-form-item>
-              <el-form-item label="title" prop="title">
-                <el-input type="title" v-model="form.title"></el-input>
-              </el-form-item>
-              <el-form-item label="tags">
-                <au-tag ref="tags" master="channels" masterField="channel" :masterId="form.id" relation="tags_channels" :refresh="tags_refresh"></au-tag>
-              </el-form-item>
-              <el-form-item label="details">
-                <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
-              </el-form-item>
-              <el-form-item label="description">
-                <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
-              </el-form-item>
-            </el-col>
-           </el-row>
-           <hr/>
-           <el-row :gutter="20">
-              <el-form-item>
-                <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveform">Save</el-button>
-                <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCloseform">Close</el-button>
-              </el-form-item>
-            </el-row>
-         </el-form>
+      <el-tabs type="border-card">
+        <el-tab-pane label="General">
+          <el-form ref="form" :model="form" :rules="rules"
+             label-width="100px" inline-message>
+            <el-row :gutter="20">
+              <el-col :span="21">
+                <el-form-item label="name" prop="name">
+                  <el-input type="name" v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="title" prop="title">
+                  <el-input type="title" v-model="form.title"></el-input>
+                </el-form-item>
+                <el-form-item label="tags">
+                  <au-tag ref="tags" master="channels" masterField="channel" :masterId="form.id" relation="tags_channels" :refresh="tags_refresh"></au-tag>
+                </el-form-item>
+                <el-form-item label="details">
+                  <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+                </el-form-item>
+                <el-form-item label="description">
+                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
+                </el-form-item>
+              </el-col>
+             </el-row>
+             <hr/>
+             <el-row :gutter="20">
+                <el-form-item>
+                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSaveform">Save</el-button>
+                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onCloseform">Close</el-button>
+                </el-form-item>
+              </el-row>
+           </el-form>
+         </el-tab-pane>
+       </el-tabs>
     </el-dialog>
   </div>
 </template>
@@ -91,6 +95,9 @@ export default {
       service_id: function(newVal, oldVal) {
         if(!this.disabled && this.service_id!="-1"){
           this.getChannels('');
+        }
+        else{
+          this.channels = [];
         }
       }
   },
@@ -131,7 +138,9 @@ export default {
     if(!this.disabled && this.service_id!="-1"){
       this.getChannels('');
     }
-    //this.getChannels('');
+    else{
+      this.channels = [];
+    }
   },
   methods:{
     onChangeDetails(val){

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="6">
+      <el-col :span="8">
         <div class="text-left">
           <el-button icon="el-icon-circle-plus" circle @click="onAdd"></el-button>
           <el-button icon="el-icon-edit" circle @click="onEdit"></el-button>
@@ -19,7 +19,7 @@
           </el-dropdown>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
         <div class="text-center" vertical-align="middle">
           <el-pagination id="paginator" class="text-center" layout="prev, pager, next, sizes"
                 :page-sizes="[10, 25, 50, 100]"
@@ -29,7 +29,7 @@
           </el-pagination>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="8">
         <div class="text-left">
           <au-filter v-model="filter_string_64" @change="handleFilterChange"></au-filter>
         </div>
@@ -57,7 +57,20 @@ export default {
       type: Array
     }
   },
-  computed:{
+  watch: {
+    $route (to, from){
+      this.page = Number(this.$route.query.page);
+      this.limit = Number(this.$route.query.limit);
+      this.filter_string_64 = this.$route.query.filter;
+      this.getItems();
+    },
+    handler: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.handler = newVal;
+        this.getItems();
+      }
+    }
   },
   data: function () {
     return {
@@ -77,14 +90,6 @@ export default {
     this.limit = Number(this.$route.query.limit);
     this.filter_string_64 = this.$route.query.filter;
     this.getItems();
-  },
-  watch:{
-    $route (to, from){
-      this.page = Number(this.$route.query.page);
-      this.limit = Number(this.$route.query.limit);
-      this.filter_string_64 = this.$route.query.filter;
-      this.getItems();
-    }
   },
   methods:{
     handleFilterChange(value){
@@ -120,6 +125,15 @@ export default {
       }
       return url;
     },
+    validateUrl(url){
+      var array = url.split('/');
+      for (var i = 0; i < array.length; i++) {
+        if(array[i] == "-1"){
+          return false;
+        }
+      }
+      return true;
+    },
     getItems(){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -130,10 +144,21 @@ export default {
         }
       }
       var url = this.createUrl();
+      if(!this.validateUrl(url)){
+        self.items = [];
+        self.limit = 25;
+        self.page_count = 1000;
+        self.result_count = 0;
+        self.$emit('change', this.items);
+        return;
+      }
       this.$axios.get(baseurl() + url , config )
         .then(function (response) {
           if(response.status == 200){
             self.items = response.data.items;
+            if(self.items == ""){
+              self.items = [];
+            }
             self.limit = Number(response.data.info.limit);
             self.page_count = Number(response.data.info.page_count);
             self.result_count = Number(response.data.info.result_count);
