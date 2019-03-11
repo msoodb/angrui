@@ -76,15 +76,37 @@ import AUKeyValue from '../../components/AU-KeyValue'
 
 export default {
   name: 'Playlist',
-  computed:{
+  props: {
     service_id: {
-      get: function () {
-        return this.$route.params.service_id;
+      type: String,
+      required: true
+    },
+    record_id: {
+      type: String,
+      required: true
+    }
+  },
+  watch: {
+    service_id: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.service_id = newVal;
+        if(this.service_id == '-1'){
+          this.resetForm();
+        } else{
+          this.getItem();
+        }
       }
     },
-    playlist_id: {
-      get: function () {
-        return this.$route.params.id;
+    record_id: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.record_id = newVal;
+        if(this.record_id == '-1'){
+          this.resetForm();
+        } else{
+          this.getItem();
+        }
       }
     }
   },
@@ -132,7 +154,7 @@ export default {
      this.status = this.statuses[1];
   },
   mounted(){
-    if(this.$route.params.id != -1){
+    if(this.record_id != "-1"){
       this.getItem();
     }
   },
@@ -147,9 +169,23 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
+    resetForm(){
+      var self = this;
+      self.form.id = self.record_id;
+      self.form.name = '';
+      self.form.title = '';
+      self.form.service = '';
+      self.form.status = '1',
+      self.status = null;
+      self.form.type = '0';
+      self.form.situation = '0';
+      self.form.created_at = '';
+      self.form.updated_at = '';
+      self.form.description = '';
+    },
     getItem(){
       var self = this;
-      var id = self.$route.params.id;
+      var id = self.record_id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -224,7 +260,7 @@ export default {
     },
     updateItem(){
       var self = this;
-      var id = self.$route.params.id;
+      var id = self.record_id;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -261,13 +297,13 @@ export default {
     onSave() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          if(this.$route.params.id == -1){
+          if(this.record_id == -1){
             this.addItem();
           }
           else{
             this.updateItem();
           }
-          //this.onClose();
+          this.onClose();
         }
         else{
           this.$message.error('Please fill in the required fields.');
@@ -275,25 +311,8 @@ export default {
       });
     },
     onClose() {
-      this.$router.go(-1);
+      //this.$router.go(-1);
     }
   }
 }
 </script>
-<style scoped>
-.el-form-item{
-  margin-bottom:0px;
-}
-.card-body{
-  padding: 0rem;
-}
-.el-table td, .el-table th{
-  padding: 0px;
-}
-.el-form-item__content{
-  line-height:0px;
-}
-.el-textarea{
-  margin-bottom: 10px;
-}
-</style>

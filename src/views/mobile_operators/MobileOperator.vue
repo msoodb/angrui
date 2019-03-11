@@ -138,7 +138,7 @@ export default {
     'au-keyValue':AUKeyValue
   },
   mounted(){
-    if(this.record_id != -1){
+    if(this.record_id != "-1"){
       this.getItem();
     }
   },

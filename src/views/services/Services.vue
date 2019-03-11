@@ -4,7 +4,9 @@
       <au-list
         handler="services"
         :multipleSelection="multipleSelection"
-        @change="itemsChanged">
+        @change="itemsChanged"
+        @add="onAdd"
+        @edit="onEdit">
       </au-list>
     </template>
     <el-table ref="table" :data="items"  stripe style="width: 100%" border
@@ -35,23 +37,36 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog ref="dialog" id="dialog"
+      :visible.sync="dialogVisible"
+      :modalAppendToBody="false"
+      :close-on-click-modal="false"
+      width="80%"
+      :show-close="false"
+      top="1vh">
+      <au-service :record_id="record_id"></au-service>
+    </el-dialog>
   </b-card>
 </template>
 
 <script>
 import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
+import AUService from '../services/Service'
 
 export default {
   name: 'Services',
   data() {
      return {
        items: [],
-       multipleSelection: []
+       multipleSelection: [],
+       record_id:'-1',
+       dialogVisible: false
      }
   },
   components: {
-    'au-list': AUList
+    'au-list': AUList,
+    'au-service': AUService
   },
   methods: {
     itemsChanged(items){
@@ -63,33 +78,22 @@ export default {
     formatDateOnly(row, column, cellValue){
       var date = cellValue.split(' ');
       return date[0];
+    },
+    onAdd(){
+      this.record_id = "-1";
+      this.dialogVisible = true;
+    },
+    onEdit(id){
+      this.record_id = id;
+      this.dialogVisible = true;
     }
   }
 }
 </script>
 
 <style scoped>
-.card{
-  margin-bottom: 0rem;
-}
 .card-body{
   padding: 0rem;
   padding-top: 40px;
-}
-.card-header{
-  padding: 0rem;
-  border: 0rem;
-  background-color: white;
-  position: fixed;
-  z-index: 20;
-  width: -moz-available;
-  border-bottom: 1px solid #c8ced3;
-}
-.card-body >>> table > tbody > tr > td {
-  cursor: pointer;
-  padding: 0px;
-}
-.card-body >>> table > tbody > tr > th {
-  padding: 0px;
 }
 </style>

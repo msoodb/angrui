@@ -52,7 +52,6 @@ import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
 import AUMobileOperator from '../mobile_operators/MobileOperator'
 
-
 export default {
   name: 'MobileOperators',
   data() {
