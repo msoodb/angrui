@@ -44,7 +44,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-service :record_id="record_id"></au-service>
+      <au-service :record_id="record_id" @close="onClose"></au-service>
     </el-dialog>
   </b-card>
 </template>
@@ -86,6 +86,9 @@ export default {
     onEdit(id){
       this.record_id = id;
       this.dialogVisible = true;
+    },
+    onClose(){
+      this.dialogVisible = false;
     }
   }
 }

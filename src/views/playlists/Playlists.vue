@@ -36,7 +36,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-playlist :record_id="record_id" :service_id="service_id"></au-playlist>
+      <au-playlist :record_id="record_id" :service_id="service_id" @close="onClose"></au-playlist>
     </el-dialog>
   </b-card>
 </template>
@@ -65,7 +65,7 @@ export default {
         this.handler = 'services/' + this.service_id + '/playlists';
       }
     }
-  },  
+  },
   data() {
      return {
        items: [],
@@ -97,6 +97,9 @@ export default {
     onEdit(id){
       this.record_id = id;
       this.dialogVisible = true;
+    },
+    onClose(){
+      this.dialogVisible = false;
     }
   }
 }

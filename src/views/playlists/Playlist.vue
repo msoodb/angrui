@@ -1,70 +1,66 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-tabs type="border-card">
-        <el-tab-pane label="General">
-          <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
-            <el-row :gutter="20">
-              <el-col :span="16">
-                <el-form-item label="name" prop="name">
-                  <el-input type="name" v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="title" prop="title">
-                  <el-input type="title" v-model="form.title"></el-input>
-                </el-form-item>
-                <el-form-item label="service" prop="service">
-                  <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
-                </el-form-item>
-                <el-form-item label="tags">
-                  <au-tag ref="tags" master="playlists" masterField="playlist" :masterId="playlist_id" relation="tags_playlists"></au-tag>
-                </el-form-item>
-                <el-form-item label="description">
-                  <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
-                </el-form-item>
-                <el-form-item label="details">
-                  <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item label="status" prop="status">
-                  <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
-                    <el-option
-                      v-for="item in statuses"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="id" prop="id">
-                  <el-input v-model="form.id" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="created by" prop="created_by">
-                  <el-input v-model="created_by" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="updated by" prop="updated_by">
-                  <el-input v-model="updated_by" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="created_at">
-                  <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                </el-form-item>
-                <el-form-item label="updated_at">
-                  <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
-                </el-form-item>
-              </el-col>
-             </el-row>
-             <hr/>
-             <el-row :gutter="20">
-                <el-form-item>
-                  <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-                  <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
-                </el-form-item>
-              </el-row>
-           </el-form>
-          </el-tab-pane>
-        </el-tabs>
-    </el-main>
-  </el-container>
+  <el-tabs type="border-card">
+    <el-tab-pane label="General">
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
+        <el-row :gutter="20">
+          <el-col :span="16">
+            <el-form-item label="name" prop="name">
+              <el-input type="name" v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="title" prop="title">
+              <el-input type="title" v-model="form.title"></el-input>
+            </el-form-item>
+            <el-form-item label="service" prop="service">
+              <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
+            </el-form-item>
+            <el-form-item label="tags">
+              <au-tag ref="tags" master="playlists" masterField="playlist" :masterId="playlist_id" relation="tags_playlists"></au-tag>
+            </el-form-item>
+            <el-form-item label="description">
+              <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
+            </el-form-item>
+            <el-form-item label="details">
+              <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="status" prop="status">
+              <el-select v-model="status" value-key="value" placeholder="Select" @change="onStatusChange">
+                <el-option
+                  v-for="item in statuses"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="id" prop="id">
+              <el-input v-model="form.id" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="created by" prop="created_by">
+              <el-input v-model="created_by" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="updated by" prop="updated_by">
+              <el-input v-model="updated_by" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="created_at">
+              <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            </el-form-item>
+            <el-form-item label="updated_at">
+              <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
+            </el-form-item>
+          </el-col>
+         </el-row>
+         <hr/>
+         <el-row :gutter="20">
+            <el-form-item>
+              <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+              <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
+            </el-form-item>
+          </el-row>
+       </el-form>
+      </el-tab-pane>
+    </el-tabs>
 </template>
 
 <script>
@@ -311,7 +307,7 @@ export default {
       });
     },
     onClose() {
-      //this.$router.go(-1);
+      this.$emit('close');
     }
   }
 }

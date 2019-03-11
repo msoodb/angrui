@@ -40,7 +40,7 @@
           :close-on-click-modal="false"
           width="80%"
           :show-close="false">
-          <au-entity :record_id="record_id"></au-entity>
+          <au-entity :record_id="record_id" @close="onClose"></au-entity>
         </el-dialog>
       </b-card>
     </b-col>
@@ -84,6 +84,9 @@ export default {
     onEdit(id){
       this.record_id = id;
       this.dialogVisible = true;
+    },
+    onClose(){
+      this.dialogVisible = false;
     }
   }
 }

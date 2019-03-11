@@ -76,7 +76,7 @@
         </el-form-item>
       </el-form>
     </el-tab-pane>
-    <el-tab-pane label="Playlists">
+    <el-tab-pane label="Playlists" class="el-tabs-no-padding">
       <au-playlists :service_id="record_id"></au-playlists>
     </el-tab-pane>
   </el-tabs>
@@ -338,7 +338,7 @@ export default {
       });
     },
     onClose() {
-      //this.$router.go(-1);
+      this.$emit('close');
     }
   }
 };
