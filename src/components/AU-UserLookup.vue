@@ -117,6 +117,9 @@ export default {
       .then(function (response) {
         if(response.status == 200){
           self.items = response.data.items;
+          if(self.items == ""){
+            self.items = [];
+          }
           self.limit = Number(response.data.info.limit);
           self.page_count = Number(response.data.info.page_count);
           self.result_count = Number(response.data.info.result_count);

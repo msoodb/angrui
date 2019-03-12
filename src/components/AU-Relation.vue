@@ -136,6 +136,9 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             self.relations = response.data.items;
+            if(self.relations == ""){
+              self.relations = [];
+            }
           }
         }.bind(this))
         .catch(function (error) {

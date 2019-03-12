@@ -280,6 +280,9 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             self.items = response.data.items;
+            if(self.items == ""){
+              self.items = [];
+            }
           }
         }.bind(this))
         .catch(function (error) {
