@@ -13,10 +13,6 @@
           <el-menu-item index="2-4" route="/users_content_providers?page=1">Users Content Providers</el-menu-item>
           <el-menu-item index="2-5" route="/users_publishers?page=1">Users Publishers</el-menu-item>
           <el-menu-item index="2-6" route="/tags?page=1">Tags</el-menu-item>
-          <el-menu-item index="2-7" route="/tags_channels?page=1">Tags Channels</el-menu-item>
-          <el-menu-item index="2-8" route="/tags_playlists?page=1">Tags Playlists</el-menu-item>
-          <el-menu-item index="2-9" route="/tags_contents?page=1">Tags Contents</el-menu-item>
-          <el-menu-item index="2-10" route="/contents?page=1">Contents</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">User</template>

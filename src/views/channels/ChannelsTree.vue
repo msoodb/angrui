@@ -18,6 +18,12 @@
             <el-button
               type="text"
               size="mini"
+              @click="() => onUplaod(node, data)">
+              Uplaod
+            </el-button>
+            <el-button
+              type="text"
+              size="mini"
               @click="() => onAddChannel(data)">
               Append
             </el-button>

@@ -52,7 +52,6 @@ import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
 import AUAggregator from '../aggregators/Aggregator'
 
-
 export default {
   name: 'Aggregators',
   data() {
