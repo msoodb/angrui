@@ -109,6 +109,10 @@ const Channel = () => import('@/views/channels/Channel')
 const ServicePlaylists = () => import('@/views/playlists/ServicePlaylists')
 const ServicePlaylist = () => import('@/views/playlists/ServicePlaylist')
 
+// Playlist
+const Playlists = () => import('@/views/playlists/Playlists')
+const Playlist = () => import('@/views/playlists/Playlist')
+
 // Publishers
 const Publishers = () => import('@/views/publishers/Publishers')
 const Publisher = () => import('@/views/publishers/Publisher')
@@ -598,25 +602,25 @@ export default new Router({
             },
           ]
         },
-        // {
-        //   path: 'playlists',
-        //   meta: { label: 'Playlists'},
-        //   component: {
-        //     render (c) { return c('router-view') }
-        //   },
-        //   children: [
-        //     {
-        //       path: '',
-        //       component: Playlists,
-        //     },
-        //     {
-        //       path: ':id',
-        //       meta: { label: 'Playlist Details'},
-        //       name: 'Playlist',
-        //       component: Playlist,
-        //     },
-        //   ]
-        // },
+        {
+          path: 'playlists',
+          meta: { label: 'Playlists'},
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Playlists,
+            },
+            {
+              path: ':id',
+              meta: { label: 'Playlist Details'},
+              name: 'Playlist',
+              component: Playlist,
+            },
+          ]
+        },
         {
           path: 'publishers',
           meta: { label: 'Publishers'},
