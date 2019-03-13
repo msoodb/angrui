@@ -15,13 +15,11 @@
       </el-table-column>
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
-      <el-table-column prop="service" label="service" width="150">
-      </el-table-column>
       <el-table-column prop="channel" label="channel" width="150">
       </el-table-column>
       <el-table-column prop="publisher" label="publisher" width="180">
       </el-table-column>
-      <el-table-column prop="type" label="type" width="300" align="center" :formatter="formatType">
+      <el-table-column prop="type" label="type" width="120" align="center" :formatter="formatType">
       </el-table-column>
       <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
       </el-table-column>
@@ -40,7 +38,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-content :record_id="record_id" @close="onClose"></au-content>
+      <au-service-content :record_id="record_id" :service_id="service_id" @close="onClose"></au-service-content>
     </el-dialog>
   </b-card>
 </template>
@@ -48,11 +46,29 @@
 <script>
 import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
-import AUContent from '../contents/Content'
+import AUServiceContent from '../contents/ServiceContent'
 
 
 export default {
-  name: 'Contents',
+  name: 'ServiceContents',
+  props: {
+    service_id: {
+        type: String,
+        required: true
+    },
+    disabled: {
+        type: Boolean
+    }
+  },
+  watch: {
+    service_id: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.service_id = newVal;
+        this.handler = 'services/' + this.service_id + '/contents';
+      }
+    }
+  },
   data() {
      return {
        items: [],
@@ -63,7 +79,7 @@ export default {
   },
   components: {
     'au-list': AUList,
-    'au-content': AUContent
+    'au-service-content': AUServiceContent
   },
   methods: {
     formatType(row, column, cellValue){

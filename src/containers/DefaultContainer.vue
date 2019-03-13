@@ -13,6 +13,7 @@
           <el-menu-item index="2-4" route="/users_content_providers?page=1">Users Content Providers</el-menu-item>
           <el-menu-item index="2-5" route="/users_publishers?page=1">Users Publishers</el-menu-item>
           <el-menu-item index="2-6" route="/tags?page=1">Tags</el-menu-item>
+          <el-menu-item index="2-7" route="/contents?page=1">Contents</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">User</template>

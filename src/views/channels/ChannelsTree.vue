@@ -19,8 +19,9 @@
               type="text"
               size="mini"
               @click="() => onUplaod(node, data)">
-              Uplaod
+              Content
             </el-button>
+            {{`⋮`}}
             <el-button
               type="text"
               size="mini"
