@@ -4,8 +4,14 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
         <el-row :gutter="20">
           <el-col :span="16">
-            <el-form-item label="content" prop="content">
-              <au-lookup handler="contents" :id="form.content" @select="ContentLookupSelect"></au-lookup>
+            <el-form-item label="service" prop="service">
+              <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
+            </el-form-item>
+            <el-form-item label="channel" prop="channel">
+              <au-lookup handler="channels" :id="form.channel" @select="ChannelLookupSelect"></au-lookup>
+            </el-form-item>
+            <el-form-item label="publisher" prop="publisher">
+              <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
             </el-form-item>
             <el-form-item label="name" prop="name">
               <el-input type="name" v-model="form.name"></el-input>
@@ -89,7 +95,10 @@ export default {
     return {
       form: {
         id: '',
-        content:'',
+        service:'',
+        channel:'',
+        publisher:'',
+        type: '0',
         name:'',
         title:'',
         path:'',
@@ -145,7 +154,9 @@ export default {
     resetForm(){
       var self = this;
       self.form.id = self.record_id;
-      self.form.content = '';
+      self.form.service = '';
+      self.form.channel = '';
+      self.form.publisher = '';
       self.form.name = '';
       self.form.title = '';
       self.form.path = '';
@@ -171,7 +182,9 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
-            self.form.content = response.data.content;
+            self.form.service = response.data.service;
+            self.form.channel = response.data.channel;
+            self.form.publisher = response.data.publisher;
             self.form.name = response.data.name;
             self.form.title = response.data.title;
             self.form.path = response.data.path;

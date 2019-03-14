@@ -19,7 +19,13 @@
       </el-table-column>
       <el-table-column prop="path" label="path" width="180">
       </el-table-column>
-      <el-table-column prop="size" label="size" width="180">
+      <el-table-column prop="size" label="size" width="90">
+      </el-table-column>
+      <el-table-column prop="service" label="service" width="150">
+      </el-table-column>
+      <el-table-column prop="channel" label="channel" width="150">
+      </el-table-column>
+      <el-table-column prop="publisher" label="publisher" width="150">
       </el-table-column>
       <el-table-column prop="created_at" label="created_at" width="120" :formatter="formatDateOnly">
       </el-table-column>
