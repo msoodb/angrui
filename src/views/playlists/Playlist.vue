@@ -84,7 +84,7 @@ export default {
       handler(newVal, oldVal) {
         this.record_id = newVal;
         if(this.record_id == "-1"){
-          this.resetForm();
+          this.getDefaultData();
         } else{
           this.getItem();
         }
@@ -120,8 +120,8 @@ export default {
       status : null,
       rules: {
         name: [
-          { required: true, message: 'Please input name', trigger: 'change' },
-          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
+          { required: true, message: 'Please input name', trigger: 'blur' },
+          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'blur' }
         ]
       }
     }
@@ -135,7 +135,12 @@ export default {
      this.status = this.statuses[1];
   },
   mounted(){
-    if(this.record_id != "-1"){
+    // if(this.record_id != "-1"){
+    //   this.getItem();
+    // }
+    if(this.record_id == "-1"){
+      this.getDefaultData();
+    } else{
       this.getItem();
     }
   },
@@ -150,18 +155,19 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
-    resetForm(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.name = '';
-      self.form.title = '';
-      self.form.service = '';
-      self.form.status = '1',
-      self.status = null;
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
+    getDefaultData(){
+      // var self = this;
+      // self.form.id = self.record_id;
+      // self.form.name = '';
+      // self.form.title = '';
+      // self.form.service = '';
+      // self.form.status = '1',
+      // self.status = null;
+      // self.form.situation = '0';
+      // self.form.created_at = '';
+      // self.form.updated_at = '';
+      // self.form.description = '';
+      this.$refs["form"].resetFields();
     },
     getItem(){
       var self = this;

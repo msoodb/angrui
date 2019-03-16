@@ -4,6 +4,21 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
         <el-row :gutter="20">
           <el-col :span="16">
+          <el-form-item>
+            <el-upload
+              :action="action"
+              :headers="headers"
+              :limit="1"
+              class="upload-demo"
+              :show-file-list="true"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              :on-success="handleSuccess"
+              :on-exceed="handleExceed">
+              <el-button size="small" type="primary">Click to upload</el-button>
+            </el-upload>
+          </el-form-item>
             <el-form-item label="service" prop="service">
               <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
             </el-form-item>
@@ -84,10 +99,26 @@ export default {
       handler(newVal, oldVal) {
         this.record_id = newVal;
         if(this.record_id == '-1'){
-          this.resetForm();
+          this.getDefaultData();
         } else{
           this.getItem();
         }
+      }
+    }
+  },
+  computed:{
+    action: {
+      get: function () {
+        return baseurl() + '/files';
+      }
+    },
+    headers: {
+      get: function () {
+        var token = JSON.parse(localStorage.getItem("jwtoken"));
+        var headers = {
+          'Authorization': token
+        }
+        return headers;
       }
     }
   },
@@ -98,7 +129,6 @@ export default {
         service:'',
         channel:'',
         publisher:'',
-        type: '0',
         name:'',
         title:'',
         path:'',
@@ -110,6 +140,8 @@ export default {
         situation:'0',
         description: ''
       },
+      created_by:'',
+      updated_by:'',
       statuses: [
         {
           value: '0',
@@ -144,14 +176,20 @@ export default {
     }
   },
   methods: {
-    ContentLookupSelect(id){
-      this.form.content = id;
+    ServiceLookupSelect(id){
+      this.form.service = id;
+    },
+    ChannelLookupSelect(id){
+      this.form.channel = id;
+    },
+    PublisherLookupSelect(id){
+      this.form.publisher = id;
     },
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
     },
-    resetForm(){
+    getDefaultData(){
       var self = this;
       self.form.id = self.record_id;
       self.form.service = '';
@@ -207,6 +245,27 @@ export default {
             self.$message.error('Unknown error.');
         }
       });
+    },
+    handleRemove(file, fileList) {
+      //this.deleteProductDocument(file);
+    },
+    handlePreview(file) {
+    },
+    handleExceed(files, fileList) {
+      //this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
+    },
+    handleBeforeUpload(file) {
+      return false;
+    },
+    handleSuccess(response, file, fileList) {
+      if(response.message == "success"){
+        this.form.name = file.name;
+        this.form.path = response.path;
+        this.form.size = file.size;
+      }
     },
     addItem(){
       var self = this;

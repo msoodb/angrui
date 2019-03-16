@@ -82,7 +82,7 @@ export default {
       handler(newVal, oldVal) {
         this.record_id = newVal;
         if(this.record_id == '-1'){
-          this.resetForm();
+          this.getDefaultData();
         } else{
           this.getItem();
         }
@@ -104,6 +104,8 @@ export default {
         situation:'0',
         description: ''
       },
+      created_by:'',
+      updated_by:'',
       statuses: [
         {
           value: '0',
@@ -156,7 +158,7 @@ export default {
       this.type = selected;
       this.form.type = this.type['value'];
     },
-    resetForm(){
+    getDefaultData(){
       var self = this;
       self.form.id = self.record_id;
       self.form.service = '';

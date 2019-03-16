@@ -65,7 +65,7 @@ export default {
       handler(newVal, oldVal) {
         this.record_id = newVal;
         if(this.record_id == '-1'){
-          this.resetForm();
+          this.getDefaultData();
         } else{
           this.getItem();
         }
@@ -116,7 +116,7 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
-    resetForm(){
+    getDefaultData(){
       var self = this;
       self.form.id = self.record_id;
       self.form.name = '';

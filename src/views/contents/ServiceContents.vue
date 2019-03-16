@@ -33,7 +33,7 @@
     </el-table>
     <el-dialog ref="dialog" id="dialog"
       :visible.sync="dialogVisible"
-      :modalAppendToBody="false"
+      :append-to-body="true"
       :close-on-click-modal="false"
       width="80%"
       :show-close="false"
