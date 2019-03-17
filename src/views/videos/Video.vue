@@ -23,7 +23,7 @@
               <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
             </el-form-item>
             <el-form-item label="channel" prop="channel">
-              <au-lookup handler="channels" :id="form.channel" @select="ChannelLookupSelect"></au-lookup>
+              <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
             </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -84,6 +84,7 @@
 <script>
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
+import AUChannelLookup from '../../components/AU-ChannelLookup'
 
 export default {
   name: 'Content',
@@ -168,7 +169,8 @@ export default {
      this.status = this.statuses[1];
   },
   components: {
-    'au-lookup' : AULookup
+    'au-lookup' : AULookup,
+    'au-channel-lookup' : AUChannelLookup
   },
   mounted(){
     if(this.record_id != "-1"){

@@ -239,11 +239,4 @@ export default {
   margin-right: 10px;
   vertical-align: bottom;
 }
-.border{
-  margin-bottom: 10px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
-  min-height: 120px;
-  padding-left: 5px;
-}
 </style>

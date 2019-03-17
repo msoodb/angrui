@@ -157,11 +157,6 @@ export default {
 .el-table td, .el-table th{
   padding: 0px;
 }
-.border{
-  margin-bottom: 10px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
-}
 .el-button{
   background-color: transparent;
   border: none;
@@ -170,11 +165,5 @@ export default {
   color: black;
   background-color: #efefef;
   border: none;
-}
-.padding{
-  padding-top:50px;
-  padding-right:50px;
-  padding-left:50px;
-  padding-buttom:30px;
 }
 </style>
