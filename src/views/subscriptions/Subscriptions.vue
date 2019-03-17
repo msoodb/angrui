@@ -2,6 +2,7 @@
   <b-card no-header>
     <template slot="header">
       <au-list
+        ref="list"
         handler="subscriptions"
         :multipleSelection="multipleSelection"
         @change="itemsChanged"
@@ -88,6 +89,7 @@ export default {
     },
     onClose(){
       this.dialogVisible = false;
+      this.$refs["list"].getItems();
     }
   }
 }

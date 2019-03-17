@@ -49,8 +49,12 @@ export default {
     }
   },
   watch: {
-    masterId: function(newVal, oldVal) {
-      this.masterId = newVal;
+    masterId: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.masterId = newVal;
+        //this.getItems();
+      }
     },
     refresh: function(newVal, oldVal) {
       this.getItems();
@@ -65,7 +69,7 @@ export default {
     }
   },
   created() {
-    this.getItems();
+    //this.getItems();
   },
   methods:{
     getItems(){

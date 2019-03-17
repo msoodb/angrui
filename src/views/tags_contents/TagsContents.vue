@@ -4,6 +4,7 @@
       <b-card no-header>
         <template slot="header">
           <au-list
+            ref="list"
             handler="tags_contents"
             :multipleSelection="multipleSelection"
             @change="itemsChanged">

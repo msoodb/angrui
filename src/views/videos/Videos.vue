@@ -2,6 +2,7 @@
   <b-card no-header>
     <template slot="header">
       <au-list
+        ref="list"
         handler="videos"
         :multipleSelection="multipleSelection"
         @change="itemsChanged"
@@ -16,9 +17,7 @@
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="name" label="name" width="150">
-      </el-table-column>
-      <el-table-column prop="path" label="path" width="180">
-      </el-table-column>
+      </el-table-column>    
       <el-table-column prop="size" label="size" width="90">
       </el-table-column>
       <el-table-column prop="service" label="service" width="150">
@@ -101,6 +100,7 @@ export default {
     },
     onClose(){
       this.dialogVisible = false;
+      this.$refs["list"].getItems();
     }
   }
 }

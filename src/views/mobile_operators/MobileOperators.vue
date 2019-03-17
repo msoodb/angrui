@@ -2,6 +2,7 @@
   <b-card no-header>
     <template slot="header">
       <au-list
+        ref="list"
         handler="mobile_operators"
         :multipleSelection="multipleSelection"
         @change="itemschanged"
@@ -87,6 +88,7 @@ export default {
     },
     onClose(){
       this.dialogVisible = false;
+      this.$refs["list"].getItems();
     }
   }
 }

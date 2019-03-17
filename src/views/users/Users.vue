@@ -2,6 +2,7 @@
   <b-card no-header>
     <template slot="header">
       <au-list
+        ref="list"
         handler="users"
         :multipleSelection="multipleSelection"
         :moreCommands = "moreCommands"
@@ -213,6 +214,7 @@ export default {
     },
     onClose(){
       this.dialogVisible = false;
+      this.$refs["list"].getItems();
     }
   }
 }

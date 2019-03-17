@@ -178,9 +178,6 @@ export default {
       });
     },
     onAdd(){
-      // var id = -1;
-      // const form_link = this.formLink(id);
-      // this.$router.push(form_link);
       this.$emit('add');
     },
     onEdit(){
@@ -188,9 +185,7 @@ export default {
         this.$message.warning('Please select one record to edit.');
         return;
       }
-      var id = this.multipleSelection[0].id;
-      // const form_link = this.formLink(id);
-      // this.$router.push({path: form_link})
+      var id = this.multipleSelection[0].id;    
       this.$emit('edit', id);
     },
     formLink (id) {

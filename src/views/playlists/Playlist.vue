@@ -13,13 +13,13 @@
             <el-form-item label="service" prop="service">
               <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
             </el-form-item>
-            <el-form-item label="tags">
+            <el-form-item label="tags" prop="tags">
               <au-tag ref="tags" master="playlists" masterField="playlist" :masterId="record_id" relation="tags_playlists"></au-tag>
             </el-form-item>
-            <el-form-item label="description">
+            <el-form-item label="description" prop="description">
               <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
             </el-form-item>
-            <el-form-item label="details">
+            <el-form-item label="details" prop="details">
               <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
             </el-form-item>
           </el-col>
@@ -43,10 +43,10 @@
             <el-form-item label="updated by" prop="updated_by">
               <el-input v-model="updated_by" disabled></el-input>
             </el-form-item>
-            <el-form-item label="created_at">
+            <el-form-item label="created_at" prop="created_at">
               <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
             </el-form-item>
-            <el-form-item label="updated_at">
+            <el-form-item label="updated_at" prop="updated_at">
               <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
             </el-form-item>
           </el-col>
@@ -135,9 +135,6 @@ export default {
      this.status = this.statuses[1];
   },
   mounted(){
-    // if(this.record_id != "-1"){
-    //   this.getItem();
-    // }
     if(this.record_id == "-1"){
       this.getDefaultData();
     } else{
@@ -156,18 +153,17 @@ export default {
       this.form.status = this.status['value'];
     },
     getDefaultData(){
-      // var self = this;
-      // self.form.id = self.record_id;
-      // self.form.name = '';
-      // self.form.title = '';
-      // self.form.service = '';
-      // self.form.status = '1',
-      // self.status = null;
-      // self.form.situation = '0';
-      // self.form.created_at = '';
-      // self.form.updated_at = '';
-      // self.form.description = '';
-      this.$refs["form"].resetFields();
+      var self = this;
+      self.form.id = self.record_id;
+      self.form.name = '';
+      self.form.title = '';
+      self.form.service = '';
+      self.form.status = '1',
+      self.status = null;
+      self.form.situation = '0';
+      self.form.created_at = '';
+      self.form.updated_at = '';
+      self.form.description = '';
     },
     getItem(){
       var self = this;
@@ -295,6 +291,7 @@ export default {
       });
     },
     onClose() {
+      //this.$refs["form"].resetFields();
       this.$emit('close');
     }
   }
