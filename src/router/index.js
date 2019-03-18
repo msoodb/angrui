@@ -149,6 +149,9 @@ const TagsContent = () => import('@/views/tags_contents/TagsContent')
 const Videos = () => import('@/views/videos/Videos')
 const Video = () => import('@/views/videos/Video')
 
+// Upload
+const Upload = () => import('@/views/upload/Upload')
+
 //Charts
 //const Charts = () => import('@/views/charts')
 const ProductChart = () => import('@/views/charts/ProductChart')
@@ -219,6 +222,11 @@ export default new Router({
           path: 'widgets',
           name: 'Widgets',
           component: Widgets
+        },
+        {
+          path: 'upload',
+          name: 'upload',
+          component: Upload
         },
         {
           path: 'tags',

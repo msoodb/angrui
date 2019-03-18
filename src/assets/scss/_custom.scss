@@ -1,6 +1,7 @@
 // Here you can add other styles
-.el-textarea{
-  margin-bottom: 10px;
+.el-textarea .el-textarea__inner{
+  margin-bottom: 5px;
+  border-radius: 0px;
 }
 .card{
   margin-bottom: 0rem;
@@ -44,9 +45,9 @@
     padding: 0px;
 }
 .border{
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border: 1px solid #dcdfe6;
-  border-radius: 4px;
+  border-radius: 0px;
 }
 .padding{
   padding-top:30px;
@@ -84,4 +85,18 @@
   width: 178px;
   height: 178px;
   display: block;
+}
+.el-input__inner{
+  border-radius: 0px;
+  height: 30px;
+}
+label {
+    display: inline-block;
+    margin-bottom: 0;
+}
+.el-button--mini, .el-button--small {
+    border-radius: 0px;
+}
+.lookup-button{
+  height:30px;
 }

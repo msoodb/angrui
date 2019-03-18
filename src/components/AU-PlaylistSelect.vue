@@ -1,33 +1,18 @@
 <template>
   <el-row :gutter="0">
-    <el-col :span="3">
-      <el-button class="lookup-button" type="default" size="mini" @click="onLookup">+</el-button>
-    </el-col>
-    <el-col :span="21">
-      <el-input readonly v-model="this.name"></el-input>
-    </el-col>
-    <el-dialog :visible.sync="dialogFormVisible" :append-to-body="true"
-          :show-close="false">
-       <div class="lookup-list">
-       </div>
-       <div class="lookup-list">
-         <div class="channel-tree">
-            <div class="custom-tree-container">
-              <el-tree
-                :data="channels"
-                node-key="id"
-                :props="defaultProps"
-                @node-click="handleChannelClick"
-                :expand-on-click-node="true">
-              </el-tree>
-            </div>
-          </div>
-       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="onLookupConfirm">Confirm</el-button>
-      </span>
-    </el-dialog>
+    <el-select
+      v-model="value11"
+      multiple
+      collapse-tags
+      style="margin-left: 20px;"
+      placeholder="Select">
+      <el-option
+        v-for="item in playlists"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
   </el-row>
 </template>
 
@@ -36,7 +21,7 @@ import {baseurl} from '../config'
 
 
 export default {
-  name: 'AU-ChannelLookup',
+  name: 'AU-PlaylistSelect',
   props: {
     service_id: {
         type: String,

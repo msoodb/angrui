@@ -25,6 +25,21 @@
             <el-form-item label="channel" prop="channel">
               <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
             </el-form-item>
+            <el-form-item label="playlist" prop="playlist">
+              <el-select
+                v-model="value11"
+                multiple
+                collapse-tags
+                style="margin-left: 20px;"
+                placeholder="Select">
+                <el-option
+                  v-for="item in playlists"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
             </el-form-item>
@@ -154,6 +169,23 @@ export default {
         }
       ],
       status : null,
+      playlists: [{
+          value: 'Option1',
+          label: 'Option1'
+        }, {
+          value: 'Option2',
+          label: 'Option2'
+        }, {
+          value: 'Option3',
+          label: 'Option3'
+        }, {
+          value: 'Option4',
+          label: 'Option4'
+        }, {
+          value: 'Option5',
+          label: 'Option5'
+        }],
+      value11: [],
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },

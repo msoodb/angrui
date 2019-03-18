@@ -1,7 +1,7 @@
 <template>
     <el-row :gutter="0">
       <el-col :span="3">
-        <el-button class="lookup" type="default" @click="onLookup">+</el-button>
+        <el-button class="lookup-button" size="mini" type="default" @click="onLookup">+</el-button>
       </el-col>
       <el-col :span="21">
         <el-input readonly v-model="this.username"></el-input>
@@ -173,8 +173,5 @@ export default {
     padding: 5px 5px;
     font-weight: 600;
     color: #88898c;
-}
-.lookup{
-  height:40px;
 }
 </style>
