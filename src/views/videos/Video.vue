@@ -26,19 +26,7 @@
               <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
             </el-form-item>
             <el-form-item label="playlist" prop="playlist">
-              <el-select
-                v-model="value11"
-                multiple
-                collapse-tags
-                style="margin-left: 20px;"
-                placeholder="Select">
-                <el-option
-                  v-for="item in playlists"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
+              <au-playlist-select handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-playlist-select>
             </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -100,6 +88,7 @@
 import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
 import AUChannelLookup from '../../components/AU-ChannelLookup'
+import AUPlaylistSelect from '../../components/AU-PlaylistSelect'
 
 export default {
   name: 'Content',
@@ -202,7 +191,8 @@ export default {
   },
   components: {
     'au-lookup' : AULookup,
-    'au-channel-lookup' : AUChannelLookup
+    'au-channel-lookup' : AUChannelLookup,
+    'au-playlist-select' : AUPlaylistSelect
   },
   mounted(){
     if(this.record_id != "-1"){

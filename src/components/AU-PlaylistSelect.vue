@@ -1,16 +1,16 @@
 <template>
   <el-row :gutter="0">
     <el-select
-      v-model="value11"
+      v-model="content_playlists"
       multiple
       collapse-tags
       style="margin-left: 20px;"
       placeholder="Select">
       <el-option
         v-for="item in playlists"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
+        :key="item.id"
+        :label="item.name"
+        :value="item.name">
       </el-option>
     </el-select>
   </el-row>
@@ -40,45 +40,33 @@ export default {
     }
   },
   watch: {
-      // service_id: function(newVal, oldVal) {
-      //   if(!this.disabled && this.service_id!="-1"){
-      //     this.getChannels('');
-      //   }
-      //   else{
-      //     this.channels = [];
-      //   }
-      // },
-      id: function(newVal, oldVal) {
-        this.getChannel();
+      service_id: function(newVal, oldVal) {
+        if(!this.disabled && this.service_id!="-1"){
+          this.getPlaylists();
+        }
+        else{
+          this.playlists = [];
+        }
       }
+      // id: function(newVal, oldVal) {
+      //   this.getPlaylist();
+      // }
   },
   data: function () {
     return {
-       channels: [],
+       playlists: [],
        defaultProps: {
          children: 'children',
          label: 'name'
        },
-       currentRow: null,
-       dialogFormVisible: false,
-       name:''
+       content_playlists: [],
     }
   },
+  created(){
+    //this.getPlaylists();
+  },
   methods:{
-    onLookup(){
-      this.dialogFormVisible = true;
-      this.getChannels('');
-    },
-    onLookupConfirm(){
-      this.dialogFormVisible = false;
-      var id = this.currentRow.id;
-      this.name = this.currentRow.name;
-      this.$emit('select', id);
-    },
-    handleCurrentRowChange(val) {
-       this.currentRow = val;
-    },
-    getChannels(data){
+    getPlaylists(){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -87,37 +75,22 @@ export default {
           'Authorization': token
         }
       };
-      var parent;
-      if(!data || data == ''){
-        parent = '';
-        self.channels = [];
-      }else{
-        parent = data.id;
-        this.$set(data, 'children', []);
-      }
-      this.$axios.get(baseurl() + '/services/' + this.service_id + '/channels' +
-       '?parent=' + parent, config )
+      self.playlists = [];
+      this.$axios.get(baseurl() + '/services/' + this.service_id + '/playlists' , config )
         .then(function (response) {
           if(response.status == 200){
             for (var i = 0; i < response.data.items.length; i++) {
-              var channel = {
+              var playlist = {
                 'id': response.data.items[i].id,
                 'name': response.data.items[i].name,
                 'title': response.data.items[i].title,
                 'service': response.data.items[i].service,
-                'parent': response.data.items[i].parent,
                 'details': response.data.items[i].details,
                 'status': response.data.items[i].status,
                 'situation': response.data.items[i].situation,
-                'description': response.data.items[i].description,
-                'children': []
+                'description': response.data.items[i].description
               }
-              if(parent == ''){
-                self.channels.push(channel);
-              }else{
-                data.children.push(channel);
-              }
-              self.getChannels(channel);
+              self.playlists.push(playlist);
             }
           }
         }.bind(this))
@@ -133,11 +106,7 @@ export default {
           }
       });
     },
-    handleChannelClick(data) {
-      this.currentRow = data;
-      this.getChannels(data);
-    },
-    getChannel(){
+    getContentPlaylist(){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -146,7 +115,7 @@ export default {
           'Authorization': token
         }
       }
-      var url = '/services/' + this.service_id + '/channels/' + self.id;
+      var url = '/services/' + this.service_id + '/playlists/' + self.id;
       this.$axios.get(baseurl() + url, config )
         .then(function (response) {
           if(response.status == 200){
