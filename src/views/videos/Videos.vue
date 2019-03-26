@@ -16,9 +16,9 @@
       </el-table-column>
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
-      <el-table-column prop="name" label="name" width="150">
-      </el-table-column>    
-      <el-table-column prop="size" label="size" width="90">
+      <el-table-column prop="name" label="name" width="280">
+      </el-table-column>
+      <el-table-column prop="size" label="size" width="120">
       </el-table-column>
       <el-table-column prop="service" label="service" width="150">
       </el-table-column>

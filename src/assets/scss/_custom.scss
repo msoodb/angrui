@@ -48,6 +48,7 @@
   margin-bottom: 5px;
   border: 1px solid #dcdfe6;
   border-radius: 0px;
+  padding-left: 5px;
 }
 .padding{
   padding-top:30px;
@@ -91,12 +92,31 @@
   height: 30px;
 }
 label {
-    display: inline-block;
-    margin-bottom: 0;
+  display: inline-block;
+  margin-bottom: 0;
 }
 .el-button--mini, .el-button--small {
-    border-radius: 0px;
+  border-radius: 0px;
 }
 .lookup-button{
   height:30px;
+}
+.el-tag{
+  margin-right: 10px;
+  border-radius: 0px;
+}
+.el-tag + .el-tag {
+    margin-right: 10px;
+}
+.button-new-tag {
+  margin-right: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-right: 10px;
+  vertical-align: bottom;
 }

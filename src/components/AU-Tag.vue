@@ -219,24 +219,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.el-tag{
-  margin-right: 10px;
-}
-.el-tag + .el-tag {
-    margin-right: 10px;
-}
-.button-new-tag {
-  margin-right: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 90px;
-  margin-right: 10px;
-  vertical-align: bottom;
-}
-</style>

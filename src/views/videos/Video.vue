@@ -43,6 +43,9 @@
             <el-form-item label="size" prop="size">
               <el-input type="size" v-model="form.size"></el-input>
             </el-form-item>
+            <el-form-item label="tags" prop="tags">
+              <au-tag ref="tags" master="contents" masterField="content" :masterId="form.content" relation="tags_contents"></au-tag>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="status" prop="status">
@@ -89,6 +92,8 @@ import {baseurl} from '../../config'
 import AULookup from '../../components/AU-Lookup'
 import AUChannelLookup from '../../components/AU-ChannelLookup'
 import AUPlaylistSelect from '../../components/AU-PlaylistSelect'
+import AUTag from '../../components/AU-Tag'
+
 
 export default {
   name: 'Content',
@@ -131,6 +136,7 @@ export default {
     return {
       form: {
         id: '',
+        content: '',
         service:'',
         channel:'',
         publisher:'',
@@ -192,6 +198,7 @@ export default {
   components: {
     'au-lookup' : AULookup,
     'au-channel-lookup' : AUChannelLookup,
+    'au-tag' : AUTag,
     'au-playlist-select' : AUPlaylistSelect
   },
   mounted(){
@@ -216,6 +223,7 @@ export default {
     getDefaultData(){
       var self = this;
       self.form.id = self.record_id;
+      self.form.content = '';
       self.form.service = '';
       self.form.channel = '';
       self.form.publisher = '';
@@ -244,6 +252,7 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             self.form.id = response.data.id;
+            self.form.content = response.data.content;
             self.form.service = response.data.service;
             self.form.channel = response.data.channel;
             self.form.publisher = response.data.publisher;
@@ -311,6 +320,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -346,6 +356,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
