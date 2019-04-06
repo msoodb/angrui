@@ -95,6 +95,10 @@ export default {
     },
     getChannels(data){
       var self = this;
+      console.log(self.service_id);
+      if(!self.service_id || self.service_id=='' || self.service_id=='-1'){
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {

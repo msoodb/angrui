@@ -42,15 +42,13 @@ export default {
   watch: {
       service_id: function(newVal, oldVal) {
         if(!this.disabled && this.service_id!="-1"){
+          this.content_playlists = [];
           this.getPlaylists();
         }
         else{
           this.playlists = [];
         }
       }
-      // id: function(newVal, oldVal) {
-      //   this.getPlaylist();
-      // }
   },
   data: function () {
     return {
@@ -62,11 +60,9 @@ export default {
        content_playlists: [],
     }
   },
-  created(){
-    //this.getPlaylists();
-  },
   methods:{
     getPlaylists(){
+      console.log("here");
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {

@@ -53,12 +53,12 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         this.masterId = newVal;
-        //this.getItems();
+        this.getItems();
       }
-    },
-    refresh: function(newVal, oldVal) {
-      this.getItems();
     }
+    // refresh: function(newVal, oldVal) {
+    //   this.getItems();
+    // }
   },
   data: function () {
     return {
@@ -67,9 +67,6 @@ export default {
       inputVisible: false,
       inputValue: ''
     }
-  },
-  created() {
-    //this.getItems();
   },
   methods:{
     getItems(){

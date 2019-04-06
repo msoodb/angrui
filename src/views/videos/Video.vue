@@ -209,6 +209,7 @@ export default {
   methods: {
     ServiceLookupSelect(id){
       this.form.service = id;
+      this.form.channel = '';
     },
     ChannelLookupSelect(id){
       this.form.channel = id;
