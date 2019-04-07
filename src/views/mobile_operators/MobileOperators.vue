@@ -43,7 +43,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-mobile-operator :record_id="record_id" @close="onClose"></au-mobile-operator>
+      <au-mobile-operator ref="form" id="form" :record_id="record_id" @close="onClose"></au-mobile-operator>
     </el-dialog>
   </b-card>
 </template>
@@ -79,16 +79,24 @@ export default {
       return date[0];
     },
     onAdd(){
-      this.record_id = "-1";
-      this.dialogVisible = true;
+      var self = this;
+      self.record_id = "-1";
+      self.dialogVisible = true;
+      setTimeout(function(){
+        self.$refs["form"].getItem();
+      },10)
     },
     onEdit(id){
-      this.record_id = id;
-      this.dialogVisible = true;
+      var self = this;
+      self.record_id = id;
+      self.dialogVisible = true;
+      setTimeout(function(){
+        self.$refs["form"].getItem();
+      },10)
     },
     onClose(){
       this.dialogVisible = false;
-      this.$refs["list"].getItems();
+      this.$refs.list.getItems();
     }
   }
 }

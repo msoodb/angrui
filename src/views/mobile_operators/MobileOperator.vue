@@ -19,10 +19,10 @@
             <el-form-item label="email" prop="email">
               <el-input type="email" v-model="form.email"></el-input>
             </el-form-item>
-            <el-form-item label="description">
+            <el-form-item label="description" prop="description">
               <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
             </el-form-item>
-            <el-form-item label="details">
+            <el-form-item label="details" prop="details">
               <au-keyValue title="details" :data="form.details" @change="onChangeDetails"></au-keyValue>
             </el-form-item>
           </el-col>
@@ -46,10 +46,10 @@
             <el-form-item label="updated by" prop="updated_by">
               <el-input v-model="updated_by" disabled></el-input>
             </el-form-item>
-            <el-form-item label="created_at">
+            <el-form-item label="created_at" prop="created_at">
               <el-date-picker v-model="form.created_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
             </el-form-item>
-            <el-form-item label="updated_at">
+            <el-form-item label="updated_at" prop="updated_at">
               <el-date-picker v-model="form.updated_at" type="date" placeholder="Pick a day" disabled></el-date-picker>
             </el-form-item>
           </el-col>
@@ -78,19 +78,15 @@ export default {
       required: true
     }
   },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  // watch: {
+  //   record_id: {
+  //     immediate: true,
+  //     handler(newVal, oldVal) {
+  //       this.record_id = newVal;
+  //       this.getItem();
+  //     }
+  //   }
+  // },
   data: () => {
     return {
       form: {
@@ -137,11 +133,9 @@ export default {
   components: {
     'au-keyValue':AUKeyValue
   },
-  mounted(){
-    if(this.record_id != "-1"){
-      this.getItem();
-    }
-  },
+  // mounted(){
+  //   this.getItem();
+  // },
   methods: {
     onChangeDetails(val){
       this.form.details = val;
@@ -150,26 +144,28 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
-    getDefaultData(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.name = '';
-      self.form.title = '';
-      self.form.code = '';
-      self.form.phone = '';
-      self.form.email = '';
-      self.form.details = '';
-      self.form.status = '1',
-      self.status = null;
-      self.form.type = '0';
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
-    },
     getItem(){
+      console.log("get Item");
       var self = this;
       var id = self.record_id;
+      if(id == '-1'){
+        self.form.id = self.record_id;
+        self.form.name = '';
+        self.form.title = '';
+        self.form.code = '';
+        self.form.phone = '';
+        self.form.email = '';
+        self.form.details = '';
+        self.form.status = '1',
+        self.status = null;
+        self.form.type = '0';
+        self.form.situation = '0';
+        self.form.created_at = '';
+        self.form.updated_at = '';
+        self.form.description = '';
+        self.$refs["form"].resetFields();
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
