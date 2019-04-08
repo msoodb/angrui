@@ -145,7 +145,6 @@ export default {
       this.form.status = this.status['value'];
     },
     getItem(){
-      console.log("get Item");
       var self = this;
       var id = self.record_id;
       if(id == '-1'){
@@ -290,6 +289,9 @@ export default {
     },
     onClose() {
       this.$emit('close');
+    },
+    onReset() {
+      this.$refs["form"].resetFields();
     }
   }
 }
