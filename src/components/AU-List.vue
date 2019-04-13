@@ -79,7 +79,8 @@ export default {
       limit: 25,
       page_count: 10000,
       result_count: 0,
-      filter_string_64:''
+      filter_string_64:'',
+      order_string_64:''
     }
   },
   components: {
@@ -92,8 +93,9 @@ export default {
     this.getItems();
   },
   methods:{
-    handleFilterChange(value){
-      this.filter_string_64 = value;
+    handleFilterChange(filter, order){
+      this.filter_string_64 = filter;
+      this.order_string_64 = order;
       this.page = 1;
       var url = this.createUrl();
       this.$router.push({path: url});
@@ -122,6 +124,9 @@ export default {
       url = url + '&limit=' + self.limit;
       if(self.filter_string_64 && self.filter_string_64 != "undefined" && self.filter_string_64 != ""){
         url = url + '&filter=' + self.filter_string_64;
+      }
+      if(self.order_string_64 && self.order_string_64 != "undefined" && self.order_string_64 != ""){
+        url = url + '&order=' + self.order_string_64;
       }
       return url;
     },
@@ -185,7 +190,7 @@ export default {
         this.$message.warning('Please select one record to edit.');
         return;
       }
-      var id = this.multipleSelection[0].id;    
+      var id = this.multipleSelection[0].id;
       this.$emit('edit', id);
     },
     formLink (id) {

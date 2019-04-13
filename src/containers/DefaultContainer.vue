@@ -44,6 +44,9 @@
       <div class="line"></div>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
+        <b-nav-item class="d-md-down-none" to="/upload">
+          <i class="el-icon-upload"></i>
+        </b-nav-item>
         <b-nav-item class="d-md-down-none">
           <i class="icon-bell"></i>
           <b-badge pill variant="danger">5</b-badge>
