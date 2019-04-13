@@ -81,16 +81,24 @@ export default {
       return date[0];
     },
     onAdd(){
-      this.record_id = "-1";
-      this.dialogVisible = true;
+      var self = this;
+      self.record_id = "-1";
+      self.dialogVisible = true;
+      setTimeout(function(){
+        self.$refs["form"].getItem();
+      },10)
     },
     onEdit(id){
-      this.record_id = id;
-      this.dialogVisible = true;
+      var self = this;
+      self.record_id = id;
+      self.dialogVisible = true;
+      setTimeout(function(){
+        self.$refs["form"].getItem();
+      },10)
     },
     onClose(){
       this.dialogVisible = false;
-      this.$refs["list"].getItems();
+      this.$refs.list.getItems();
     }
   }
 }
