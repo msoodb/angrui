@@ -78,8 +78,8 @@
         <hr/>
         <el-row :gutter="20">
             <el-form-item>
-              <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
-              <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
+            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
             </el-form-item>
         </el-row>
       </el-form>
@@ -96,27 +96,13 @@ import AUTag from '../../components/AU-Tag'
 
 
 export default {
-  name: 'Content',
-  props: {
-    record_id: {
-      type: String,
-      required: true
-    }
-  },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  name: 'UploadVideo',
   computed:{
+    record_id: {
+      get: function () {
+        return -1;
+      }
+    },
     action: {
       get: function () {
         return baseurl() + '/files';
