@@ -2,13 +2,20 @@
   <el-row :gutter="20">
     <el-col :span="4">1</el-col>
     <el-col :span="16">
-      <el-card class="box-card">
-        <el-button icon="el-icon-circle-check" type="success" size="small" @click="onAddVideo">Add More Video</el-button>
-      </el-card>
       <component
         v-for="(selectedComponent, index) in selectedComponents"
-          :is="selectedComponent"
-      ></component>
+          :is="selectedComponent" :file="files[`${index}`]">
+      </component>
+      <el-upload
+        action=""
+        class="upload-demo"
+        :multiple="true"
+        :show-file-list="false"
+        :auto-upload = "false"
+        :on-change = "onChange"
+        :file-list="files">
+        <el-button icon="el-icon-circle-check" type="default" size="small">Add More Video</el-button>
+      </el-upload>
     </el-col>
     <el-col :span="4"></el-col>
   </el-row>
@@ -24,16 +31,26 @@ export default {
   data() {
      return {
        items: [],
-       selectedComponents:[]
+       selectedComponents:[],
+       files:[]
      }
   },
   components: {
     'upload-video': UploadVideo
   },
   methods: {
-    onAddVideo(){
+      onChange(file, fileList){
+      this.files.push(file);
       this.selectedComponents.push('upload-video');
     }
   }
 }
 </script>
+
+<style scoped>
+  .el-button {
+    margin-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+</style>

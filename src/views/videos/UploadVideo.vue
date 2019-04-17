@@ -1,6 +1,5 @@
 <template>
-  <el-tabs type="border-card">
-    <el-tab-pane label="General">
+  <el-card class="box-card">
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
         <el-row :gutter="20">
           <el-col :span="16">
@@ -10,13 +9,17 @@
               :headers="headers"
               :limit="1"
               class="upload-demo"
+              ref="upload"
               :show-file-list="true"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
+              :auto-upload = "false"
               :before-remove="beforeRemove"
               :on-success="handleSuccess"
+              :file-list="fileList"
               :on-exceed="handleExceed">
-              <el-button size="small" type="primary">Click to upload</el-button>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
             </el-upload>
           </el-form-item>
             <el-form-item label="service" prop="service">
@@ -83,8 +86,7 @@
             </el-form-item>
         </el-row>
       </el-form>
-    </el-tab-pane>
-  </el-tabs>
+    </el-card>
 </template>
 
 <script>
@@ -118,6 +120,21 @@ export default {
       }
     }
   },
+  props: {
+    file: {
+      type: Object,
+      required: true
+    }
+  },
+  watch: {
+    file: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        this.fileList.push(newVal);
+        //this.$refs["upload"].submit();
+      }
+    }
+  },
   data: () => {
     return {
       form: {
@@ -139,6 +156,7 @@ export default {
       },
       created_by:'',
       updated_by:'',
+      fileList: [],
       statuses: [
         {
           value: '0',
@@ -150,22 +168,7 @@ export default {
         }
       ],
       status : null,
-      playlists: [{
-          value: 'Option1',
-          label: 'Option1'
-        }, {
-          value: 'Option2',
-          label: 'Option2'
-        }, {
-          value: 'Option3',
-          label: 'Option3'
-        }, {
-          value: 'Option4',
-          label: 'Option4'
-        }, {
-          value: 'Option5',
-          label: 'Option5'
-        }],
+      playlists: [],
       value11: [],
       rules: {
         name: [
@@ -380,3 +383,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .box-card {
+    margin: 10px;
+  }
+</style>
