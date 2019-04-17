@@ -8,6 +8,8 @@
               :action="action"
               :headers="headers"
               :limit="1"
+              drag
+              disabled
               class="upload-demo"
               ref="upload"
               :show-file-list="true"
@@ -78,10 +80,9 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <hr/>
         <el-row :gutter="20">
             <el-form-item>
-            <el-button icon="el-icon-circle-check" type="success" size="small" @click="onSave">Save</el-button>
+            <el-button icon="el-icon-circle-check" type="primary" size="small" @click="onSave">Publish</el-button>
             <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
             </el-form-item>
         </el-row>
