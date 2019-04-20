@@ -9,6 +9,22 @@
       <el-upload
         action=""
         class="upload-demo"
+        drag
+        :multiple="true"
+        ref="dragUpload"
+        v-show="!show_mode"
+        :show-file-list="false"
+        :auto-upload = "false"
+        :on-change = "onChange"
+        :file-list="files">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+      </el-upload>
+      <el-upload
+        action=""
+        ref="buttonUpload"
+        v-show="show_mode"
+        class="upload-demo"
         :multiple="true"
         :show-file-list="false"
         :auto-upload = "false"
@@ -32,16 +48,18 @@ export default {
      return {
        items: [],
        selectedComponents:[],
-       files:[]
+       files:[],
+       show_mode: false
      }
   },
   components: {
     'upload-video': UploadVideo
   },
   methods: {
-      onChange(file, fileList){
+    onChange(file, fileList){
+      this.show_mode = !this.show_mode;
       this.files.push(file);
-      this.selectedComponents.push('upload-video');
+      this.selectedComponents.push('upload-video');      
     }
   }
 }

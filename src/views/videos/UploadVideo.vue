@@ -8,7 +8,6 @@
               :action="action"
               :headers="headers"
               :limit="1"
-              drag
               disabled
               class="upload-demo"
               ref="upload"
@@ -20,8 +19,6 @@
               :on-success="handleSuccess"
               :file-list="fileList"
               :on-exceed="handleExceed">
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
             </el-upload>
           </el-form-item>
             <el-form-item label="service" prop="service">
@@ -82,6 +79,7 @@
         </el-row>
         <el-row :gutter="20">
             <el-form-item>
+            <el-button icon="el-icon-circle-check" type="default" size="small" @click="onUpload">Upload</el-button>
             <el-button icon="el-icon-circle-check" type="primary" size="small" @click="onSave">Publish</el-button>
             <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
             </el-form-item>
@@ -131,8 +129,11 @@ export default {
     file: {
       immediate: true,
       handler(newVal, oldVal) {
-        this.fileList.push(newVal);
-        //this.$refs["upload"].submit();
+        var self = this;
+        self.fileList.push(newVal);
+        setTimeout(function(){
+          self.$refs["upload"].submit();
+        }, 1000)
       }
     }
   },
@@ -361,6 +362,9 @@ export default {
             self.$message.error('Unknown error.');
           }
       });
+    },
+    onUpload(){
+      this.$refs["upload"].submit();
     },
     onSave() {
       this.$refs["form"].validate((valid) => {
