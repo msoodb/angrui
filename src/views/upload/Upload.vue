@@ -3,10 +3,9 @@
     <el-col :span="4">1</el-col>
     <el-col :span="16">
     <el-card class="box-card" v-show="!show_upload">
-        <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
+        <el-form ref="form" :model="form" label-width="140px" inline-message>
           <el-row :gutter="20">
             <el-col :span="16">
-            </el-form-item>
               <el-form-item label="service" prop="service">
                 <au-lookup handler="services" :id="form.service" @select="ServiceLookupSelect"></au-lookup>
               </el-form-item>
@@ -30,11 +29,22 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row :gutter="20">
+              <el-form-item>
+              <el-button icon="el-icon-circle-check" type="default" size="small" @click="onApplytoAll">Apply to All</el-button>
+              </el-form-item>
+          </el-row>
         </el-form>
       </el-card>
       <component
         v-for="(selectedComponent, index) in selectedComponents"
-          :is="selectedComponent" :file="files[`${index}`]">
+          :is="selectedComponent" :file="files[`${index}`]"
+          :service="service"
+          :channel="channel"
+          :publisher="publisher"
+          :name="name"
+          :title="title"
+          :description="description">
       </component>
       <el-upload
         action=""
@@ -101,32 +111,16 @@ export default {
          situation:'0',
          description: ''
        },
-       created_by:'',
-       updated_by:'',
+       service:'',
+       channel:'',
+       publisher:'',
+       name:'',
+       title:'',
+       description: '',
        fileList: [],
-       statuses: [
-         {
-           value: '0',
-           label: 'disable'
-         },
-         {
-           value: '1',
-           label: 'enable'
-         }
-       ],
-       status : null,
        playlists: [],
-       value11: [],
-       rules: {
-         name: [
-           { required: true, message: 'Please input name', trigger: 'change' },
-           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
-         ],
-         path: [
-           { required: true, message: 'Please input path', trigger: 'change' }
-         ]
-       }
-     }
+       value11: []
+      }
   },
   components: {
     'upload-video': UploadVideo,
@@ -150,6 +144,14 @@ export default {
       this.show_upload = false;
       this.files.push(file);
       this.selectedComponents.push('upload-video');
+    },
+    onApplytoAll(){
+      this.service = this.form.service;
+      this.channel = this.form.channel;
+      this.publisher = this.form.publisher;
+      this.name = this.form.name;
+      this.title = this.form.title;
+      this.description = this.form.description;
     }
   }
 }
@@ -160,5 +162,8 @@ export default {
     margin-left: 10px;
     margin-bottom: 10px;
     margin-top: 10px;
+  }
+  .box-card {
+    margin: 10px;
   }
 </style>

@@ -48,6 +48,9 @@
             <el-form-item label="tags" prop="tags">
               <au-tag ref="tags" master="contents" masterField="content" :masterId="form.content" relation="tags_contents"></au-tag>
             </el-form-item>
+            <el-form-item label="description" prop="description">
+              <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="status" prop="status">
@@ -123,6 +126,24 @@ export default {
     file: {
       type: Object,
       required: true
+    },
+    service:{
+      type: String
+    },
+    channel:{
+      type: String
+    },
+    publisher:{
+      type: String
+    },
+    name:{
+      type: String
+    },
+    title:{
+      type: String
+    },
+    description:{
+      type: String
     }
   },
   watch: {
@@ -134,6 +155,48 @@ export default {
         setTimeout(function(){
           self.$refs["upload"].submit();
         }, 1000)
+      }
+    },
+    service: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.service = newVal;
+      }
+    },
+    channel: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.channel = newVal;
+      }
+    },
+    publisher: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.publisher = newVal;
+      }
+    },
+    name: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.name = newVal;
+      }
+    },
+    title: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.title = newVal;
+      }
+    },
+    description: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.description = newVal;
       }
     }
   },
