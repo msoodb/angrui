@@ -10,7 +10,7 @@
         v-for="item in playlists"
         :key="item.id"
         :label="item.name"
-        :value="item.name">
+        :value="item.id">
       </el-option>
     </el-select>
   </el-row>
@@ -27,11 +27,7 @@ export default {
         type: String,
         required: true
     },
-    handler: {
-        type: String,
-        required: true
-    },
-    id: {
+    content_id: {
         type: String,
         required: true
     },
@@ -49,6 +45,15 @@ export default {
           this.playlists = [];
         }
       }
+      // content_id: function(newVal, oldVal) {
+      //   if(!this.disabled && this.content_id!="-1"){
+      //     this.content_playlists = [];
+      //     this.getContentPlaylist();
+      //   }
+      //   else{
+      //     this.content_playlists = [];
+      //   }
+      // }
   },
   data: function () {
     return {
@@ -57,12 +62,11 @@ export default {
          children: 'children',
          label: 'name'
        },
-       content_playlists: [],
+       content_playlists: []
     }
   },
   methods:{
     getPlaylists(){
-      console.log("here");
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -103,6 +107,7 @@ export default {
       });
     },
     getContentPlaylist(){
+      console.log("here");
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -111,11 +116,65 @@ export default {
           'Authorization': token
         }
       }
-      var url = '/services/' + this.service_id + '/playlists/' + self.id;
+      var url = '/contents/' + this.content_id + '/playlists_contents';
       this.$axios.get(baseurl() + url, config )
         .then(function (response) {
           if(response.status == 200){
-            self.name = response.data.name;
+            for (var i = 0; i < response.data.items.length; i++) {
+              var content_playlist = {
+                'id': response.data.items[i].id,
+                'name': response.data.items[i].playlist_name,
+                'title': response.data.items[i].playlist_title,
+                'details': response.data.items[i].details,
+                'status': response.data.items[i].status,
+                'situation': response.data.items[i].situation,
+                'description': response.data.items[i].description
+              }
+              self.content_playlists.push(content_playlist);
+            }
+          }
+        }.bind(this))
+        .catch(function (error) {
+          if(error.response && error.response.status == 401){
+            self.$router.push('/pages/login');
+          }else if(error.response && error.response.status == 403){
+            self.$message.warning('Forbidden request.');
+          }else{
+            self.$message.error('Unknown error.');
+          }
+      });
+    },
+    saveItem()
+    {
+      for (var i = 0; i < this.content_playlists.length; i++) {
+        console.log(this.content_playlists[i]);
+        this.addContentPlaylist(this.content_playlists[i]);
+      }
+    },
+    addContentPlaylist(id){
+      var self = this;
+      var token = JSON.parse(localStorage.getItem("jwtoken"));
+      let config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      }
+      var relationsData = {
+        'playlist' : id,
+        'content' : self.content_id,
+        'details' : '{}',
+        'status' : 1,
+        'situation' : 0,
+        'description': ''
+      }
+      var data_request = JSON.stringify(relationsData);
+      var url = '/contents/' + self.content_id + '/playlists_contents';
+      this.$axios.post(baseurl() + url, data_request, config )
+        .then(function (response) {
+          if(response.status == 200){
+            setTimeout(function () {
+            }, 1);
           }
         }.bind(this))
         .catch(function (error) {

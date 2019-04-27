@@ -13,7 +13,7 @@
                 <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
               </el-form-item>
               <el-form-item label="playlist" prop="playlist">
-                <au-playlist-select handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-playlist-select>
+                <au-playlist-select :service_id="form.service" :content_id="form.id" @select="ChannelLookupSelect"></au-playlist-select>
               </el-form-item>
               <el-form-item label="publisher" prop="publisher">
                 <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -26,6 +26,9 @@
               </el-form-item>
               <el-form-item label="tags" prop="tags">
                 <au-tag ref="tags" master="contents" masterField="content" :masterId="form.content" relation="tags_contents"></au-tag>
+              </el-form-item>
+              <el-form-item label="description" prop="description">
+                <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
               </el-form-item>
             </el-col>
           </el-row>

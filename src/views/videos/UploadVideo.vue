@@ -28,7 +28,7 @@
               <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
             </el-form-item>
             <el-form-item label="playlist" prop="playlist">
-              <au-playlist-select handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-playlist-select>
+              <au-playlist-select ref="playlists" :service_id="form.service" :content_id="form.content"></au-playlist-select>
             </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -233,8 +233,6 @@ export default {
         }
       ],
       status : null,
-      playlists: [],
-      value11: [],
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
@@ -369,6 +367,7 @@ export default {
       this.$axios.post(baseurl() + '/videos', data_request, config )
         .then(function (response) {
           if(response.status == 200){
+            self.form.id = response.id;
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
@@ -376,6 +375,7 @@ export default {
             })
             setTimeout(function () {
               self.$refs.tags.saveItem();
+              self.$refs.playlists.saveItem();
               currentMsg.close();
             }, 1000);
           }
