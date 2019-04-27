@@ -53,7 +53,7 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         this.masterId = newVal;
-        this.getItems();
+        //this.getItems();
       }
     }
     // refresh: function(newVal, oldVal) {

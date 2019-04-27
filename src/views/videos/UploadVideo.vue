@@ -39,7 +39,7 @@
             <el-form-item label="title" prop="title">
               <el-input type="title" v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="path" prop="path">
+            <el-form-item label="path" prop="path" hidden>
               <el-input type="path" v-model="form.path"></el-input>
             </el-form-item>
             <el-form-item label="size" prop="size">
@@ -367,15 +367,16 @@ export default {
       this.$axios.post(baseurl() + '/videos', data_request, config )
         .then(function (response) {
           if(response.status == 200){
-            self.form.id = response.id;
+            self.form.id = response.data.id;
+            self.form.content = response.data.content;
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
               type:'success'
             })
             setTimeout(function () {
-              self.$refs.tags.saveItem();
-              self.$refs.playlists.saveItem();
+              //self.$refs.tags.saveItem();
+              //self.$refs.playlists.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -411,7 +412,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
-              self.$refs.tags.saveItem();
+              //self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }

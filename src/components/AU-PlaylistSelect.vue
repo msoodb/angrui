@@ -38,22 +38,21 @@ export default {
   watch: {
       service_id: function(newVal, oldVal) {
         if(!this.disabled && this.service_id!="-1"){
-          this.content_playlists = [];
           this.getPlaylists();
         }
         else{
           this.playlists = [];
         }
+      },
+      content_id: function(newVal, oldVal) {
+        if(!this.disabled && this.content_id && this.content_id!="-1"){
+          this.content_playlists = [];
+          this.getContentPlaylist();
+        }
+        else{
+          this.content_playlists = [];
+        }
       }
-      // content_id: function(newVal, oldVal) {
-      //   if(!this.disabled && this.content_id!="-1"){
-      //     this.content_playlists = [];
-      //     this.getContentPlaylist();
-      //   }
-      //   else{
-      //     this.content_playlists = [];
-      //   }
-      // }
   },
   data: function () {
     return {
@@ -107,7 +106,6 @@ export default {
       });
     },
     getContentPlaylist(){
-      console.log("here");
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
@@ -146,9 +144,10 @@ export default {
     },
     saveItem()
     {
+      console.log(this.content_id);
       for (var i = 0; i < this.content_playlists.length; i++) {
         console.log(this.content_playlists[i]);
-        this.addContentPlaylist(this.content_playlists[i]);
+         this.addContentPlaylist(this.content_playlists[i]);
       }
     },
     addContentPlaylist(id){
