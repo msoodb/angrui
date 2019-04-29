@@ -43,7 +43,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-video :record_id="record_id" @close="onClose"></au-video>
+      <au-video ref="form" id="form" :record_id="record_id" @close="onClose"></au-video>
     </el-dialog>
   </b-card>
 </template>
@@ -96,7 +96,7 @@ export default {
       self.dialogVisible = true;
       setTimeout(function(){
         self.$refs["form"].getItem();
-      },10)
+      },1000)
     },
     onEdit(id){
       var self = this;
@@ -104,7 +104,7 @@ export default {
       self.dialogVisible = true;
       setTimeout(function(){
         self.$refs["form"].getItem();
-      },10)
+      },1000)
     },
     onClose(){
       this.dialogVisible = false;

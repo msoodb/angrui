@@ -46,11 +46,11 @@ export default {
       },
       content_id: function(newVal, oldVal) {
         if(!this.disabled && this.content_id && this.content_id!="-1"){
-          this.content_playlists = [];
+          //this.content_playlists = [];
           this.getContentPlaylist();
         }
         else{
-          this.content_playlists = [];
+          //this.content_playlists = [];
         }
       }
   },
@@ -145,9 +145,10 @@ export default {
     saveItem()
     {
       console.log(this.content_id);
+      console.log(this.content_playlists);
       for (var i = 0; i < this.content_playlists.length; i++) {
         console.log(this.content_playlists[i]);
-         this.addContentPlaylist(this.content_playlists[i]);
+        this.addContentPlaylist(this.content_playlists[i]);
       }
     },
     addContentPlaylist(id){

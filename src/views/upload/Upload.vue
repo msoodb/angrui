@@ -13,7 +13,7 @@
                 <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
               </el-form-item>
               <el-form-item label="playlist" prop="playlist">
-                <au-playlist-select :service_id="form.service" :content_id="form.id" @select="ChannelLookupSelect"></au-playlist-select>
+                <au-playlist-select :service_id="form.service" :content_id="form.content" ></au-playlist-select>
               </el-form-item>
               <el-form-item label="publisher" prop="publisher">
                 <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -34,7 +34,8 @@
           </el-row>
           <el-row :gutter="20">
               <el-form-item>
-              <el-button icon="el-icon-circle-check" type="default" size="small" @click="onApplytoAll">Apply to All</el-button>
+                <el-button icon="el-icon-circle-check" type="default" size="small" @click="onApplytoAll">Apply to All</el-button>
+                <el-button icon="el-icon-circle-check" type="primary" size="small" @click="onSaveAll">Publish All</el-button>
               </el-form-item>
           </el-row>
         </el-form>
@@ -149,6 +150,14 @@ export default {
       this.selectedComponents.push('upload-video');
     },
     onApplytoAll(){
+      this.service = this.form.service;
+      this.channel = this.form.channel;
+      this.publisher = this.form.publisher;
+      this.name = this.form.name;
+      this.title = this.form.title;
+      this.description = this.form.description;
+    },
+    onSaveAll(){
       this.service = this.form.service;
       this.channel = this.form.channel;
       this.publisher = this.form.publisher;

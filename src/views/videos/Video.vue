@@ -37,7 +37,7 @@
             <el-form-item label="title" prop="title">
               <el-input type="title" v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="path" prop="path">
+            <el-form-item label="path" prop="path" hidden>
               <el-input type="path" v-model="form.path"></el-input>
             </el-form-item>
             <el-form-item label="size" prop="size">
@@ -321,7 +321,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
-              self.$refs.tags.saveItem();
+              //self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -357,7 +357,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
-              self.$refs.tags.saveItem();
+              //self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }

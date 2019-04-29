@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card ref="box" class="box-card" :hidden="hidebox">
       <el-form ref="form" :model="form" :rules="rules" label-width="140px" inline-message>
         <el-row :gutter="20">
           <el-col :span="16">
@@ -82,9 +82,8 @@
         </el-row>
         <el-row :gutter="20">
             <el-form-item>
-            <el-button icon="el-icon-circle-check" type="default" size="small" @click="onUpload">Upload</el-button>
             <el-button icon="el-icon-circle-check" type="primary" size="small" @click="onSave">Publish</el-button>
-            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Close</el-button>
+            <el-button icon="el-icon-circle-close" type="default" size="small" @click="onClose">Cancel</el-button>
             </el-form-item>
         </el-row>
       </el-form>
@@ -202,6 +201,7 @@ export default {
   },
   data: () => {
     return {
+      hidebox:false,
       form: {
         id: '',
         content: '',
@@ -376,7 +376,7 @@ export default {
             })
             setTimeout(function () {
               //self.$refs.tags.saveItem();
-              //self.$refs.playlists.saveItem();
+              self.$refs.playlists.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -427,10 +427,10 @@ export default {
           }
       });
     },
-    onUpload(){
-      this.$refs["upload"].submit();
-    },
     onSave() {
+      if(this.hidebox == true){
+        return;
+      }
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if(this.record_id == -1){
@@ -447,7 +447,8 @@ export default {
       });
     },
     onClose() {
-      this.$emit('close');
+      this.hidebox = true;
+      //this.$emit('close');
     }
   }
 }
