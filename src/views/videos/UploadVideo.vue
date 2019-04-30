@@ -143,7 +143,11 @@ export default {
     },
     description:{
       type: String
-    }
+    },
+    publish: {
+      type: Boolean,
+      required: true
+    },
   },
   watch: {
     file: {
@@ -196,6 +200,13 @@ export default {
       handler(newVal, oldVal) {
         var self = this;
         self.form.description = newVal;
+      }
+    },
+    publish: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.onSave();
       }
     }
   },
@@ -376,7 +387,7 @@ export default {
             })
             setTimeout(function () {
               //self.$refs.tags.saveItem();
-              self.$refs.playlists.saveItem();
+              //self.$refs.playlists.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -448,7 +459,6 @@ export default {
     },
     onClose() {
       this.hidebox = true;
-      //this.$emit('close');
     }
   }
 }

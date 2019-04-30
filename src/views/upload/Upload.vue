@@ -48,7 +48,8 @@
           :publisher="publisher"
           :name="name"
           :title="title"
-          :description="description">
+          :description="description"
+          :publish="publish">
       </component>
       <el-upload
         action=""
@@ -98,6 +99,7 @@ export default {
        selectedComponents:[],
        files:[],
        show_upload: true,
+       publish: false,
        form: {
          id: '',
          content: '',
@@ -158,12 +160,7 @@ export default {
       this.description = this.form.description;
     },
     onSaveAll(){
-      this.service = this.form.service;
-      this.channel = this.form.channel;
-      this.publisher = this.form.publisher;
-      this.name = this.form.name;
-      this.title = this.form.title;
-      this.description = this.form.description;
+      this.publish = true;
     }
   }
 }
