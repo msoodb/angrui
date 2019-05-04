@@ -31,6 +31,9 @@
                 <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="8">
+              <img src="../../assets/images/lady.jpg" alt="graphic"/>
+            </el-col>
           </el-row>
           <el-row :gutter="20">
               <el-form-item>
