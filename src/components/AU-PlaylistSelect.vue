@@ -107,6 +107,7 @@ export default {
     },
     getContentPlaylist(){
       var self = this;
+      self.content_playlists = [];
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -144,10 +145,7 @@ export default {
     },
     saveItem()
     {
-      console.log(this.content_id);
-      console.log(this.content_playlists);
       for (var i = 0; i < this.content_playlists.length; i++) {
-        console.log(this.content_playlists[i]);
         this.addContentPlaylist(this.content_playlists[i]);
       }
     },

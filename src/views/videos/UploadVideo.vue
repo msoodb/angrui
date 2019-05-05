@@ -206,7 +206,9 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         var self = this;
-        self.onSave();
+        if(newVal == true){
+          self.onSave();
+        }
       }
     }
   },
@@ -387,7 +389,7 @@ export default {
             })
             setTimeout(function () {
               //self.$refs.tags.saveItem();
-              //self.$refs.playlists.saveItem();
+              self.$refs.playlists.saveItem();
               currentMsg.close();
             }, 1000);
           }
