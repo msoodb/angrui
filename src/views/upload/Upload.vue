@@ -164,6 +164,7 @@ export default {
     },
     onSaveAll(){
       this.publish = true;
+      this.show_upload = true;
     }
   }
 }

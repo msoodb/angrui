@@ -126,6 +126,9 @@ export default {
       type: Object,
       required: true
     },
+    playlists: {
+      type: Array
+    },
     service:{
       type: String
     },
@@ -158,6 +161,13 @@ export default {
         setTimeout(function(){
           self.$refs["upload"].submit();
         }, 1000)
+      }
+    },
+    playlists: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.form.service = newVal;
       }
     },
     service: {
