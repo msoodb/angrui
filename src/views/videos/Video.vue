@@ -101,15 +101,6 @@ export default {
       required: true
     }
   },
-  // watch: {
-  //   record_id: {
-  //     immediate: true,
-  //     handler(newVal, oldVal) {
-  //       this.record_id = newVal;
-  //       this.getItem();
-  //     }
-  //   }
-  // },
   computed:{
     action: {
       get: function () {
@@ -262,12 +253,10 @@ export default {
       });
     },
     handleRemove(file, fileList) {
-      //this.deleteProductDocument(file);
     },
     handlePreview(file) {
     },
     handleExceed(files, fileList) {
-      //this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`Attachment will be permanently deleted. Are you sure? ${ file.name }`);
@@ -302,7 +291,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
-              //self.$refs.tags.saveItem();
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }
@@ -338,7 +327,7 @@ export default {
               type:'success'
             })
             setTimeout(function () {
-              //self.$refs.tags.saveItem();
+              self.$refs.tags.saveItem();
               currentMsg.close();
             }, 1000);
           }

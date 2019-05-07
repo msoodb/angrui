@@ -8,15 +8,14 @@
       @close="handleClose(tag)">
       {{tag.name}}
     </el-tag>
-    <el-input
+    <el-input      
       class="input-new-tag"
       v-if="inputVisible"
       v-model="inputValue"
       ref="saveTagInput"
       size="mini"
       @keyup.enter.native="handleInputConfirm"
-      @blur="handleInputConfirm"
-    >
+      @blur="handleInputConfirm">
     </el-input>
     <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
   </div>
