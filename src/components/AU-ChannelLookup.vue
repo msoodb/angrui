@@ -55,14 +55,14 @@ export default {
     }
   },
   watch: {
-      // service_id: function(newVal, oldVal) {
-      //   if(!this.disabled && this.service_id!="-1"){
-      //     this.getChannels('');
-      //   }
-      //   else{
-      //     this.channels = [];
-      //   }
-      // },
+      service_id: function(newVal, oldVal) {
+        if(!this.disabled && this.service_id!="-1"){
+          this.getChannels('');
+        }
+        else{
+          this.channels = [];
+        }
+      },
       id: function(newVal, oldVal) {
         this.getChannel();
       }
@@ -96,6 +96,7 @@ export default {
     getChannels(data){
       var self = this;
       if(!self.service_id || self.service_id=='' || self.service_id=='-1'){
+        self.channels = [];
         return;
       }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
@@ -157,6 +158,10 @@ export default {
     },
     getChannel(){
       var self = this;
+      if(!self.service_id || self.service_id=='' || self.service_id=='-1'){
+        self.name = '';
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {

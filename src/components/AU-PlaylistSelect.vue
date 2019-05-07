@@ -31,27 +31,34 @@ export default {
         type: String,
         required: true
     },
-    disabled: {
-        type: Boolean
+    contentPlaylists: {
+      type: Array
     }
   },
   watch: {
       service_id: function(newVal, oldVal) {
-        if(!this.disabled && this.service_id!="-1"){
+        if(this.service_id!="-1"){
           this.getPlaylists();
         }
         else{
           this.playlists = [];
         }
       },
-      content_id: function(newVal, oldVal) {
-        if(!this.disabled && this.content_id && this.content_id!="-1"){
-          this.getContentPlaylist();
+      // content_id: function(newVal, oldVal) {
+      //   if(this.content_id && this.content_id!="-1"){
+      //     //this.getContentPlaylist();
+      //   }
+      //   else{
+      //     this.content_playlists = [];
+      //   }
+      // }
+      contentPlaylists: {
+        immediate: true,
+        handler(newVal, oldVal) {
+          var self = this;
+          self.content_playlists = newVal;
         }
-        else{
-          this.content_playlists = [];
-        }
-      }
+      },
   },
   data: function () {
     return {
@@ -127,7 +134,7 @@ export default {
                 'situation': response.data.items[i].situation,
                 'description': response.data.items[i].description
               }
-              self.content_playlists.push(content_playlist);
+              //self.content_playlists.push(content_playlist);
             }
           }
         }.bind(this))
@@ -144,10 +151,10 @@ export default {
     saveItem()
     {
       console.log("saveItem");
-      console.log(this.content_playlists);
-      for (var i = 0; i < this.content_playlists.length; i++) {
-        this.addContentPlaylist(this.content_playlists[i]);
-      }
+      // console.log(this.content_playlists);
+      // for (var i = 0; i < this.content_playlists.length; i++) {
+      //   this.addContentPlaylist(this.content_playlists[i]);
+      // }
     },
     addContentPlaylist(id){
       var self = this;

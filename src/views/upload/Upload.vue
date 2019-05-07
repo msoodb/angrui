@@ -12,9 +12,6 @@
               <el-form-item label="channel" prop="channel">
                 <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
               </el-form-item>
-              <el-form-item label="playlist" prop="playlist">
-                <au-playlist-select :service_id="form.service" :content_id="form.content" ></au-playlist-select>
-              </el-form-item>
               <el-form-item label="publisher" prop="publisher">
                 <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
               </el-form-item>
@@ -90,7 +87,6 @@ import {baseurl} from '../../config'
 import UploadVideo from '../videos/UploadVideo'
 import AULookup from '../../components/AU-Lookup'
 import AUChannelLookup from '../../components/AU-ChannelLookup'
-import AUPlaylistSelect from '../../components/AU-PlaylistSelect'
 import AUTag from '../../components/AU-Tag'
 
 
@@ -108,6 +104,7 @@ export default {
          content: '',
          service:'',
          channel:'',
+         playlists: [],
          publisher:'',
          name:'',
          title:'',
@@ -127,16 +124,14 @@ export default {
        title:'',
        description: '',
        fileList: [],
-       playlists: [],
-       value11: []
+       playlists: []
       }
   },
   components: {
     'upload-video': UploadVideo,
     'au-lookup' : AULookup,
     'au-channel-lookup' : AUChannelLookup,
-    'au-tag' : AUTag,
-    'au-playlist-select' : AUPlaylistSelect
+    'au-tag' : AUTag
   },
   methods: {
     ServiceLookupSelect(id){

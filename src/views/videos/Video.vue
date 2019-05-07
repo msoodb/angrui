@@ -15,7 +15,8 @@
               :on-remove="handleRemove"
               :before-remove="beforeRemove"
               :on-success="handleSuccess"
-              :on-exceed="handleExceed">
+              :on-exceed="handleExceed"
+              :file-list="files">
               <el-button size="small" type="primary">Click to upload</el-button>
             </el-upload>
           </el-form-item>
@@ -24,9 +25,6 @@
             </el-form-item>
             <el-form-item label="channel" prop="channel">
               <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
-            </el-form-item>
-            <el-form-item label="playlist" prop="playlist">
-              <au-playlist-select ref="playlists" handler="channels" :service_id="form.service" :content_id="form.content" @select="ChannelLookupSelect"></au-playlist-select>
             </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -103,19 +101,15 @@ export default {
       required: true
     }
   },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  // watch: {
+  //   record_id: {
+  //     immediate: true,
+  //     handler(newVal, oldVal) {
+  //       this.record_id = newVal;
+  //       this.getItem();
+  //     }
+  //   }
+  // },
   computed:{
     action: {
       get: function () {
@@ -163,24 +157,9 @@ export default {
           label: 'enable'
         }
       ],
+      files:[],
       status : null,
-      playlists: [{
-          value: 'Option1',
-          label: 'Option1'
-        }, {
-          value: 'Option2',
-          label: 'Option2'
-        }, {
-          value: 'Option3',
-          label: 'Option3'
-        }, {
-          value: 'Option4',
-          label: 'Option4'
-        }, {
-          value: 'Option5',
-          label: 'Option5'
-        }],
-      value11: [],
+      playlists: [],
       rules: {
         name: [
           { required: true, message: 'Please input name', trigger: 'change' },
@@ -221,27 +200,29 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
-    getDefaultData(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.content = '';
-      self.form.service = '';
-      self.form.channel = '';
-      self.form.publisher = '';
-      self.form.name = '';
-      self.form.title = '';
-      self.form.path = '';
-      self.form.size = '0',
-      self.form.status = '1',
-      self.status = null;
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
-    },
     getItem(){
       var self = this;
       var id = self.record_id;
+      if(id == '-1'){
+        self.form.id = self.record_id;
+        self.form.content = '';
+        self.form.service = '';
+        self.form.channel = '';
+        self.form.publisher = '';
+        self.form.name = '';
+        self.form.title = '';
+        self.form.path = '';
+        self.form.size = '0',
+        self.form.status = '1',
+        self.status = null;
+        self.form.situation = '0';
+        self.form.created_at = '';
+        self.form.updated_at = '';
+        self.form.description = '';
+        self.files = [];
+        self.$refs["form"].resetFields();
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
