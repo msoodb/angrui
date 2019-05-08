@@ -30,19 +30,14 @@ export default {
     content_id: {
         type: String,
         required: true
-    },
-    contentPlaylists: {
-      type: Array
     }
+    // contentPlaylists: {
+    //   type: Array
+    // }
   },
   watch: {
       service_id: function(newVal, oldVal) {
-        if(this.service_id!="-1"){
-          this.getPlaylists();
-        }
-        else{
-          this.playlists = [];
-        }
+        this.getPlaylists();
       },
       // content_id: function(newVal, oldVal) {
       //   if(this.content_id && this.content_id!="-1"){
@@ -52,13 +47,13 @@ export default {
       //     this.content_playlists = [];
       //   }
       // }
-      contentPlaylists: {
-        immediate: true,
-        handler(newVal, oldVal) {
-          var self = this;
-          self.content_playlists = newVal;
-        }
-      },
+      // contentPlaylists: {
+      //   immediate: true,
+      //   handler(newVal, oldVal) {
+      //     var self = this;
+      //     self.content_playlists = newVal;
+      //   }
+      // },
   },
   data: function () {
     return {
@@ -73,6 +68,11 @@ export default {
   methods:{
     getPlaylists(){
       var self = this;
+      if(!self.service_id || self.service_id=="-1" || self.service_id==""){
+        self.playlists = [];
+        self.content_playlists = [];
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -81,6 +81,7 @@ export default {
         }
       };
       self.playlists = [];
+      self.content_playlists = [];
       this.$axios.get(baseurl() + '/services/' + this.service_id + '/playlists' , config )
         .then(function (response) {
           if(response.status == 200){
@@ -134,7 +135,7 @@ export default {
                 'situation': response.data.items[i].situation,
                 'description': response.data.items[i].description
               }
-              //self.content_playlists.push(content_playlist);
+              self.content_playlists.push(content_playlist);
             }
           }
         }.bind(this))
@@ -150,11 +151,10 @@ export default {
     },
     saveItem()
     {
-      console.log("saveItem");
-      // console.log(this.content_playlists);
-      // for (var i = 0; i < this.content_playlists.length; i++) {
-      //   this.addContentPlaylist(this.content_playlists[i]);
-      // }
+      console.log(this.content_playlists);
+      for (var i = 0; i < this.content_playlists.length; i++) {
+        this.addContentPlaylist(this.content_playlists[i]);
+      }
     },
     addContentPlaylist(id){
       var self = this;
