@@ -288,6 +288,8 @@ export default {
       this.$axios.post(baseurl() + '/videos', data_request, config )
         .then(function (response) {
           if(response.status == 200){
+            self.form.id = response.data.id;
+            self.form.content = response.data.content;
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,

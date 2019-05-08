@@ -157,13 +157,16 @@ export default {
     },
     saveItem()
     {
-      console.log(this.content_playlists);
       for (var i = 0; i < this.content_playlists.length; i++) {
         this.addContentPlaylist(this.content_playlists[i]);
       }
     },
     addContentPlaylist(id){
       var self = this;
+      if(!self.content_id || self.content_id=="-1" || self.content_id==""){
+        self.content_playlists = [];
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
