@@ -38,7 +38,7 @@ export default {
   watch: {
       service_id: function(newVal, oldVal) {
         this.getPlaylists();
-      },
+      }
       // content_id: function(newVal, oldVal) {
       //   if(this.content_id && this.content_id!="-1"){
       //     //this.getContentPlaylist();
