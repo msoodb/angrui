@@ -38,6 +38,7 @@ export default {
   watch: {
       service_id: function(newVal, oldVal) {
         this.getPlaylists();
+        this.getContentPlaylist();
       }
       // content_id: function(newVal, oldVal) {
       //   if(this.content_id && this.content_id!="-1"){
@@ -114,6 +115,10 @@ export default {
     },
     getContentPlaylist(){
       var self = this;
+      if(!self.content_id || self.content_id=="-1" || self.content_id==""){
+        self.content_playlists = [];
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -121,6 +126,7 @@ export default {
           'Authorization': token
         }
       }
+      self.content_playlists = [];
       var url = '/contents/' + this.content_id + '/playlists_contents';
       this.$axios.get(baseurl() + url, config )
         .then(function (response) {
