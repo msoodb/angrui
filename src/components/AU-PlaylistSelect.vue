@@ -3,7 +3,6 @@
     <el-select
       v-model="content_playlists"
       multiple
-      collapse-tags
       style="margin-left: 20px;"
       placeholder="Select">
       <el-option
@@ -30,10 +29,10 @@ export default {
     content_id: {
         type: String,
         required: true
+    },
+    contentPlaylists: {
+      type: Array
     }
-    // contentPlaylists: {
-    //   type: Array
-    // }
   },
   watch: {
       service_id: function(newVal, oldVal) {
@@ -47,14 +46,15 @@ export default {
         else{
           this.content_playlists = [];
         }
+      },
+      contentPlaylists: {
+        immediate: true,
+        handler(newVal, oldVal) {
+          var self = this;
+          self.content_playlists = [];
+          self.content_playlists = newVal;
+        }
       }
-      // contentPlaylists: {
-      //   immediate: true,
-      //   handler(newVal, oldVal) {
-      //     var self = this;
-      //     self.content_playlists = newVal;
-      //   }
-      // },
   },
   data: function () {
     return {
@@ -89,13 +89,13 @@ export default {
             for (var i = 0; i < response.data.items.length; i++) {
               var playlist = {
                 'id': response.data.items[i].id,
-                'name': response.data.items[i].name,
-                'title': response.data.items[i].title,
-                'service': response.data.items[i].service,
-                'details': response.data.items[i].details,
-                'status': response.data.items[i].status,
-                'situation': response.data.items[i].situation,
-                'description': response.data.items[i].description
+                'name': response.data.items[i].name
+                // 'title': response.data.items[i].title,
+                // 'service': response.data.items[i].service,
+                // 'details': response.data.items[i].details,
+                // 'status': response.data.items[i].status,
+                // 'situation': response.data.items[i].situation,
+                // 'description': response.data.items[i].description
               }
               self.playlists.push(playlist);
             }
@@ -132,16 +132,20 @@ export default {
         .then(function (response) {
           if(response.status == 200){
             for (var i = 0; i < response.data.items.length; i++) {
-              var content_playlist = {
-                'id': response.data.items[i].id,
-                'name': response.data.items[i].playlist_name,
-                'title': response.data.items[i].playlist_title,
-                'details': response.data.items[i].details,
-                'status': response.data.items[i].status,
-                'situation': response.data.items[i].situation,
-                'description': response.data.items[i].description
-              }
-              self.content_playlists.push(content_playlist);
+              // var content_playlist = {
+              //   'id': response.data.items[i].id,
+              //   'name': response.data.items[i].playlist_name,
+              //   'title': response.data.items[i].playlist_title,
+              //   'details': response.data.items[i].details,
+              //   'status': response.data.items[i].status,
+              //   'situation': response.data.items[i].situation,
+              //   'description': response.data.items[i].description
+              // }
+              // var content_playlist = {
+              //   'name': response.data.items[i].playlist_name
+              // }
+              //console.log(content_playlist);
+              self.content_playlists.push(response.data.items[i].playlist_name);
             }
           }
         }.bind(this))
