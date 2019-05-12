@@ -243,6 +243,8 @@ export default {
             self.status = self.statuses[response.data.status];
             self.form.situation = response.data.situation;
             self.form.description = response.data.description;
+            self.$refs.auplaylists.getPlaylists();
+            self.$refs.auplaylists.getContentPlaylist();
           }
         }.bind(this))
         .catch(function (error) {

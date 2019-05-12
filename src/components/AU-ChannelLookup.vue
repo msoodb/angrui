@@ -57,7 +57,7 @@ export default {
   watch: {
       service_id: function(newVal, oldVal) {
         if(!this.disabled && this.service_id!="-1"){
-          this.getChannels('');
+          //this.getChannels('');
         }
         else{
           this.channels = [];

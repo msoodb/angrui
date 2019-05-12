@@ -96,7 +96,7 @@ export default {
       self.dialogVisible = true;
       setTimeout(function(){
         self.$refs["form"].getItem();
-      },1000)
+      },10)
     },
     onEdit(id){
       var self = this;
@@ -104,7 +104,7 @@ export default {
       self.dialogVisible = true;
       setTimeout(function(){
         self.$refs["form"].getItem();
-      },1000)
+      },10)
     },
     onClose(){
       this.dialogVisible = false;

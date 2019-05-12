@@ -38,16 +38,16 @@ export default {
   watch: {
       service_id: function(newVal, oldVal) {
         this.getPlaylists();
-        this.getContentPlaylist();
+        this.content_playlists = [];
+      },
+      content_id: function(newVal, oldVal) {
+        if(this.content_id && this.content_id!="-1"){
+          this.getContentPlaylist();
+        }
+        else{
+          this.content_playlists = [];
+        }
       }
-      // content_id: function(newVal, oldVal) {
-      //   if(this.content_id && this.content_id!="-1"){
-      //     //this.getContentPlaylist();
-      //   }
-      //   else{
-      //     this.content_playlists = [];
-      //   }
-      // }
       // contentPlaylists: {
       //   immediate: true,
       //   handler(newVal, oldVal) {
