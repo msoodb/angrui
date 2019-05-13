@@ -27,7 +27,8 @@
               <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
             </el-form-item>
             <el-form-item label="playlists" prop="playlist">
-              <au-playlist-select ref="auplaylists" :contentPlaylists="contentPlaylists" :service_id="form.service" :content_id="form.content" ></au-playlist-select>
+              <au-playlist-select ref="auplaylists" :contentPlaylists="contentPlaylists"
+                :service_id="form.service" :content_id="form.content"></au-playlist-select>
             </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -351,6 +352,7 @@ export default {
       });
     },
     onSave() {
+      //console.log(this.$refs.auplaylists.getSelectedPlaylists());
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if(this.record_id == -1){

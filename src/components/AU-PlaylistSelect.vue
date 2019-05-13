@@ -67,6 +67,11 @@ export default {
     }
   },
   methods:{
+    getSelectedPlaylists()
+    {
+      //this.$emit('getSelectedPlaylists', this.content_playlists);
+      return this.content_playlists;
+    },
     getPlaylists(){
       var self = this;
       if(!self.service_id || self.service_id=="-1" || self.service_id==""){

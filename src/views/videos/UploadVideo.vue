@@ -28,7 +28,8 @@
               <au-channel-lookup handler="channels" :service_id="form.service" :id="form.channel" @select="ChannelLookupSelect"></au-channel-lookup>
             </el-form-item>
             <el-form-item label="playlists" prop="playlist">
-              <au-playlist-select ref="auplaylists" :service_id="form.service" :content_id="form.content" ></au-playlist-select>
+              <au-playlist-select ref="auplaylists" :contentPlaylists="content_playlists"
+                :service_id="form.service" :content_id="form.content" ></au-playlist-select>
             </el-form-item>
             <el-form-item label="publisher" prop="publisher">
               <au-lookup handler="publishers" :id="form.publisher" @select="PublisherLookupSelect"></au-lookup>
@@ -132,6 +133,9 @@ export default {
     channel:{
       type: String
     },
+    contentPlaylists:{
+      type: Array
+    },
     publisher:{
       type: String
     },
@@ -172,6 +176,13 @@ export default {
       handler(newVal, oldVal) {
         var self = this;
         self.form.channel = newVal;
+      }
+    },
+    contentPlaylists: {
+      immediate: true,
+      handler(newVal, oldVal) {
+        var self = this;
+        self.content_playlists = newVal;
       }
     },
     publisher: {
@@ -232,6 +243,7 @@ export default {
         situation:'0',
         description: ''
       },
+      content_playlists:[],
       created_by:'',
       updated_by:'',
       fileList: [],

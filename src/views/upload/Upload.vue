@@ -52,7 +52,8 @@
           :name="name"
           :title="title"
           :description="description"
-          :publish="publish">
+          :publish="publish"
+          :contentPlaylists="contentPlaylists">
       </component>
       <el-upload
         action=""
@@ -162,11 +163,13 @@ export default {
       this.name = this.form.name;
       this.title = this.form.title;
       this.description = this.form.description;
+      console.log(this.$refs.auplaylists.getSelectedPlaylists());
+      this.contentPlaylists = this.$refs.auplaylists.getSelectedPlaylists();
     },
     onSaveAll(){
       this.publish = true;
       this.show_upload = true;
-      console.log(this.contentPlaylists);
+      console.log(this.$refs.auplaylists.getSelectedPlaylists());
     }
   }
 }
