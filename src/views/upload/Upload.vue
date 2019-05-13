@@ -163,13 +163,11 @@ export default {
       this.name = this.form.name;
       this.title = this.form.title;
       this.description = this.form.description;
-      console.log(this.$refs.auplaylists.getSelectedPlaylists());
       this.contentPlaylists = this.$refs.auplaylists.getSelectedPlaylists();
     },
     onSaveAll(){
       this.publish = true;
       this.show_upload = true;
-      console.log(this.$refs.auplaylists.getSelectedPlaylists());
     }
   }
 }
