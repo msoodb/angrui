@@ -37,7 +37,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-users_publisher :record_id="record_id" @close="onClose"></au-users_publisher>
+      <au-users_publisher ref="form" id="form" :record_id="record_id" @close="onClose"></au-users_publisher>
     </el-dialog>
   </b-card>
 </template>

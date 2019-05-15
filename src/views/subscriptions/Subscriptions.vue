@@ -39,7 +39,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-subscription :record_id="record_id" @close="onClose"></au-subscription>
+      <au-subscription ref="form" id="form" :record_id="record_id" @close="onClose"></au-subscription>
     </el-dialog>
   </b-card>
 </template>

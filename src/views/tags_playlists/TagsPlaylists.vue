@@ -37,7 +37,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-tags_playlist :record_id="record_id" @close="onClose"></au-tags_playlist>
+      <au-tags_playlist ref="form" id="form" :record_id="record_id" @close="onClose"></au-tags_playlist>
     </el-dialog>
   </b-card>
 </template>

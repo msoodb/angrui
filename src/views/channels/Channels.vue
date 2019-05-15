@@ -41,7 +41,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-channel :record_id="record_id" @close="onClose"></au-channel>
+      <au-channel ref="form" id="form" :record_id="record_id" @close="onClose"></au-channel>
     </el-dialog>
   </b-card>
 </template>

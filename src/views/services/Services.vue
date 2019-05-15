@@ -45,7 +45,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-service :record_id="record_id" @close="onClose"></au-service>
+      <au-service ref="form" id="form" :record_id="record_id" @close="onClose"></au-service>
     </el-dialog>
   </b-card>
 </template>

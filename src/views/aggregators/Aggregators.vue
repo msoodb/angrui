@@ -43,7 +43,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-aggregator :record_id="record_id" @close="onClose"></au-aggregator>
+      <au-aggregator ref="form" id="form" :record_id="record_id" @close="onClose"></au-aggregator>
     </el-dialog>
   </b-card>
 </template>

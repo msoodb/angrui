@@ -39,7 +39,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-privilege :record_id="record_id" @close="onClose"></au-privilege>
+      <au-privilege ref="form" id="form" :record_id="record_id" @close="onClose"></au-privilege>
     </el-dialog>
   </b-card>
 </template>

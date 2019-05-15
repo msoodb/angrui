@@ -30,7 +30,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-tag :record_id="record_id" @close="onClose"></au-tag>
+      <au-tag ref="form" id="form" :record_id="record_id" @close="onClose"></au-tag>
     </el-dialog>
   </b-card>
 </template>

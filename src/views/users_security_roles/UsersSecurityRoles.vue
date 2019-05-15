@@ -37,7 +37,7 @@
       width="80%"
       :show-close="false"
       top="1vh">
-      <au-users_security_role :record_id="record_id" @close="onClose"></au-users_security_role>
+      <au-users_security_role ref="form" id="form" :record_id="record_id" @close="onClose"></au-users_security_role>
     </el-dialog>
   </b-card>
 </template>
