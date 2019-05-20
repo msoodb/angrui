@@ -8,7 +8,7 @@
       @close="handleClose(tag)">
       {{tag.name}}
     </el-tag>
-    <el-input      
+    <el-input
       class="input-new-tag"
       v-if="inputVisible"
       v-model="inputValue"
