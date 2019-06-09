@@ -63,19 +63,19 @@ export default {
       required: true
     }
   },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  // watch: {
+  //   record_id: {
+  //     immediate: true,
+  //     handler(newVal, oldVal) {
+  //       this.record_id = newVal;
+  //       if(this.record_id == '-1'){
+  //         this.getDefaultData();
+  //       } else{
+  //         this.getItem();
+  //       }
+  //     }
+  //   }
+  // },
   data: () => {
     return {
       from: null,
@@ -116,11 +116,11 @@ export default {
   components: {
     'au-keyValue':AUKeyValue
   },
-  mounted(){
-    if(this.record_id != "-1"){
-      this.getItem();
-    }
-  },
+  // mounted(){
+  //   if(this.record_id != "-1"){
+  //     this.getItem();
+  //   }
+  // },
   methods: {
     onChangeDetails(val){
       this.form.details = val;
@@ -128,21 +128,22 @@ export default {
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
-    },
-    getDefaultData(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.phone = '';
-      self.form.status = '1',
-      self.status = null;
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
-    },
+    },    
     getItem(){
       var self = this;
       var id = self.record_id;
+      if(id == '-1'){
+        self.form.id = self.record_id;
+        self.form.phone = '';
+        self.form.status = '1',
+        self.status = null;
+        self.form.situation = '0';
+        self.form.created_at = '';
+        self.form.updated_at = '';
+        self.form.description = '';
+        self.$refs["form"].resetFields();
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
