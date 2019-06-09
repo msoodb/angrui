@@ -14,16 +14,16 @@
               <el-input v-model="form.code"></el-input>
             </el-form-item>
             <el-form-item label="pendar" prop="pendar">
-              <el-input v-model="form.pendar"></el-input>
+              <el-input type="pendar" v-model="form.pendar"></el-input>
             </el-form-item>
             <el-form-item label="mobile operator" prop="mobile_operator">
-              <au-lookup handler="mobile_operators" :id="form.mobile_operator" @select="MobileOperatorLookupSelect"></au-lookup>
+              <au-lookup type="mobile_operator" handler="mobile_operators" :id="form.mobile_operator" @select="MobileOperatorLookupSelect"></au-lookup>
             </el-form-item>
             <el-form-item label="aggregator" prop="aggregator">
-              <au-lookup handler="aggregators" :id="form.aggregator" @select="AggregatorLookupSelect"></au-lookup>
+              <au-lookup type="aggregator" handler="aggregators" :id="form.aggregator" @select="AggregatorLookupSelect"></au-lookup>
             </el-form-item>
             <el-form-item label="content provider" prop="content_provider">
-              <au-lookup handler="content_providers" :id="form.content_provider" @select="ContentProviderLookupSelect"></au-lookup>
+              <au-lookup type="content_provider" handler="content_providers" :id="form.content_provider" @select="ContentProviderLookupSelect"></au-lookup>
             </el-form-item>
             <el-form-item label="description">
               <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
@@ -70,7 +70,7 @@
       </el-form>
     </el-tab-pane>
     <el-tab-pane label="Channels">
-      <el-form ref="form" :model="form" :rules="rules" label-width="0px" inline-message>
+      <el-form label-width="0px" inline-message>
         <el-form-item>
           <au-channels-tree :service_id="record_id"></au-channels-tree>
         </el-form-item>
@@ -105,19 +105,19 @@ export default {
       required: true
     }
   },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  // watch: {
+  //   record_id: {
+  //     immediate: true,
+  //     handler(newVal, oldVal) {
+  //       this.record_id = newVal;
+  //       if(this.record_id == '-1'){
+  //         this.getDefaultData();
+  //       } else{
+  //         this.getItem();
+  //       }
+  //     }
+  //   }
+  // },
   data: () => {
     return {
       form: {
@@ -154,12 +154,18 @@ export default {
           { required: true, message: 'Please input name', trigger: 'change' },
           { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'change' }
         ],
-        phone: [
-          { required: true, message: 'Please input code', trigger: 'change' }
+        pendar: [
+          { required: true, message: 'Please input pendar', trigger: 'change' },
+          { min: 36, max: 36, message: 'UUid4 Length should be 36', trigger: 'change' }
         ],
-        email: [
-          { required: true, message: 'Please input email', trigger: 'change' },
-          { type: 'email', message: 'Email must be in correct format', trigger: 'change' }
+        mobile_operator: [
+          { required: true, message: 'Please input mobile_operator', trigger: 'change' },
+        ],
+        aggregator: [
+          { required: true, message: 'Please input aggregator', trigger: 'change' },
+        ],
+        content_provider: [
+          { required: true, message: 'Please input content_provider', trigger: 'change' },
         ]
       }
     }
@@ -175,11 +181,11 @@ export default {
     'au-service-playlists': AUServicePlaylists,
     'au-service-contents': AUServiceContents
   },
-  mounted(){
-    if(this.record_id != "-1"){
-      this.getItem();
-    }
-  },
+  // mounted(){
+  //   if(this.record_id != "-1"){
+  //     this.getItem();
+  //   }
+  // },
   methods: {
     MobileOperatorLookupSelect(id){
       this.form.mobile_operator = id;
@@ -197,28 +203,29 @@ export default {
       this.status = selected;
       this.form.status = this.status['value'];
     },
-    getDefaultData(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.pendar = '';
-      self.form.mobile_operator = '';
-      self.form.aggregator = '';
-      self.form.content_provider = '';
-      self.form.name = '';
-      self.form.title = '';
-      self.form.code = '';
-      self.form.details = '';
-      self.form.status = '1',
-      self.status = null;
-      self.form.type = '0';
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
-    },
     getItem(){
       var self = this;
       var id = self.record_id;
+      if(id == '-1'){
+        self.form.id = self.record_id;
+        self.form.pendar = '';
+        self.form.mobile_operator = '';
+        self.form.aggregator = '';
+        self.form.content_provider = '';
+        self.form.name = '';
+        self.form.title = '';
+        self.form.code = '';
+        self.form.details = '';
+        self.form.status = '1',
+        self.status = null;
+        self.form.type = '0';
+        self.form.situation = '0';
+        self.form.created_at = '';
+        self.form.updated_at = '';
+        self.form.description = '';
+        self.$refs["form"].resetFields();
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
