@@ -40,7 +40,7 @@
               </el-table-column>
               <el-table-column  label="delete" width="90" align="center">
                 <template slot-scope="scope">
-                  <el-checkbox :checked="scope.row.isKey== 1"/>
+                  <el-checkbox :checked="scope.row.isKey==1"/>
                 </template>
               </el-table-column>
             </el-table>
@@ -96,19 +96,19 @@ export default {
       required: true
     }
   },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  // watch: {
+  //   record_id: {
+  //     immediate: true,
+  //     handler(newVal, oldVal) {
+  //       this.record_id = newVal;
+  //       if(this.record_id == '-1'){
+  //         this.getDefaultData();
+  //       } else{
+  //         this.getItem();
+  //       }
+  //     }
+  //   }
+  // },
   data: () => {
     return {
       form: {
@@ -147,33 +147,34 @@ export default {
   created() {
      this.status = this.statuses[1];
   },
-  mounted(){
-    if(this.record_id != "-1"){
-      this.getItem();
-      this.getItems();
-    }
-  },
+  // mounted(){
+  //   if(this.record_id != "-1"){
+  //     this.getItem();
+  //     this.getItems();
+  //   }
+  // },
   methods: {
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
-    },
-    getDefaultData(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.name = '';
-      self.form.title = '';
-      self.form.status = '1',
-      self.status = null;
-      self.form.type = '0';
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
-    },
+    },  
     getItem(){
       var self = this;
       var id = self.record_id;
+      if(id == '-1'){
+        self.form.id = self.record_id;
+        self.form.name = '';
+        self.form.title = '';
+        self.form.status = '1',
+        self.status = null;
+        self.form.type = '0';
+        self.form.situation = '0';
+        self.form.created_at = '';
+        self.form.updated_at = '';
+        self.form.description = '';
+        self.$refs["form"].resetFields();
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
