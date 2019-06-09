@@ -80,19 +80,19 @@ export default {
       required: true
     }
   },
-  watch: {
-    record_id: {
-      immediate: true,
-      handler(newVal, oldVal) {
-        this.record_id = newVal;
-        if(this.record_id == '-1'){
-          this.getDefaultData();
-        } else{
-          this.getItem();
-        }
-      }
-    }
-  },
+  // watch: {
+  //   record_id: {
+  //     immediate: true,
+  //     handler(newVal, oldVal) {
+  //       this.record_id = newVal;
+  //       if(this.record_id == '-1'){
+  //         this.getDefaultData();
+  //       } else{
+  //         this.getItem();
+  //       }
+  //     }
+  //   }
+  // },
   data: () => {
     return {
       form: {
@@ -137,11 +137,11 @@ export default {
   created() {
      this.status = this.statuses[1];
   },
-  mounted(){
-    if(this.record_id != "-1"){
-      this.getItem();
-    }
-  },
+  // mounted(){
+  //   if(this.record_id != "-1"){
+  //     this.getItem();
+  //   }
+  // },
   methods: {
     ServiceLookupSelect(id){
       this.form.service = id;
@@ -155,26 +155,27 @@ export default {
     onStatusChange(selected){
       this.status = selected;
       this.form.status = this.status['value'];
-    },
-    getDefaultData(){
-      var self = this;
-      self.form.id = self.record_id;
-      self.form.name = '';
-      self.form.title = '';
-      self.form.service = '';
-      self.form.parent = '';
-      self.form.details = '';
-      self.form.status = '1',
-      self.status = null;
-      self.form.type = '0';
-      self.form.situation = '0';
-      self.form.created_at = '';
-      self.form.updated_at = '';
-      self.form.description = '';
-    },
+    },  
     getItem(){
       var self = this;
       var id = self.record_id;
+      if(id == '-1'){
+        self.form.id = self.record_id;
+        self.form.name = '';
+        self.form.title = '';
+        self.form.service = '';
+        self.form.parent = '';
+        self.form.details = '';
+        self.form.status = '1',
+        self.status = null;
+        self.form.type = '0';
+        self.form.situation = '0';
+        self.form.created_at = '';
+        self.form.updated_at = '';
+        self.form.description = '';
+        self.$refs["form"].resetFields();
+        return;
+      }
       var token = JSON.parse(localStorage.getItem("jwtoken"));
       let config = {
         headers: {
@@ -224,7 +225,7 @@ export default {
       var data_request = JSON.stringify(self.form);
       this.$axios.post(baseurl() + '/channels', data_request, config )
         .then(function (response) {
-          if(response.status == 200){          
+          if(response.status == 200){
             let currentMsg =  self.$message  ({
               message : 'Record added successfully',
               duration:0,
