@@ -35,11 +35,7 @@
           <el-menu-item index="5-2" route="/channels?page=1">Channels</el-menu-item>
           <el-menu-item index="5-3" route="/playlists?page=1">Playlists</el-menu-item>
           <el-menu-item index="5-4" route="/videos?page=1">Videos</el-menu-item>
-        </el-submenu>
-        <el-submenu index="6">
-          <template slot="title">Products</template>
-          <el-menu-item index="6-1" route="/products?page=1">Products</el-menu-item>
-        </el-submenu>
+        </el-submenu>        
         </el-menu>
       <div class="line"></div>
       </b-navbar-nav>
