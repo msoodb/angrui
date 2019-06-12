@@ -42,6 +42,8 @@
 
 <script>
 import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
+import {baseurl} from '../config'
+
 export default {
   name: 'DefaultHeaderDropdownAccnt',
   components: {
@@ -54,7 +56,7 @@ export default {
     user_avatar: {
       get: function () {
         var user_id = JSON.parse(localStorage.getItem("user_id"));
-        return 'http://127.0.0.1:9081/users/' + user_id + '/avatars';
+        return baseurl() + '/users/' + user_id + '/avatars';
       }
     }
   },
