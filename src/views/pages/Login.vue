@@ -11,7 +11,7 @@
                   <p class="text-muted">Sign In to your account</p>
                   <b-input-group class="mb-3">
                     <b-input-group-prepend><b-input-group-text><i class="icon-user"></i></b-input-group-text></b-input-group-prepend>
-                    <b-form-input type="input" name="input" id="input" class="form-control" placeholder="username or email"
+                    <b-form-input name="input" id="input" class="form-control" placeholder="username or email"
                       v-model="formData.input" v-validate="'required'" required="required"/>
                   </b-input-group>
                   <div class="msg_holder mb-3" v-if="errors">
@@ -19,7 +19,7 @@
                   </div>
                   <b-input-group class="mb-4">
                     <b-input-group-prepend><b-input-group-text><i class="icon-lock"></i></b-input-group-text></b-input-group-prepend>
-                    <b-form-input type="password" name="password" id="Password" class="form-control" placeholder="password"
+                    <b-form-input type="password" name="password" id="password" class="form-control" placeholder="password"
                       autocomplete="current-password" v-model="formData.password"
                       v-validate="'required|min:4'" required="required"/>
                   </b-input-group>
@@ -62,7 +62,10 @@ export default {
   name: 'Login',
   data(){
     return{
-      formData:{},
+      formData:{
+        input: '',
+        password: ''
+      },
       disableClick : false
     }
   },
