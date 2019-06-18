@@ -142,6 +142,11 @@ export default {
     getItems(){
       var self = this;
       var token = JSON.parse(localStorage.getItem("jwtoken"));
+      // if(!token || token == "undefined" || token == ""){
+      //   console.log("token is : ", token);
+      //   self.$router.push('/pages/login');
+      //   return;
+      // }
       let config = {
         headers: {
           'Content-Type': 'application/json',
