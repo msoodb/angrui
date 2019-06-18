@@ -20,8 +20,8 @@ import router from './router'
 
 Vue.use(BootstrapVue)
 Vue.use(ElementUI)
-Vue.use(axios)
-Vue.prototype.$axios = axios
+//Vue.use(axios)
+Vue.prototype.$axios = axios;
 Vue.use(qs)
 Vue.use(VeeValidate, {
   fieldsBagName: 'veeFields'
