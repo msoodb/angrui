@@ -68,6 +68,11 @@ export default {
       immediate: true,
       handler(newVal, oldVal) {
         this.handler = newVal;
+        if(!localStorage.getItem("jwtoken") || localStorage.getItem("jwtoken") == "undefined" || localStorage.getItem("jwtoken") == ""){
+          var self = this;
+          self.$router.push('/pages/login');
+          return;
+        }
         this.getItems();
       }
     }

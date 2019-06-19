@@ -35,7 +35,7 @@
           <el-menu-item index="5-2" route="/channels?page=1">Channels</el-menu-item>
           <el-menu-item index="5-3" route="/playlists?page=1">Playlists</el-menu-item>
           <el-menu-item index="5-4" route="/videos?page=1">Videos</el-menu-item>
-        </el-submenu>        
+        </el-submenu>
         </el-menu>
       <div class="line"></div>
       </b-navbar-nav>
@@ -79,8 +79,8 @@
     <TheFooter>
       <!--footer-->
       <div>
-        <a href="https://coreui.io">AngrUI</a>
-        <span class="ml-1">&copy; 2018 creativeLabs.</span>
+        <a href="http://mibinim.com">Mibinim</a>
+        <span class="ml-1">&copy; 2018 atitel.</span>
       </div>
       <div class="ml-auto">
         <span class="mr-1">Powered by</span>
