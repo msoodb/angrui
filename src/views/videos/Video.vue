@@ -39,7 +39,7 @@
             <el-form-item label="title" prop="title">
               <el-input type="title" v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="path" prop="path" hidden>
+            <el-form-item label="path" prop="path">
               <el-input type="path" v-model="form.path"></el-input>
             </el-form-item>
             <el-form-item label="size" prop="size">
@@ -47,6 +47,12 @@
             </el-form-item>
             <el-form-item label="tags" prop="tags">
               <au-tag ref="tags" master="contents" masterField="content" :masterId="form.content" relation="tags_contents"></au-tag>
+            </el-form-item>
+            <el-form-item>
+              <video width="520" controls>
+                 <source src="form.url" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
             </el-form-item>
           </el-col>
           <el-col :span="8">
