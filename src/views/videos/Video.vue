@@ -138,6 +138,7 @@ export default {
         name:'',
         title:'',
         path:'',
+        url:'',
         size: '0',
         created_at: '',
         updated_at: '',
@@ -243,6 +244,7 @@ export default {
             self.form.name = response.data.name;
             self.form.title = response.data.title;
             self.form.path = response.data.path;
+            self.form.url = response.data.url;
             self.form.size = Number(response.data.size);
             self.form.created_at = response.data.created_at;
             self.form.updated_at = response.data.updated_at;
