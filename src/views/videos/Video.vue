@@ -50,7 +50,7 @@
             </el-form-item>
             <el-form-item>
               <video width="520" controls>
-                 <source src="form.url" type="video/mp4">
+                 <source :src="form.url" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
             </el-form-item>
