@@ -50,7 +50,7 @@
             </el-form-item>
             <el-form-item>
               <video width="520" controls>
-                 <source :src="form.url" type="video/mp4">
+                 <source ref="player" :src="form.url" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
             </el-form-item>
@@ -253,6 +253,7 @@ export default {
             self.status = self.statuses[response.data.status];
             self.form.situation = response.data.situation;
             self.form.description = response.data.description;
+            self.$refs["player"].play();
           }
         }.bind(this))
         .catch(function (error) {
