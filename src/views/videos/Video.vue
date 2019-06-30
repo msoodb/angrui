@@ -253,7 +253,7 @@ export default {
             self.status = self.statuses[response.data.status];
             self.form.situation = response.data.situation;
             self.form.description = response.data.description;
-            self.$refs["player"].play();
+            self.$refs["player"].load();
           }
         }.bind(this))
         .catch(function (error) {
