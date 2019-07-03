@@ -17,6 +17,14 @@
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="channel" label="channel" width="150">
+        <template slot-scope="scope">
+          <el-button
+            @click.native.prevent="onEdit(scope.row.id)"
+            type="text"
+            size="small">
+            {{scope.row.channel}}
+          </el-button>
+        </template>
       </el-table-column>
       <el-table-column prop="publisher" label="publisher" width="180">
       </el-table-column>

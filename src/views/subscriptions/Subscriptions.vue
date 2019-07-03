@@ -17,6 +17,14 @@
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="member" label="member" width="180">
+        <template slot-scope="scope">
+          <el-button
+            @click.native.prevent="onEdit(scope.row.id)"
+            type="text"
+            size="small">
+            {{scope.row.member}}
+          </el-button>
+        </template>
       </el-table-column>
       <el-table-column prop="service" label="service" width="180">
       </el-table-column>

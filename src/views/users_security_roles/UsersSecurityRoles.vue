@@ -17,6 +17,14 @@
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="_user_" label="user" width="180">
+        <template slot-scope="scope">
+          <el-button
+            @click.native.prevent="onEdit(scope.row.id)"
+            type="text"
+            size="small">
+            {{scope.row._user_}}
+          </el-button>
+        </template>
       </el-table-column>
       <el-table-column prop="security_role" label="security role" width="180">
       </el-table-column>
