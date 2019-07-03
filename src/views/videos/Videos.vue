@@ -17,6 +17,14 @@
       <el-table-column  type="index"  width="40" align="center">
       </el-table-column>
       <el-table-column prop="name" label="name" width="280">
+        <template slot-scope="scope">
+        <el-button
+          @click.native.prevent="onEdit(scope.row.id)"
+          type="text"
+          size="small">
+          {{scope.row.name}}
+        </el-button>
+      </template>
       </el-table-column>
       <el-table-column prop="size" label="size" width="120">
       </el-table-column>
@@ -99,6 +107,7 @@ export default {
       },10)
     },
     onEdit(id){
+      console.log(id);
       var self = this;
       self.record_id = id;
       self.dialogVisible = true;
