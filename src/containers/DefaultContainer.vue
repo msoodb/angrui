@@ -72,19 +72,13 @@
         </div>
       </main>
       <AppAside fixed>
-        <!--aside-->
         <DefaultAside/>
       </AppAside>
     </div>
     <TheFooter>
-      <!--footer-->
       <div>
         <a href="http://mibinim.com">Mibinim</a>
-        <span class="ml-1">&copy; 2018 atitel.</span>
-      </div>
-      <div class="ml-auto">
-        <span class="mr-1">Powered by</span>
-        <a href="https://coreui.io">CoreUI for Vue</a>
+        <span class="ml-1">&copy; 2018.</span>
       </div>
     </TheFooter>
   </div>
@@ -122,8 +116,11 @@ export default {
   },
   methods: {
   },
-  mounted(){
-    this.loading = true;
+  beforeCreate(){
+    // var self = this;
+    // setTimeout(function () {
+    //   alert("beforeCreate")
+    // }, 5000);
     if(typeof(Storage) != "undefined"){
       if(!localStorage.getItem("jwtoken") || localStorage.getItem("jwtoken") == "undefined" || localStorage.getItem("jwtoken") == ""){
         var self = this;
@@ -133,6 +130,19 @@ export default {
     else {
       console.log("Your browser does not support Web Storage.");
     }
+  },
+  created(){
+    // var self = this;
+    // setTimeout(function () {
+    //   alert("created")
+    // }, 5000);
+  },
+  mounted(){
+    //this.loading = true;
+    // var self = this;
+    // setTimeout(function () {
+    //   alert("mounted")
+    // }, 5000);
   },
   computed: {
     name () {
