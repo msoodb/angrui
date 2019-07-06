@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" style="display:none" ref="app">
     <AppHeader fixed>
       <SidebarToggler class="d-md-down-none" display="lg" />
       <SidebarToggler class="d-lg-none" display="md" mobile />
@@ -36,9 +36,8 @@
           <el-menu-item index="5-3" route="/playlists?page=1">Playlists</el-menu-item>
           <el-menu-item index="5-4" route="/videos?page=1">Videos</el-menu-item>
         </el-submenu>
-        </el-menu>
+      </el-menu>
       <div class="line"></div>
-      </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-nav-item class="d-md-down-none" to="/upload">
           <i class="el-icon-upload"></i>
@@ -117,11 +116,16 @@ export default {
   methods: {
   },
   beforeCreate(){
-    // var self = this;
-    // setTimeout(function () {
-    //   alert("beforeCreate")
-    // }, 5000);
+  },
+  created(){
+  },
+  mounted(){
     if(typeof(Storage) != "undefined"){
+      var self = this;
+      setTimeout(function () {
+        self.$refs["app"].style.display = 'flex';
+      }, 500);
+
       if(!localStorage.getItem("jwtoken") || localStorage.getItem("jwtoken") == "undefined" || localStorage.getItem("jwtoken") == ""){
         var self = this;
         self.$router.push('/pages/login');
@@ -130,19 +134,6 @@ export default {
     else {
       console.log("Your browser does not support Web Storage.");
     }
-  },
-  created(){
-    // var self = this;
-    // setTimeout(function () {
-    //   alert("created")
-    // }, 5000);
-  },
-  mounted(){
-    //this.loading = true;
-    // var self = this;
-    // setTimeout(function () {
-    //   alert("mounted")
-    // }, 5000);
   },
   computed: {
     name () {
