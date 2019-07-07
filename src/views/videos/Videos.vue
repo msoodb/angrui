@@ -91,6 +91,7 @@ export default {
     },
     itemsChanged(items){
       this.items = items;
+      this.loading = false;
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;
