@@ -3,7 +3,7 @@
     <template slot="header">
       <au-list
         ref="list"
-        handler="contents"
+        :handler="handler"
         :multipleSelection="multipleSelection"
         @change="itemsChanged"
         @add="onAdd"
@@ -83,7 +83,8 @@ export default {
        items: [],
        multipleSelection: [],
        record_id:'-1',
-       dialogVisible: false
+       dialogVisible: false,
+       handler:''
      }
   },
   components: {
