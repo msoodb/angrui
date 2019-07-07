@@ -20,7 +20,7 @@
                 :page-count="page_count" @current-change="handleCurrentChange" :current-page.sync="page">
           </el-pagination>
         </div>
-        <el-table ref="table" :data="details" style="width:100%" height="300" border
+        <el-table v-loading="loading" ref="table" :data="details" style="width:100%" height="300" border
             highlight-current-row @selection-change="handleSelectionChange">
           <el-table-column type="selection"  width="40" align="center">
           </el-table-column>

@@ -10,7 +10,7 @@
         @edit="onEdit">
       </au-list>
     </template>
-    <el-table ref="table" :data="items"  stripe style="width: 100%" border
+    <el-table v-loading="loading" ref="table" :data="items"  stripe style="width: 100%" border
           @selection-change="handleSelectionChange">
       <el-table-column  type="selection"  width="40" align="center">
       </el-table-column>
@@ -65,7 +65,8 @@ export default {
        items: [],
        multipleSelection: [],
        record_id:'-1',
-       dialogVisible: false
+       dialogVisible: false,
+       loading: true
      }
   },
   components: {
@@ -75,6 +76,7 @@ export default {
   methods: {
     itemsChanged(items){
       this.items = items;
+      this.loading = false;
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;

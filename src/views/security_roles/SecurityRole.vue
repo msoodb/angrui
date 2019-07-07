@@ -13,7 +13,7 @@
             <el-form-item label="description">
               <el-input type="textarea" :rows=6 v-model="form.description"></el-input>
             </el-form-item>
-            <el-table ref="table" :data="items" stripe height="350" style="width: 100%;" border >
+            <el-table v-loading="loading" ref="table" :data="items" stripe height="350" style="width: 100%;" border >
               <el-table-column  type="index"  width="40" align="center">
               </el-table-column>
               <el-table-column prop="name" label="name" width="180">
