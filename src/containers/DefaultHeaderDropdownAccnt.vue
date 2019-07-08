@@ -4,7 +4,7 @@
       <img
         :src="user_avatar"
         class="img-avatar"
-        alt="admin@bootstrapmaster.com" />
+        alt="user" />
     </template>\
     <template slot="dropdown">
       <b-dropdown-header tag="div" class="text-center"><strong>Account</strong></b-dropdown-header>
