@@ -104,7 +104,7 @@ import AUTag from '../../components/AU-Tag'
 
 
 export default {
-  name: 'Video',
+  name: 'ServiceVideo',
   props: {
     record_id: {
       type: String,

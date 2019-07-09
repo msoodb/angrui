@@ -45,13 +45,13 @@
       </el-table-column>
     </el-table>
     <el-dialog ref="dialog" id="dialog"
-      :visible.sync="dialogVisible"
-      :modalAppendToBody="false"
-      :close-on-click-modal="false"
-      width="80%"
-      :show-close="false"
-      top="1vh">
-      <au-video ref="form" id="form" :record_id="record_id" @close="onClose"></au-video>
+        :visible.sync="dialogVisible"
+        :append-to-body="true"
+        :close-on-click-modal="false"
+        width="80%"
+        :show-close="false"
+        top="1vh">
+      <au-service-video ref="form" id="form" :record_id="record_id" @close="onClose"></au-service-video>
     </el-dialog>
   </b-card>
 </template>
@@ -59,7 +59,7 @@
 <script>
 import {baseurl} from '../../config'
 import AUList from '../../components/AU-List'
-import AUVideo from '../videos/Video'
+import AUServiceVideo from '../videos/ServiceVideo'
 
 
 export default {
@@ -94,7 +94,7 @@ export default {
   },
   components: {
     'au-list': AUList,
-    'au-video': AUVideo
+    'au-service-video': AUServiceVideo
   },
   methods: {
     formatType(row, column, cellValue){
