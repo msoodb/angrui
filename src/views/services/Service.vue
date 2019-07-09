@@ -82,6 +82,9 @@
     <el-tab-pane label="Contents" class="el-tabs-no-padding">
       <au-service-contents :service_id="record_id"></au-service-contents>
     </el-tab-pane>
+    <el-tab-pane label="Videos" class="el-tabs-no-padding">
+      <au-service-videos :service_id="record_id"></au-service-videos>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -93,6 +96,7 @@ import AUTag from '../../components/AU-Tag'
 import AUChannelsTree from '../channels/ChannelsTree'
 import AUServicePlaylists from '../playlists/ServicePlaylists'
 import AUServiceContents from '../contents/ServiceContents'
+import AUServiceVideos from '../videos/ServiceVideos'
 
 
 
@@ -179,7 +183,8 @@ export default {
     'au-keyValue': AUKeyValue,
     'au-channels-tree': AUChannelsTree,
     'au-service-playlists': AUServicePlaylists,
-    'au-service-contents': AUServiceContents
+    'au-service-contents': AUServiceContents,
+    'au-service-videos': AUServiceVideos
   },
   // mounted(){
   //   if(this.record_id != "-1"){

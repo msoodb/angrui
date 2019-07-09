@@ -40,7 +40,7 @@
       <div class="line"></div>
       <b-navbar-nav class="ml-auto">
         <b-nav-item class="d-md-down-none" to="/upload">
-          <el-button icon="el-icon-circle-check" type="success" round size="small" @click="onSave">Upload</el-button>
+          <el-button icon="el-icon-circle-check" type="success" round size="small">Upload</el-button>
         </b-nav-item>
         <DefaultHeaderDropdownAccnt/>
       </b-navbar-nav>
