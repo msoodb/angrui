@@ -19,9 +19,9 @@
               type="text"
               size="mini"
               @click="() => onUplaod(node, data)">
-              Content
+              Videos
             </el-button>
-            {{`⋮`}}
+            ⋮
             <el-button
               type="text"
               size="mini"
