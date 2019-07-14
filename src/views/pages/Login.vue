@@ -1,13 +1,12 @@
 <template>
-  <div class="app flex-row align-items-center">
+  <div class="app flex-row align-items-center bg">
     <div class="container">
       <b-row class="justify-content-center">
-        <b-col md="8">
-          <b-card-group>
+        <b-col md="6">
             <b-card no-body class="p-4">
               <b-card-body>
                 <b-form>
-                  <h1>Login</h1>
+                  <h1>Mibinim</h1>
                   <p class="text-muted">Sign In to your account</p>
                   <b-input-group class="mb-3">
                     <b-input-group-prepend><b-input-group-text><i class="icon-user"></i></b-input-group-text></b-input-group-prepend>
@@ -37,16 +36,15 @@
                 </b-form>
               </b-card-body>
             </b-card>
-            <b-card no-body class="text-white bg-primary py-5 d-md-down-none" style="width:44%">
+            <!--<b-card no-body class="text-white bg-primary py-5 d-md-down-none" style="width:44%">
               <b-card-body class="text-center">
                 <div>
                   <h2>Sign up</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <p class="text-left" style="margin:10px;">Mibinim.com is an online OTT platform for content owners to monetize their audio / video media with the help of an online app builder and support for DCB payment.</p>
                   <b-button variant="primary" class="active mt-3" to="/pages/register">Register Now!</b-button>
                 </div>
               </b-card-body>
-            </b-card>
-          </b-card-group>
+            </b-card>-->
         </b-col>
       </b-row>
     </div>
@@ -116,3 +114,13 @@ export default {
     }
   }
 </script>
+
+<style scoped>
+.bg {
+  background: url(../../assets/images/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+</style>
