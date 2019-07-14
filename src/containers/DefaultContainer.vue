@@ -65,8 +65,9 @@
     </div>
     <TheFooter>
       <div>
-        <a href="http://mibinim.com">Mibinim</a>
-        <span class="ml-1">&copy; 2018.</span>
+        <span class="ml-1">&copy; </span>
+        <span class="ml-1">Mibinim</span>
+        <span class="ml-1">2019</span>
       </div>
     </TheFooter>
   </div>
