@@ -20,7 +20,7 @@
                     <b-input-group-prepend><b-input-group-text><i class="icon-lock"></i></b-input-group-text></b-input-group-prepend>
                     <b-form-input type="password" name="password" id="password" class="form-control" placeholder="password"
                       autocomplete="current-password" v-model="formData.password"
-                      v-validate="'required|min:4'" required="required"/>
+                      required="required"/>
                   </b-input-group>
                   <div class="msg_holder mb-3" v-if="errors">
                     <span v-show="errors.has('password')"><i  class="fa fa-warning"></i>{{ errors.first('password') }}</span>
